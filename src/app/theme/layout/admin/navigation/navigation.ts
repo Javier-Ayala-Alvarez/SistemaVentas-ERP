@@ -30,7 +30,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Dashboard',
         type: 'item',
         url: '/analytics',
-        icon: 'feather icon-home'
+        icon: 'feather icon-home' 
       },
       {
         id: 'FacturasAdministrador',
