@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-factura-administrador',
   standalone: true,
-  imports: [],
+  imports: [MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './factura-administrador.component.html',
   styleUrl: './factura-administrador.component.scss'
 })
-export class FacturaAdministradorComponent {
+export default class FacturaAdministradorComponent {
 
 }

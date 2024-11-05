@@ -1,1 +1,90 @@
-<p>factura-administrador works!</p>
+<mat-card class="card-container">
+    <mat-card-content>
+      <mat-list>
+        <div mat-subheader>
+          <h1>Facturas</h1>
+        </div>
+  
+        <br>
+        <div mat-subheader>
+          <form class="form-inline d-flex align-items-center" >
+            <input class="form-control mr-1" type="search" placeholder="Buscar" aria-label="Search" name="search"
+              >
+            <button class="btn btn btn-outline-primary" style="margin-right: 15px;" type="submit">Buscar</button>
+  
+            <button type="button" class="btn btn btn-outline-success" style="margin-right: 15px;"
+              >
+              Agregar
+            </button>
+  
+           
+            <!--<div >
+              <mat-spinner></mat-spinner> Generando...
+          </div>-->
+          </form>
+        </div>
+  
+        <br>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="col-md-3 tht">Codigo</th>
+              <th class="col-md-3 tht">Nombre</th>
+              <th class="col-md-3 tht">Apellido</th>
+              <th class="col-md-3 tht">Estado</th>
+              <th class="col-md-3 tht">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+  
+  
+  
+              <td class="align-middle">000</td>
+              <td class="align-middle">EDGAR</td>
+              <td class="align-middle">AYALA</td>
+              <td class="align-middle">PAGADA</td>
+              <td class="form-inline d-flex align-items-center">
+                <button type="button" class="btn btn-primary rounded-circle" style=" margin-right: 3px;"
+                  >
+                  <mat-icon>visibility</mat-icon> <!-- Ojo abierto -->
+                </button>
+                <button type="button" class="btn btn-danger rounded-circle" style="margin-right: 3px;"
+                 >
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button type="button" class="btn btn-default rounded-circle" style="margin-right: 3px;"
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              </td>
+        
+          </tbody>
+        </table>
+  
+  
+      </mat-list>
+    </mat-card-content>
+    <nav aria-label="Page navigation example" style="margin-top: 15px;">
+      <ul class="pagination justify-content-end">
+        <li class="page-item" style="margin-left: 25px; margin-right: 25px;">
+          <div>Items por pagina </div>
+        </li>
+        <li class="page-item">
+          <div>pagina</div>
+        </li>
+        <li class="page-item" style="margin-left: 25px;">
+          <div> hasta</div>
+        </li>
+        <li class="page-item">
+          <a style="margin: 15px; margin-top: 25px;" ><mat-icon
+              style="color: black; cursor:pointer;">skip_previous</mat-icon></a>
+        </li>
+        <li class="page-item ">
+          <a style="margin: 15px; " ><mat-icon
+              style="color: black; cursor:pointer;">skip_next</mat-icon></a>
+        </li>
+      </ul>
+    </nav>
+  
+  </mat-card>

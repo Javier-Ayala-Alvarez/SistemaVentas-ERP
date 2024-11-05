@@ -36,12 +36,19 @@ export const NavigationItems: NavigationItem[] = [
         id: 'FacturasAdministrador',
         title: 'Factura-Administrador',
         type: 'item',
-        url: '/component/administrador-factura',
+        url: '//administrador-factura',
         icon: 'feather icon-file-text' // Icono relacionado con facturación
       },
       {
         id: 'Facturas',
         title: 'Facturas',
+        type: 'item',
+        url: '*',
+        icon: 'feather icon-file-text'
+      },
+      {
+        id: 'Cotizaciones',
+        title: 'Cotizaciones',
         type: 'item',
         url: '*',
         icon: 'feather icon-file-text'
