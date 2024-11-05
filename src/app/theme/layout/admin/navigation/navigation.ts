@@ -29,14 +29,14 @@ export const NavigationItems: NavigationItem[] = [
         id: 'dashboard',
         title: 'Dashboard',
         type: 'item',
-        url: '/analytics',
+        url: '/dashboard',
         icon: 'feather icon-home'
       },
       {
         id: 'FacturasAdministrador',
         title: 'Factura-Administrador',
         type: 'item',
-        url: '//administrador-factura',
+        url: '/administrador-factura',
         icon: 'feather icon-file-text' // Icono relacionado con facturación
       },
       {

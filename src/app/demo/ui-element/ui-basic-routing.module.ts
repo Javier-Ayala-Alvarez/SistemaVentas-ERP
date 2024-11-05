@@ -9,9 +9,14 @@ const routes: Routes = [
       {
         path: 'administrador-factura',
         loadComponent: () => import('./vistas/factura-administrador/factura-administrador.component')
+      }, 
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./vistas/dashboard/dashboard.component')
       }
     ]
-  }
+  }  
+
 ];
 
 @NgModule({
