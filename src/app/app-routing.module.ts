@@ -20,7 +20,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: '',
+    path: 'admin',
     component: GuestComponent,
     children: [
       {
