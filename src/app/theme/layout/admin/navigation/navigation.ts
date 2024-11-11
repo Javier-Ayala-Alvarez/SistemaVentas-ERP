@@ -29,19 +29,27 @@ export const NavigationItems: NavigationItem[] = [
         id: 'dashboard',
         title: 'Dashboard',
         type: 'item',
-        url: '/analytics',
-        icon: 'feather icon-home' 
+
+        url: '/dashboard',
+        icon: 'feather icon-home'
       },
       {
         id: 'FacturasAdministrador',
         title: 'Factura-Administrador',
         type: 'item',
-        url: '/component/administrador-factura',
+        url: '/administrador-factura',
         icon: 'feather icon-file-text' // Icono relacionado con facturación
       },
       {
         id: 'Facturas',
         title: 'Facturas',
+        type: 'item',
+        url: '*',
+        icon: 'feather icon-file-text'
+      },
+      {
+        id: 'Cotizaciones',
+        title: 'Cotizaciones',
         type: 'item',
         url: '*',
         icon: 'feather icon-file-text'
