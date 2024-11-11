@@ -6,16 +6,59 @@
         </div>
   
         <br>
-        <div mat-subheader>
+        <div mat-subheader class="mat-sm" >
           <form class="form-inline d-flex align-items-center" >
-            <input class="form-control mr-1" type="search" placeholder="Buscar" aria-label="Search" name="search"
-              >
-            <button class="btn btn btn-outline-primary" style="margin-right: 15px;" type="submit">Buscar</button>
+            <input class="form-control mr-1" type="search" placeholder="Nombre" aria-label="Search" name="search" style=" height: 58px; width: 100px; margin-bottom: 20px;">
+            
+              <!--fechas-->
+
+              <mat-form-field style="margin-left: 2rem;" >
+                <mat-label>Fecha Inicio - Fecha  Fin</mat-label>
+
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Start date">
+                  <input matEndDate placeholder="End date">
+                </mat-date-range-input>
+                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+
+
+              <!--COMBO PARA SUCURSAL-->
+
+              
+<mat-form-field style="margin-left: 2rem;">
+  <mat-label>Sucursal</mat-label>
+  <mat-select [(value)]="selectedFood">
+    <mat-option></mat-option>
+    @for (option of foods; track option) {
+      <mat-option [value]="option.value">{{ option.viewValue }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+
+
+<mat-form-field style="margin-left: 2rem;">
+  <mat-label>Tipo Operación</mat-label>
+  <mat-select [(value)]="selectedCar">
+    <option value=""></option>
+    @for (option of cars; track option) {
+      <mat-option [value]="option.value"
+      [value]="option.value">{{ option.viewValue }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+
+              
+              
+            
+
+            <button class="btn btn btn-outline-primary" style="margin-left: 2rem; height: 58px; width: 100px; margin-bottom: 20px;" type="submit">Buscar</button>
   
-            <button type="button" class="btn btn btn-outline-success" style="margin-right: 15px;"
-              >
-              Agregar
-            </button>
+           
   
            
             <!--<div >
@@ -86,5 +129,15 @@
         </li>
       </ul>
     </nav>
+    
   
   </mat-card>
+  <br>
+
+  <div>
+    <button type="button" class="btn btn btn-outline-primary" style=" width: 100px; margin-right: 15px;">Agregar</button>
+    <button type="button" class="btn btn btn-outline-success" style=" width: 200px; margin-right: 15px;">Reenviar DTE</button>
+    <button type="button" class="btn btn btn-outline-success" style=" width: 200px; margin-right: 15px;">Errores DTE</button>
+    <button type="button" class="btn btn btn-outline-success" style=" width: 200px; margin-right: 15px;">Forma de pago</button>
+  
+  </div>
