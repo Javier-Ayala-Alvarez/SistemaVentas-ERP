@@ -14,6 +14,11 @@ const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./vistas/dashboard/dashboard.component')
       }
+      , 
+      {
+        path: 'factura',
+        loadComponent: () => import('./vistas/factura/factura.component')
+      }
     ]
   }  
 

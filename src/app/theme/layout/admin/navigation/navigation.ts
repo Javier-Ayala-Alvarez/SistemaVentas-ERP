@@ -30,21 +30,21 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Dashboard',
         type: 'item',
 
-        url: '/dashboard',
+        url: '/component/dashboard',
         icon: 'feather icon-home'
       },
       {
         id: 'FacturasAdministrador',
         title: 'Factura-Administrador',
         type: 'item',
-        url: '/administrador-factura',
+        url: '/component/administrador-factura',
         icon: 'feather icon-file-text' // Icono relacionado con facturación
       },
       {
         id: 'Facturas',
         title: 'Facturas',
         type: 'item',
-        url: '*',
+        url: '/component/factura',
         icon: 'feather icon-file-text'
       },
       {
