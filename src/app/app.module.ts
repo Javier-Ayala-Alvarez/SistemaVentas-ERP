@@ -33,6 +33,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import FacturaAdministradorComponent from './demo/ui-element/vistas/factura-administrador/factura-administrador.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     NavItemComponent,
     NavCollapseComponent,
     NavGroupComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -68,8 +69,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatDatepickerModule,
     MatNativeDateModule,
     CommonModule,
-    MatPaginatorModule,
-  ],
+    MatPaginatorModule  ],
   providers: [
     provideAnimationsAsync()
   ],
