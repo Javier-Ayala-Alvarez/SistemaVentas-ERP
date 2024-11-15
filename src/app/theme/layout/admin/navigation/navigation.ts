@@ -51,35 +51,35 @@ export const NavigationItems: NavigationItem[] = [
         id: 'Cotizaciones',
         title: 'Cotizaciones',
         type: 'item',
-        url: '*',
+        url: '/component/cotizaciones',
         icon: 'feather icon-file-text'
       },
       {
         id: 'Compras',
         title: 'Compras',
         type: 'item',
-        url: '*',
+        url: '/component/compras',
         icon: 'feather icon-shopping-cart' // Icono de carrito para compras
       },
       {
         id: 'Gastos',
         title: 'Gastos',
         type: 'item',
-        url: '*',
+        url: '/component/gastos',
         icon: 'feather icon-credit-card' // Icono de tarjeta para gastos
       },
       {
         id: 'Cajas',
         title: 'Cajas',
         type: 'item',
-        url: '*',
+        url: 'component/cajas',
         icon: 'feather icon-dollar-sign' // Icono de dinero para caja
       },
       {
         id: 'Remesas',
         title: 'Remesas',
         type: 'item',
-        url: '*',
+        url: '/component/remesas',
         icon: 'feather icon-dollar-sign' // Icono de dinero para caja
       }
     ]
@@ -100,13 +100,13 @@ export const NavigationItems: NavigationItem[] = [
             id: 'button',
             title: 'Productos',
             type: 'item',
-            url: '/component/button'
+            url: '/component/productos'
           },
           {
             id: 'badges',
             title: 'Unidades',
             type: 'item',
-            url: '/component/badges'
+            url: '/component/unidades'
           }
         ]
       },
@@ -120,7 +120,7 @@ export const NavigationItems: NavigationItem[] = [
             id: 'button',
             title: 'Clientes',
             type: 'item',
-            url: '/component/button'
+            url: '/component/clientes'
           }
         ]
       },
@@ -134,7 +134,7 @@ export const NavigationItems: NavigationItem[] = [
             id: 'button',
             title: 'Proveedores',
             type: 'item',
-            url: '/component/button'
+            url: '/component/proveedores'
           }
         ]
       },
@@ -148,13 +148,13 @@ export const NavigationItems: NavigationItem[] = [
             id: 'button',
             title: 'Empresa',
             type: 'item',
-            url: '/component/button'
+            url: '/component/empresa'
           },
           {
             id: 'badges',
             title: 'Sucursal',
             type: 'item',
-            url: '/component/badges'
+            url: '/component/sucursal'
           }
         ]
       },
@@ -170,7 +170,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'Proveedores',
         title: 'Proveedores',
         type: 'item',
-        url: '/sample-page',
+        url: '/component/proveedores-reportes',
         classes: 'nav-item',
         icon: 'feather icon-sidebar'
       },
@@ -178,7 +178,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'Clientes',
         title: 'Clientes',
         type: 'item',
-        url: '*',
+        url: '/component/clientes-reportes',
         classes: 'nav-item',
         icon: 'feather icon-sidebar'
       },
@@ -192,14 +192,14 @@ export const NavigationItems: NavigationItem[] = [
             id: 'VentaFecha',
             title: 'Ventas Fecha',
             type: 'item',
-            url: 'javascript:',
+            url: '/component/ventas-fecha',
             external: true
           },
           {
             id: 'kardex',
             title: 'Kardex',
             type: 'item',
-            url: 'javascript:',
+            url: '/component/kardex',
             external: true
           }
         ]
@@ -216,7 +216,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'Usuarios',
         title: 'Usuarios',
         type: 'item',
-        url: '/auth/signup',
+        url: '/component/auth/signup',
         icon: 'feather icon-user', // Icono de usuario para gestión de usuarios
         target: true,
         breadcrumbs: false
