@@ -1,7 +1,7 @@
 export interface NavigationItem {
   id: string;
   title: string;
-  type: 'item' | 'collapse' | 'group';
+  type?: 'item' | 'collapse' | 'group';
   translate?: string;
   icon?: string;
   hidden?: boolean;
