@@ -1,12 +1,83 @@
 <div class="modal-header">
     <h5 class="modal-title">Forma de pago</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <p>Este es el contenido del modal.</p>
-  </div>
-  <div class="modal-footer">
+</div>
+<div class="modal-body">
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4 p-3 rounded">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Forma de Pago</th>
+                            <th>Agregar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Efectivo</td>
+                            <td>
+                                <button class="btn btn-success btn-sm rounded-circle">
+                                    <i class="fas fa-check"></i>
+                                </button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="producto">Cantidad $</label>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Ingrese la cantidad">
+                <button class="btn btn-outline-secondary" type="button">Agregar</button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+     
+
+        <div class="col-md-6">
+            <label for="producto">Total Venta $</label>
+            <div class="input-form">
+                <input type="text" class="form-control" placeholder="Total Venta" readonly> 
+            </div>
+            <label for="producto">Efectivo $</label>
+            <div class="input-form">
+                <input type="text" class="form-control" placeholder="Efectivo" readonly> 
+            </div>
+            <label for="producto">Cambio $</label>
+            <div class="input-form">
+                <input type="text" class="form-control" placeholder="Cambio" readonly> 
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4 p-3 rounded">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Forma Pago</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Efectivo</td>
+                            <td>
+                               2.2
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary">Guardar cambios</button>
-  </div>
-  
+    <button type="button" class="btn btn-primary">Guardar</button>
+</div>
