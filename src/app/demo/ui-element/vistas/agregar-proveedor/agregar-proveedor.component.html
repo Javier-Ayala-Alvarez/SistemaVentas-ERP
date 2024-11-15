@@ -1,0 +1,61 @@
+<div class="modal-header">
+    <h5 class="modal-title">Proveedor</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container mt-3">
+      <!-- Formulario de Proveedor -->
+      <form>
+        <!-- Nombre del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="nombreProveedor">Nombre del Proveedor</label>
+          <input type="text" class="form-control" id="nombreProveedor" placeholder="Nombre del proveedor" required>
+        </div>
+  
+        <!-- Dirección del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="direccionProveedor">Dirección</label>
+          <input type="text" class="form-control" id="direccionProveedor" placeholder="Dirección del proveedor" required>
+        </div>
+  
+        <!-- Teléfono del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="telefonoProveedor">Teléfono</label>
+          <input type="tel" class="form-control" id="telefonoProveedor" placeholder="Número de teléfono" required>
+        </div>
+  
+        <!-- Correo Electrónico del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="emailProveedor">Correo Electrónico</label>
+          <input type="email" class="form-control" id="emailProveedor" placeholder="Correo electrónico" required>
+        </div>
+  
+        <!-- NIT del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="nitProveedor">NIT</label>
+          <input type="text" class="form-control" id="nitProveedor" placeholder="NIT del proveedor" required>
+        </div>
+  
+        <!-- Estado del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="estadoProveedor">Estado</label>
+          <select class="form-select" id="estadoProveedor" required>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+  
+        <!-- Fecha de Registro -->
+        <div class="form-group mb-3">
+          <label for="fechaRegistro">Fecha de Registro</label>
+          <input type="date" class="form-control" id="fechaRegistro" required>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+    <button type="button" class="btn btn-primary">Guardar Proveedor</button>
+  </div>
+  
