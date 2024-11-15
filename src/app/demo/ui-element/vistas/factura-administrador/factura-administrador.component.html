@@ -1,142 +1,149 @@
-<mat-card class="card-container">
-    <mat-card-content>
-      <mat-list>
-        <div mat-subheader>
-        </div>
-  
-        <br>
-        <div mat-subheader class="mat-sm" >
-          <form class="form-inline d-flex align-items-center" >
-            <input class="form-control mr-1" type="search" placeholder="Nombre" aria-label="Search" name="search" style=" height: 58px; width: 100px; margin-bottom: 20px;">
-            
-              <!--fechas-->
+<div class="container mt-4">
+  <!-- Cabecera de la Factura -->
+  <div class="card shadow-sm p-4 mb-4 rounded">
+    <h3 class="mb-4 text-center">Administrador de Factura</h3>
 
-              <mat-form-field style="margin-left: 2rem;" >
-                <mat-label>Fecha Inicio - Fecha  Fin</mat-label>
+ <!-- Sección de Cliente y Datos de Factura -->
+<div class="row mb-3">
+  <!-- Campo de Nombre -->
+  <div class="col-md-2">
+    <label for="cliente">Nombre</label>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Nombre">
+    </div>
+  </div>
 
-                <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="Start date">
-                  <input matEndDate placeholder="End date">
-                </mat-date-range-input>
-                <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field>
-
-
-              <!--COMBO PARA SUCURSAL-->
-
-              
-<mat-form-field style="margin-left: 2rem;">
-  <mat-label>Sucursal</mat-label>
-  <mat-select [(value)]="selectedFood">
-    <mat-option></mat-option>
-    @for (option of foods; track option) {
-      <mat-option [value]="option.value">{{ option.viewValue }}</mat-option>
-    }
-  </mat-select>
-</mat-form-field>
+  <!-- Campo de Fecha Inicio -->
+  <div class="col-md-2">
+    <label for="fechaInicio">Fecha inicio</label>
+    <div class="input-group">
+      <input type="date" class="form-control" placeholder="Fecha inicio">
+      
+    </div>
+  </div>
+ <!-- Campo de Fecha Fin -->
+ <div class="col-md-2">
+  <label for="fechaInicio">Fecha Fin</label>
+  <div class="input-group">
+    <input type="date" class="form-control" placeholder="Fecha inicio">
+   
+  </div>
+</div>
 
 
+ <!-- Campo de seleccion tipo de operacion -->
+ <div class="col-md-2">
+  <label for="fechaInicio">Tipo de operación</label>
+  <div class="input-group">
+    <select class="form-select" aria-label="Default select example">
+      <option selected>...</option>
+      <option value="1">One</option>
+      <option value="2">Two</option>
+      <option value="3">Three</option>
+    </select>
+   
+  </div>
+</div>
 
-<mat-form-field style="margin-left: 2rem;">
-  <mat-label>Tipo Operación</mat-label>
-  <mat-select [(value)]="selectedCar">
-    <option value=""></option>
-    @for (option of cars; track option) {
-      <mat-option [value]="option.value"
-      [value]="option.value">{{ option.viewValue }}</mat-option>
-    }
-  </mat-select>
-</mat-form-field>
 
+<!-- Campo de seleccion tipo de sucursal -->
+<div class="col-md-2">
+  <label for="fechaInicio">Sucursal</label>
+  <div class="input-group">
+    <select class="form-select" aria-label="Default select example">
+      <option selected>...</option>
+      <option value="1">San Vicente</option>
+      <option value="2">San Miguel</option>
+      <option value="3">San Salvador</option>
+    </select>
+   
+  </div>
+</div>
 
-              
-              
-            
+<!-- Campo de Numero factura-->
+<div class="col-md-2">
+  <label for="fechaInicio">Factura N°</label>
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Número de factura"/>
+  </div>
+</div>
 
-            <button class="btn btn btn-outline-primary" style="margin-left: 2rem; height: 58px; width: 100px; margin-bottom: 20px;" type="submit">Buscar</button>
-  
-           
-  
-           
-            <!--<div >
-              <mat-spinner></mat-spinner> Generando...
-          </div>-->
-          </form>
-        </div>
-  
-        <br>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="col-md-3 tht">Codigo</th>
-              <th class="col-md-3 tht">Nombre</th>
-              <th class="col-md-3 tht">Apellido</th>
-              <th class="col-md-3 tht">Estado</th>
-              <th class="col-md-3 tht">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-  
-  
-  
-              <td class="align-middle">000</td>
-              <td class="align-middle">EDGAR</td>
-              <td class="align-middle">AYALA</td>
-              <td class="align-middle">PAGADA</td>
-              <td class="form-inline d-flex align-items-center">
-                <button type="button" class="btn btn-primary rounded-circle" style=" margin-right: 3px;"
-                  >
-                  <mat-icon>visibility</mat-icon> <!-- Ojo abierto -->
-                </button>
-                <button type="button" class="btn btn-danger rounded-circle" style="margin-right: 3px;"
-                 >
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <button type="button" class="btn btn-default rounded-circle" style="margin-right: 3px;"
-                >
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-              </td>
-        
-          </tbody>
-        </table>
-  
-  
-      </mat-list>
-    </mat-card-content>
-    <nav aria-label="Page navigation example" style="margin-top: 15px;">
+</div>
+</div>
+
+    
+
+  <!-- Cuerpo de la Factura (Tabla de Productos) -->
+  <div class="card shadow-sm mb-4 p-3 rounded">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Código</th>
+          <th>Descripción</th>
+          <th>Cantidad</th>
+          <th>Descuento</th>
+          <th>Valor Unitario</th>
+          <th>Exento</th>
+          <th>IVA</th>
+          <th>Total</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>000</td>
+          <td>Tomates</td>
+          <td>2</td>
+          <td>0%</td>
+          <td>1.00</td>
+          <td>0</td>
+          <td>0.13</td>
+          <td>1.00</td>
+          <td>
+            <button class="btn btn-danger btn-sm rounded-circle">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Paginador -->
+    <nav aria-label="Page navigation" class="mt-3">
       <ul class="pagination justify-content-end">
-        <li class="page-item" style="margin-left: 25px; margin-right: 25px;">
-          <div>Items por pagina </div>
+        <li class="page-item"><span class="page-link">Items por página</span></li>
+        <li class="page-item"><span class="page-link">Página 1 de 10</span></li>
+        <li class="page-item">
+          <a class="page-link"><i class="fas fa-step-backward"></i></a>
         </li>
         <li class="page-item">
-          <div>pagina</div>
-        </li>
-        <li class="page-item" style="margin-left: 25px;">
-          <div> hasta</div>
-        </li>
-        <li class="page-item">
-          <a style="margin: 15px; margin-top: 25px;" ><mat-icon
-              style="color: black; cursor:pointer;">skip_previous</mat-icon></a>
-        </li>
-        <li class="page-item ">
-          <a style="margin: 15px; " ><mat-icon
-              style="color: black; cursor:pointer;">skip_next</mat-icon></a>
+          <a class="page-link"><i class="fas fa-step-forward"></i></a>
         </li>
       </ul>
     </nav>
-    
-  
-  </mat-card>
-  <br>
-
-  <div>
-    <button type="button" class="btn btn btn-outline-primary" style=" width: 100px; margin-right: 15px;">Agregar</button>
-    <button type="button" class="btn btn btn-outline-success" style=" width: 200px; margin-right: 15px;">Reenviar DTE</button>
-    <button type="button" class="btn btn btn-outline-success" style=" width: 200px; margin-right: 15px;">Errores DTE</button>
-    <button type="button" class="btn btn btn-outline-success" style=" width: 200px; margin-right: 15px;">Forma de pago</button>
-  
   </div>
+
+  <!-- Pie de la Factura (Totales y Botones) -->
+  <div class="card shadow-sm p-4 rounded">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h6>Subtotal: </h6>
+        <h6>IVA:</h6>
+        <h6>Retención:</h6>
+        <h6><strong>Total Venta:</strong></h6>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <button class="btn btn-success w-100">Agregar Producto</button>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary w-100">Guardar Factura</button>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-warning w-100">Reimprimir Factura</button>
+      </div>
+    </div>
+ 
+
