@@ -66,8 +66,6 @@ export default class FacturaComponent implements OnInit {
   retencion = 0;
   totalVenta = 0;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   ngOnInit() {
   }
 
