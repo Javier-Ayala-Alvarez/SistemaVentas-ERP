@@ -14,6 +14,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.component';
+import { BuscarClienteComponent } from '../buscar-cliente/buscar-cliente.component';
+import { FormaDePagoComponent } from '../forma-de-pago/forma-de-pago.component';
 
 export interface Producto {
   codigo: string;
@@ -42,12 +46,8 @@ export interface Producto {
 })
 export default class FacturaComponent implements OnInit {
   
-  displayedColumns: string[] = ['codigo', 'descripcion', 'cantidad', 'descuento', 'valorUnitario', 'exento', 'iva', 'total', 'eliminar'];
-  dataSource = new MatTableDataSource<Producto>([
-    { codigo: 'P001', descripcion: 'Producto A', cantidad: 2, descuento: 0.1, valorUnitario: 500, exento: 0, iva: 75, total: 950 },
-    { codigo: 'P002', descripcion: 'Producto B', cantidad: 1, descuento: 0.05, valorUnitario: 300, exento: 0, iva: 22.5, total: 307.5 },
-    { codigo: 'P003', descripcion: 'Producto C', cantidad: 3, descuento: 0.2, valorUnitario: 200, exento: 0, iva: 60, total: 540 },
-  ]);
+  constructor(private modalService: NgbModal) {}
+
 
   clientes = [
     { nombre: 'Cliente 1' },
@@ -69,14 +69,29 @@ export default class FacturaComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.calculateTotals();
   }
 
-  calculateTotals() {
-    this.subtotal = this.dataSource.data.reduce((sum, item) => sum + item.valorUnitario * item.cantidad, 0);
-    this.iva = this.dataSource.data.reduce((sum, item) => sum + item.iva, 0);
-    this.retencion = 0; // Asignar retención si es necesario
-    this.totalVenta = this.subtotal + this.iva - this.retencion;
+
+  openModalCliente() {
+    
+    const modalRef1 = this.modalService.open(BuscarClienteComponent, {
+      size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      centered: true // para centrar el modal
+    });
+  }
+  openModalProducto() {
+    const modalRef = this.modalService.open(BuscarProductoComponent, {
+      size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      centered: true // para centrar el modal
+    });
+    
+  }
+
+  openModalFormaPago(){
+    const modalRef = this.modalService.open(FormaDePagoComponent, {
+      size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
+      centered: true
+  });
   }
 }
+
