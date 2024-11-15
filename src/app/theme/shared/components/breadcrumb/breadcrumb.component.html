@@ -1,6 +1,6 @@
 @if (this.navigationList) {
   @for (breadcrumb of navigationList; track breadcrumb; let last = $last) {
-    @if (last && breadcrumb.breadcrumbs !== false) {
+    @if (last && breadcrumb.breadcrumbs !== true) {<!--Para mostrar el titulo poner false-->
       <div class="page-header">
         <div class="page-block">
           <div class="row align-items-center">
