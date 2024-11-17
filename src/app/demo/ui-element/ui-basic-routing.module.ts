@@ -28,6 +28,10 @@ const routes: Routes = [
       {
         path: 'compras',
         loadComponent: () => import('./vistas/compras/compras.component')
+      },
+      {
+        path: 'Nuevacompras',
+        loadComponent: () => import('./vistas/agregar-compras/agregar-compras.component')
       }
       , 
       {
@@ -48,6 +52,14 @@ const routes: Routes = [
       {
         path: 'productos',
         loadComponent: () => import('./vistas/productos/productos.component')
+      },
+      {
+        path: 'AgregarProducto',
+        loadComponent: () => import('./vistas/agregar-producto/agregar-producto.component')
+      }, 
+      {
+        path: 'categoria',
+        loadComponent: () => import('./vistas/categoria/categoria.component')
       }
       , 
       {

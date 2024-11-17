@@ -31,6 +31,6 @@ export default class ComprasComponent {
 
   AgregarNuevo(){
     console.log("Prueba");
-   this.router.navigate(['/Nuevacompras']);
+   this.router.navigate(['/component/Nuevacompras']);
   }
 }

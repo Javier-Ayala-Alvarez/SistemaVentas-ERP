@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-agregar-cliente',
+  selector: 'app-buscar-unidad-medida',
   standalone: true,
   imports: [],
-  templateUrl: './agregar-cliente.component.html',
-  styleUrl: './agregar-cliente.component.scss'
+  templateUrl: './buscar-unidad-medida.component.html',
+  styleUrl: './buscar-unidad-medida.component.scss'
 })
-export class AgregarClienteComponent {
+export class BuscarUnidadMedidaComponent {
   constructor(public activeModal: NgbActiveModal) {}
 
 }

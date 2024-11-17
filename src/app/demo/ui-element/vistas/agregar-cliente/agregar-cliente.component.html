@@ -1,1 +1,64 @@
-<p>agregar-cliente works!</p>
+<div class="modal-header">
+    <h5 class="modal-title">Cliente</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container mt-3">
+      <!-- Formulario -->
+      <form>
+        <!-- Nombre -->
+        <div class="form-group mb-3">
+          <label for="nombreCliente">Nombre del Cliente</label>
+          <input type="text" class="form-control" id="nombreCliente" placeholder="Nombre del cliente" required>
+        </div>
+        <!-- Apellido -->
+        <div class="form-group mb-3">
+          <label for="apellidoCLiente">Apellido del Cliente</label>
+          <input type="text" class="form-control" id="apellidoCLiente" placeholder="Apellido del Cliente" required>
+        </div>
+        <!-- Dirección -->
+        <div class="form-group mb-3">
+          <label for="direccionCliente">Dirección</label>
+          <input type="text" class="form-control" id="direccionCliente" placeholder="Dirección del cliente" required>
+        </div>
+  
+        <!-- Teléfono -->
+        <div class="form-group mb-3">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" class="form-control" id="telefono" placeholder="Número de teléfono" required>
+        </div>
+  
+        <!-- Correo Electrónico del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" class="form-control" id="email" placeholder="Correo electrónico" required>
+        </div>
+        <!-- DUI -->
+        <div class="form-group mb-3">
+          <label for="dui">DUI</label>
+          <input type="text" class="form-control" id="dui" placeholder="DUI del Cliente" required>
+        </div>
+  
+        <!-- NIT del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="nit">NIT</label>
+          <input type="text" class="form-control" id="nit" placeholder="NIT del cliente" required>
+        </div>
+  
+        <!-- Estado del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="estado">Estado</label>
+          <select class="form-select" id="estado" required>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+    <button type="button" class="btn btn-primary">Guardar Cliente</button>
+  </div>

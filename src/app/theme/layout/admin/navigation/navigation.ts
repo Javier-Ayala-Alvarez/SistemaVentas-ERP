@@ -102,6 +102,13 @@ export const NavigationItems: NavigationItem[] = [
             type: 'item',
             url: '/component/productos'
           },
+          
+          {
+            id: 'badges',
+            title: 'Categoria',
+            type: 'item',
+            url: '/component/categoria'
+          },
           {
             id: 'badges',
             title: 'Unidades',

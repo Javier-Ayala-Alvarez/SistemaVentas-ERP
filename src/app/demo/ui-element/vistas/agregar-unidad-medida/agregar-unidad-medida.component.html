@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h5 class="modal-title">Unidad de Medida</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container mt-3">
+      <!-- Formulario -->
+      <form>
+        <!-- Nombre de la Unidad -->
+        <div class="form-group mb-3">
+          <label for="nombreUnidad">Nombre de la Unidad</label>
+          <input type="text" class="form-control" id="nombreUnidad" placeholder="Ejemplo: Kilogramos" required>
+        </div>
+        
+        <!-- Abreviatura -->
+        <div class="form-group mb-3">
+          <label for="abreviaturaUnidad">Abreviatura</label>
+          <input type="text" class="form-control" id="abreviaturaUnidad" placeholder="Ejemplo: kg" required>
+        </div>
+        
+        <!-- Factor de Conversión -->
+        <div class="form-group mb-3">
+          <label for="factorConversion">Factor de Conversión</label>
+          <input type="number" class="form-control" id="factorConversion" placeholder="Ejemplo: 1, 0.001" required>
+        </div>
+  
+        <!-- Estado -->
+        <div class="form-group mb-3">
+          <label for="estadoUnidad">Estado</label>
+          <select class="form-select" id="estadoUnidad" required>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+  
+        <!-- Descripción -->
+        <div class="form-group mb-3">
+          <label for="descripcionUnidad">Descripción</label>
+          <textarea class="form-control" id="descripcionUnidad" rows="3" placeholder="Descripción adicional (opcional)"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+    <button type="button" class="btn btn-primary">Guardar Unidad</button>
+  </div>
+  

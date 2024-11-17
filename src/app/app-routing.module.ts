@@ -16,10 +16,6 @@ const routes: Routes = [
       {
         path: 'component',
         loadChildren: () => import('./demo/ui-element/ui-basic.module').then((m) => m.UiBasicModule)
-      },
-      {
-        path: 'Nuevacompras',
-        loadComponent: () => import('./demo/ui-element/vistas/agregar-compras/agregar-compras.component')
       }
     ]
   },

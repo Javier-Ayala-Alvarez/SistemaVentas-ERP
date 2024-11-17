@@ -72,9 +72,10 @@ export default class FacturaComponent implements OnInit {
 
   openModalCliente() {
     
-    const modalRef1 = this.modalService.open(BuscarClienteComponent, {
+    this.modalService.open(BuscarClienteComponent, {
       size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
       centered: true // para centrar el modal
+      
     });
   }
   openModalProducto() {

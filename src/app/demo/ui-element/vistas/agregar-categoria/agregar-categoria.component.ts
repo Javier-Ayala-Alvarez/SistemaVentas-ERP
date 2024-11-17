@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-agregar-cliente',
+  selector: 'app-agregar-categoria',
   standalone: true,
   imports: [],
-  templateUrl: './agregar-cliente.component.html',
-  styleUrl: './agregar-cliente.component.scss'
+  templateUrl: './agregar-categoria.component.html',
+  styleUrl: './agregar-categoria.component.scss'
 })
-export class AgregarClienteComponent {
+export class AgregarCategoriaComponent {
   constructor(public activeModal: NgbActiveModal) {}
 
 }

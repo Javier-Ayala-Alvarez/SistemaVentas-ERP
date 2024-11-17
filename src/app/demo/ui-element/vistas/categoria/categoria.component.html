@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <!-- Cabecera de la Factura -->
     <div class="card shadow-sm p-4 mb-4 rounded">
-        <h3 class="mb-4 text-center">Producto</h3>
+        <h3 class="mb-4 text-center">Categoria</h3>
 
         <!-- Sección de Cliente y Datos de Factura -->
         <div class="container mt-4">
@@ -19,7 +19,7 @@
                     <button class="btn btn-warning w-100">Buscar</button>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-primary w-100" (click)=" AgregarNuevo()">Agregar</button>
+                    <button class="btn btn-primary w-100" (click)="openModalAgregar()">Agregar</button>
                 </div>
             </div>
         </div>
@@ -39,8 +39,8 @@
                 <tbody>
                     <tr>
                         <td>000</td>
-                        <td>Tomates</td>
-                        <td>Tomates rojos hondureños</td>
+                        <td>Verduras</td>
+                        <td>Verduras frescas</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">
