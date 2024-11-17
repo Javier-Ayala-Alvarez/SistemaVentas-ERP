@@ -1,1 +1,39 @@
-<p>agregar-remesa works!</p>
+<div class="modal-header">
+    <h5 class="modal-title">Agregar Remesa</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container mt-3">
+      <!-- Formulario -->
+      <form>
+        <!--select sucurdsal-->
+        <div class="form-group mb-3">
+            <label for="sucursal">Sucursal</label>
+            <select class="form-select" id="sucursal" required>
+              <option value="" selected disabled>Seleccione una sucursal</option>
+              <option value="1">San Vicente</option>
+              <option value="2">San Salvador</option>
+              <option value="3">San Miguel</option>
+            </select>
+          </div>
+          
+        <!-- Apellido -->
+        <div class="form-group mb-3">
+          <label for="numCaja">N° de Caja</label>
+          <input type="number" class="form-control" id="numCaja" placeholder="N° de Caja" value="0" min="0" required>
+        </div>
+        <!-- Dirección -->
+        <div class="form-group mb-3">
+          <label for="cantidad">Cantidad</label>
+          <input type="text" class="form-control" id="cantidad" placeholder="Cantidad" required>
+        </div>
+  
+
+      </form>
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+    <button type="button" class="btn btn-primary">Guardar Remesa</button>
+  </div>
