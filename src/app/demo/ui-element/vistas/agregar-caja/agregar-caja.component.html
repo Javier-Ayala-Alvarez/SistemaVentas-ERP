@@ -1,1 +1,62 @@
-<p>agregar-caja works!</p>
+<div class="modal-header">
+    <h5 class="modal-title">Cliente</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container mt-3">
+      <!-- Formulario -->
+      <form>
+       <!--select sucurdsal-->
+       <div class="form-group mb-3">
+        <label for="sucursal">Sucursal</label>
+        <select class="form-select" id="sucursal" required>
+          <option value="" selected disabled>Seleccione una sucursal</option>
+          <option value="1">San Vicente</option>
+          <option value="2">San Salvador</option>
+          <option value="3">San Miguel</option>
+        </select>
+      </div>
+        <!-- Apellido -->
+        <div class="form-group mb-3">
+          <label for="fechaInicio">Fecha de Inicio</label>
+          <input type="date" class="form-control" id="fechaInicio" placeholder="" required>
+        </div>
+        <!-- Dirección -->
+        <div class="form-group mb-3">
+          <label for="horaInicio">Hora de Inicio</label>
+          <input type="text" class="form-control" id="horaInicio" placeholder="Hora Inicio" required>
+        </div>
+  
+        <!-- Teléfono -->
+        <div class="form-group mb-3">
+          <label for="fechaCierre">Fecha de Cierre</label>
+          <input type="date" class="form-control" id="fechaCierre" placeholder="" required>
+        </div>
+  
+        <!-- Correo Electrónico del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="horaCierre">Hora de Cierre</label>
+          <input type="text" class="form-control" id="horaCierre" placeholder="Hora Cierre" required>
+        </div>
+        <!-- DUI -->
+        <div class="form-group mb-3">
+          <label for="efectivoApertura">Efectivo de Apertura</label>
+          <input type="number" class="form-control" id="efectivoApertura" placeholder="Efectivo de Apertura" required>
+        </div>
+  
+        <!-- NIT del Proveedor -->
+        <div class="form-group mb-3">
+          <label for="efectivoCierre">Efectivo de Cierre</label>
+          <input type="number" class="form-control" id="efectivoCierre" placeholder="Efectivo de Cierre" required>
+        </div>
+  
+    
+
+      </form>
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+    <button type="button" class="btn btn-primary">Guardar Cliente</button>
+  </div>
