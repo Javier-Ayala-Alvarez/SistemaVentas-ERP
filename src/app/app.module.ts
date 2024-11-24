@@ -31,7 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AgregarSucursalComponent } from './demo/ui-element/vistas/agregar-sucursal/agregar-sucursal.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -140,7 +140,8 @@ import { MatCardModule } from '@angular/material/card';
     HttpClientModule,
     MatCardModule ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

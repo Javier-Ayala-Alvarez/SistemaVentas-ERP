@@ -11,8 +11,8 @@ export class EmpresaClass {
     fecha?:Date;
     direccionLogo?:string;
 
-    usuarioCreacion?: UsuarioClass;
-    usuarioModificacion?: UsuarioClass;
+//usuarioCreacion?: UsuarioClass;
+    //usuarioModificacion?: UsuarioClass;
     fechaCreacion?: Data;
     fechaModificacion?: Data;
     

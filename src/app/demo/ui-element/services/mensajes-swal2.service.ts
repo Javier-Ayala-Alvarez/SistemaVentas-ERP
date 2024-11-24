@@ -12,20 +12,38 @@ export class MensajesSwal2Service {
 
   // Función común para manejar los errores
   handleError(e: any) {
-    const errorMessage = e.status === 0
-      ? 'No se pudo conectar al servidor. Verifique su conexión al servidor o llame a soporte.'
-      : e.status === 400 && e.error?.errors
-      ? (e.error.errors as string[]).join('<br>')
-      : e.error?.mensaje || 'Ocurrió un error inesperado';
-
+    let errorMessage = 'Ocurrió un error inesperado.';
+  
+    // Verificar la conexión al servidor
+    if (e.status === 0) {
+      errorMessage = 'No se pudo conectar al servidor. Verifique su conexión a Internet o llame a soporte.';
+    }
+    // Errores de validación (400)
+    else if (e.status === 400 && e.error?.errors) {
+      errorMessage = (e.error.errors as string[]).join('<br>');
+    }
+    // Error general con mensaje
+    else if (e.error?.mensaje) {
+      errorMessage = e.error.mensaje;
+    }
+    // Errores detallados
+    else if (e.error?.error) {
+      errorMessage = e.error.error;
+    }
+  
+    // Mostrar el mensaje de error usando SweetAlert
     Swal.fire({
       icon: 'error',
-      title: e.status === 400 ? 'Errores de validación' : 'Error !!',
-      html: errorMessage
+      title: e.status === 400 ? 'Errores de validación' : 'Error inesperado',
+      html: errorMessage,
+      showCloseButton: true,  // Agregar botón de cierre para una mejor experiencia
+      focusConfirm: false,
+      confirmButtonText: 'Aceptar'
     });
-
+  
     return throwError(e);
   }
+  
 mensaje(title: string, text: string){
   Swal.fire({
     icon: 'success',

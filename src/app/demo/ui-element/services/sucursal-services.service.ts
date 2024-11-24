@@ -4,6 +4,8 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import baserUrl from '../services/helper';
 import { SucursalClass } from '../clases/sucursal-class';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
+import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ export class SucursalServicesService {
 
   // Agrega una nueva sucursal
   agregar(sucursal: SucursalClass): Observable<any> {
+    sucursal.estado = 'A';
     return this.httpClient.post(`${this.apiUrl}/Guardar`, sucursal).pipe(
       tap(() => {
         this.mensajeSwal2.mensaje('Guardado exitoso','La sucursal se ha guardado correctamente.')
@@ -29,6 +32,7 @@ export class SucursalServicesService {
 
   // Modifica la sucursal
   modificar(id: number, sucursal: SucursalClass): Observable<any> {
+    sucursal.estado = 'A';
     return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, sucursal).pipe(
       tap(() => {
         this.mensajeSwal2.mensaje('Guardado exitoso','La sucursal se ha modificado correctamente.')
@@ -36,6 +40,36 @@ export class SucursalServicesService {
       catchError(this.mensajeSwal2.handleError) 
     );
   }
+
+ // Eliminar la sucursal
+eliminar(id: number, sucursal: SucursalClass): void {
+  Swal.fire({
+    title: 'Eliminar Sucursal',
+    text: '¿Estás seguro de que deseas eliminar esta sucursal?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((resultado) => {
+    if (resultado.isConfirmed) {
+      
+      sucursal.estado = 'N';
+      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, sucursal).pipe(
+        tap(() => {
+          this.mensajeSwal2.mensaje('Eliminada exitoso', 'La sucursal se ha modificado correctamente.');
+        }),
+        catchError((error) => {
+          this.mensajeSwal2.handleError(error);
+          return throwError(error); 
+        })
+      ).subscribe(); 
+    }
+  });
+}
+
+
 
   // Muestra la lista de sucursales
   load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {

@@ -42,6 +42,11 @@ export default class SucursalComponent {
   editar(sucursal: SucursalClass): void {
     this.openModal(sucursal);
   }
+  elimiar(sucursal: SucursalClass): void {
+    this.sucursalServices.eliminar(sucursal.id ?? 0, sucursal);
+    this.loadSucursales();
+  }
+  
   
 
 //mostrar datos en la tabla
