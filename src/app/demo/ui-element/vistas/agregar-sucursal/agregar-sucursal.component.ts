@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SucursalClass } from '../../clases/sucursal-class';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
 import { EmpresaClass } from '../../clases/empresa-class';
+import { EmpresaServicesService } from '../../services/empresa-services.service';
 
 @Component({
   selector: 'app-agregar-sucursal',
@@ -15,13 +16,14 @@ export class AgregarSucursalComponent {
   empresas?: EmpresaClass[];
   @Input() sucursalEditar?: SucursalClass; // Recibe la sucursal desde el componente principal
 
-  constructor(public activeModal: NgbActiveModal, private sucursalServices: SucursalServicesService) {}
+  constructor(public activeModal: NgbActiveModal, private sucursalServices: SucursalServicesService, private empresaServices: EmpresaServicesService) {}
 
   //Valores de inicio
   ngOnInit(): void {
     if (this.sucursalEditar) {
       this.sucursal = { ...this.sucursalEditar }; // Clonar para evitar modificar directamente el objeto original
     }
+    this.loadEmpresa();
   }
 
   //Guardar Sucursal
@@ -33,7 +35,14 @@ export class AgregarSucursalComponent {
     }
   }
 
-  
+  //mostrar datos de la empresa
+  loadEmpresa() {
+    this.empresaServices.buscar().subscribe(
+      (dato: any) => {
+      this.empresas = dato;
+      }
+    );
+  }
 
 
 }
