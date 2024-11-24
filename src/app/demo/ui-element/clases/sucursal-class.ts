@@ -4,6 +4,7 @@ import { UsuarioClass } from "./usuario-class";
 
 export class SucursalClass {
     id? : number;
+    codigo? : string;
     nombre?: string;
     direccion?: string;
     telefono?: string;

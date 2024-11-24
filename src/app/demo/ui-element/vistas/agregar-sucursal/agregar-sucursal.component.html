@@ -1,59 +1,94 @@
 <div class="modal-header">
     <h5 class="modal-title">Sucursal</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-</div>
-<div>
-    <div class="container mt-5">
-        <!-- Formulario de Sucursal -->
-        <form>
-            <!-- Nombre de la Sucursal -->
-            <div class="form-group mb-3">
-                <label for="nombreSucursal">Nombre de la Sucursal</label>
-                <input type="text" class="form-control" id="nombreSucursal" placeholder="Nombre de la sucursal"
-                    required>
-            </div>
-
-            <!-- Dirección de la Sucursal -->
-            <div class="form-group mb-3">
-                <label for="direccionSucursal">Dirección</label>
-                <input type="text" class="form-control" id="direccionSucursal" placeholder="Dirección de la sucursal"
-                    required>
-            </div>
-
-            <!-- Teléfono de la Sucursal -->
-            <div class="form-group mb-3">
-                <label for="telefonoSucursal">Teléfono</label>
-                <input type="tel" class="form-control" id="telefonoSucursal" placeholder="Número de teléfono" required>
-            </div>
-
-            <!-- Correo Electrónico de la Sucursal -->
-            <div class="form-group mb-3">
-                <label for="emailSucursal">Correo Electrónico</label>
-                <input type="email" class="form-control" id="emailSucursal" placeholder="Correo electrónico" required>
-            </div>
-
-
-            <!-- Fecha de Apertura -->
-            <div class="form-group mb-3">
-                <label for="fechaApertura">Fecha de Apertura</label>
-                <input type="date" class="form-control" id="fechaApertura" required>
-            </div>
-            <!-- Empresa -->
-            <div class="form-group mb-3">
-                <label for="empresa">Empresa</label>
-                <select class="form-select" id="empresa" required>
-                    <option value="activo">Empresa</option>
-                </select>
-            </div>
-
-        </form>
+  </div>
+  
+  <div>
+    <div class="container mt-3">
+      <!-- Formulario de Sucursal -->
+      <form>
+        <div class="row">
+          <!-- Nombre de la Sucursal -->
+          <div class="col-md-6 mb-3">
+            <label for="nombreSucursal">Nombre de la Sucursal</label>
+            <input 
+              type="text" 
+              [(ngModel)]="sucursal.nombre" 
+              class="form-control" 
+              id="nombreSucursal" 
+              placeholder="Nombre de la sucursal" 
+              required>
+          </div>
+  
+          <!-- Dirección de la Sucursal -->
+          <div class="col-md-6 mb-3">
+            <label for="direccionSucursal">Dirección</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="direccionSucursal" 
+              placeholder="Dirección de la sucursal" 
+              [(ngModel)]="sucursal.direccion"
+              required>
+          </div>
+        </div>
+  
+        <div class="row">
+          <!-- Teléfono de la Sucursal -->
+          <div class="col-md-6 mb-3">
+            <label for="telefonoSucursal">Teléfono</label>
+            <input 
+              type="tel" 
+              class="form-control" 
+              id="telefonoSucursal" 
+              placeholder="Número de teléfono" 
+              [(ngModel)]="sucursal.telefono"
+              required>
+          </div>
+  
+          <!-- Correo Electrónico de la Sucursal -->
+          <div class="col-md-6 mb-3">
+            <label for="emailSucursal">Correo Electrónico</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              id="emailSucursal" 
+              placeholder="Correo electrónico" 
+              [(ngModel)]="sucursal.correo"
+              required>
+          </div>
+        </div>
+  
+        <div class="row">
+          <!-- Fecha de Apertura -->
+          <div class="col-md-6 mb-3">
+            <label for="fechaApertura">Fecha de Apertura</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              id="fechaApertura" 
+            [(ngModel)]="sucursal.fecha"
+              required>
+          </div>
+  
+          <!-- Empresa -->
+          <div class="col-md-6 mb-3">
+            <label for="empresa">Empresa</label>
+            <select  [(ngModel)]="sucursal.empresa"
+              class="form-select" 
+              id="empresa" 
+              required>
+              <option *ngFor="let emp of empresas"
+              [value]="emp.id"> {{emp.nombre}}</option>
+            </select>
+          </div>
+        </div>
+      </form>
     </div>
-
-
-</div>
-
-<div class="modal-footer">
+  </div>
+  
+  <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary">Guardar</button>
-
-</div>
+    <button type="button" class="btn btn-primary" (click)="guardar()">Guardar</button>
+  </div>
+  
