@@ -35,6 +35,28 @@
             <option value="inactivo">Inactivo</option>
           </select>
         </div>
+         <!-- Imagen del Producto -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="imagenProducto">Imagen del Producto</label>
+          <input 
+            type="file" 
+            class="form-control" 
+            (change)="onImageSelected($event)">
+        </div>
+        <div class="col-md-6 text-center">
+          <!-- Vista previa de la imagen -->
+          <label for="preview">Vista previa</label>
+          <div class="border p-2" style="height: 150px; overflow: hidden;">
+            <img 
+              *ngIf="imagenPreview" 
+              [src]="imagenPreview" 
+              alt="Vista previa" 
+              style="max-height: 100%; max-width: 100%;">
+          </div>
+        </div>
+      </div>
+    
 
         <div class="col-md-3 d-flex align-items-end">
           <button class="btn btn-success w-100" (click)="openModalAgregar ()">Agregar Unidad de medida</button>
