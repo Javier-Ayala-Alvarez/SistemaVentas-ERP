@@ -16,13 +16,6 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-compras',
-  standalone: true,
-  imports: [
-    CommonModule, MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule,
-    MatFormFieldModule, MatInputModule, MatDatepickerModule, MatSelectModule,
-    FormsModule, MatAutocompleteModule, ReactiveFormsModule, AsyncPipe,
-    MatPaginatorModule, MatTableModule
-  ],
   templateUrl: './compras.component.html',
   styleUrl: './compras.component.scss'
 })

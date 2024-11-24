@@ -4,8 +4,6 @@ import { BuscarUnidadMedidaComponent } from '../buscar-unidad-medida/buscar-unid
 
 @Component({
   selector: 'app-agregar-producto',
-  standalone: true,
-  imports: [],
   templateUrl: './agregar-producto.component.html',
   styleUrl: './agregar-producto.component.scss'
 })

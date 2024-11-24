@@ -4,8 +4,6 @@ import { AgregarClienteComponent } from '../agregar-cliente/agregar-cliente.comp
 
 @Component({
   selector: 'app-clientes',
-  standalone: true,
-  imports: [],
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.scss'
 })

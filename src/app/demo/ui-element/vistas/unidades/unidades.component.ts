@@ -4,8 +4,6 @@ import { AgregarUnidadMedidaComponent } from '../agregar-unidad-medida/agregar-u
 
 @Component({
   selector: 'app-unidades',
-  standalone: true,
-  imports: [],
   templateUrl: './unidades.component.html',
   styleUrl: './unidades.component.scss'
 })

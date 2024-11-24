@@ -3,8 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-agregar-unidad-medida',
-  standalone: true,
-  imports: [],
   templateUrl: './agregar-unidad-medida.component.html',
   styleUrl: './agregar-unidad-medida.component.scss'
 })

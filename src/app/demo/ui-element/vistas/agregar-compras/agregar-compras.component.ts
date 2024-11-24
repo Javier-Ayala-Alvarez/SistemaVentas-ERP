@@ -15,11 +15,6 @@ import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-agregar-compras',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule,
-    MatFormFieldModule, MatInputModule, MatDatepickerModule, MatSelectModule,
-    FormsModule, MatAutocompleteModule, ReactiveFormsModule, AsyncPipe,
-    MatPaginatorModule, MatTableModule],
   templateUrl: './agregar-compras.component.html',
   styleUrl: './agregar-compras.component.scss'
 })

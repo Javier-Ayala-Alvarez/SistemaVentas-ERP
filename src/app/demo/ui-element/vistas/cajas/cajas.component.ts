@@ -6,8 +6,6 @@ import { AgregarCajaComponent } from '../agregar-caja/agregar-caja.component';
 
 @Component({
   selector: 'app-cajas',
-  standalone: true,
-  imports: [],
   templateUrl: './cajas.component.html',
   styleUrl: './cajas.component.scss'
 })

@@ -4,8 +4,6 @@ import { AgregarProveedorComponent } from '../agregar-proveedor/agregar-proveedo
 
 @Component({
   selector: 'app-proveedores',
-  standalone: true,
-  imports: [],
   templateUrl: './proveedores.component.html',
   styleUrl: './proveedores.component.scss'
 })

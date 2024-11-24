@@ -3,8 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-agregar-caja',
-  standalone: true,
-  imports: [],
   templateUrl: './agregar-caja.component.html',
   styleUrl: './agregar-caja.component.scss'
 })

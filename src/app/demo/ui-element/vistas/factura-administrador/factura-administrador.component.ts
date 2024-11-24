@@ -26,15 +26,6 @@ interface Car {
  */
 @Component({
   selector: 'app-factura-administrador',
-  standalone: true,
-  imports: [MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule,MatFormFieldModule,
-    MatInputModule,MatDatepickerModule, MatSelectModule,  FormsModule,  MatNativeDateModule],
-
-
-
-
-
-
   templateUrl: './factura-administrador.component.html',
   styleUrl: './factura-administrador.component.scss'
 })

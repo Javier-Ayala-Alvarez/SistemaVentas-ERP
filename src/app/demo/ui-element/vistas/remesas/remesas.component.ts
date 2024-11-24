@@ -4,8 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-remesas',
-  standalone: true,
-  imports: [],
   templateUrl: './remesas.component.html',
   styleUrl: './remesas.component.scss'
 })

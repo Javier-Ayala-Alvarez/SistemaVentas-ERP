@@ -36,6 +36,37 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AgregarSucursalComponent } from './demo/ui-element/vistas/agregar-sucursal/agregar-sucursal.component';
 import { HttpClientModule } from '@angular/common/http';
 import SucursalComponent from './demo/ui-element/vistas/sucursal/sucursal.component';
+import { AgregarCajaComponent } from './demo/ui-element/vistas/agregar-caja/agregar-caja.component';
+import { AgregarClienteComponent } from './demo/ui-element/vistas/agregar-cliente/agregar-cliente.component';
+import AgregarComprasComponent from './demo/ui-element/vistas/agregar-compras/agregar-compras.component';
+import { AgregarGastosComponent } from './demo/ui-element/vistas/agregar-gastos/agregar-gastos.component';
+import AgregarProductoComponent from './demo/ui-element/vistas/agregar-producto/agregar-producto.component';
+import { AgregarProveedorComponent } from './demo/ui-element/vistas/agregar-proveedor/agregar-proveedor.component';
+import { AgregarRemesaComponent } from './demo/ui-element/vistas/agregar-remesa/agregar-remesa.component';
+import { AgregarUnidadMedidaComponent } from './demo/ui-element/vistas/agregar-unidad-medida/agregar-unidad-medida.component';
+import { BuscarClienteComponent } from './demo/ui-element/vistas/buscar-cliente/buscar-cliente.component';
+import { BuscarProductoComponent } from './demo/ui-element/vistas/buscar-producto/buscar-producto.component';
+import { BuscarUnidadMedidaComponent } from './demo/ui-element/vistas/buscar-unidad-medida/buscar-unidad-medida.component';
+import CajasComponent from './demo/ui-element/vistas/cajas/cajas.component';
+import CategoriaComponent from './demo/ui-element/vistas/categoria/categoria.component';
+import ClientesComponent from './demo/ui-element/vistas/clientes/clientes.component';
+import ClientesReportesComponent from './demo/ui-element/vistas/clientes-reportes/clientes-reportes.component';
+import ComprasComponent from './demo/ui-element/vistas/compras/compras.component';
+import cotizacionesComponent from './demo/ui-element/vistas/cotizaciones/cotizaciones.component';
+import DashboardComponent from './demo/ui-element/vistas/dashboard/dashboard.component';
+import EmpresaComponent from './demo/ui-element/vistas/empresa/empresa.component';
+import FacturaComponent from './demo/ui-element/vistas/factura/factura.component';
+import FacturaAdministradorComponent from './demo/ui-element/vistas/factura-administrador/factura-administrador.component';
+import { FormaDePagoComponent } from './demo/ui-element/vistas/forma-de-pago/forma-de-pago.component';
+import GastosComponent from './demo/ui-element/vistas/gastos/gastos.component';
+import KardexComponent from './demo/ui-element/vistas/kardex/kardex.component';
+import ProductosComponent from './demo/ui-element/vistas/productos/productos.component';
+import ProveedoresComponent from './demo/ui-element/vistas/proveedores/proveedores.component';
+import ProveedoresReportesComponent from './demo/ui-element/vistas/proveedores-reportes/proveedores-reportes.component';
+import RemesasComponent from './demo/ui-element/vistas/remesas/remesas.component';
+import UnidadesComponent from './demo/ui-element/vistas/unidades/unidades.component';
+import VentasFechaComponent from './demo/ui-element/vistas/ventas-fecha/ventas-fecha.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -54,7 +85,39 @@ import SucursalComponent from './demo/ui-element/vistas/sucursal/sucursal.compon
     NavCollapseComponent,
     NavGroupComponent,
     AgregarSucursalComponent,
-    SucursalComponent
+    SucursalComponent,
+    AgregarCajaComponent,
+    AgregarClienteComponent,
+    AgregarComprasComponent,
+    AgregarGastosComponent,
+    AgregarProductoComponent,
+    AgregarProveedorComponent,
+    AgregarRemesaComponent,
+    AgregarSucursalComponent,
+    AgregarUnidadMedidaComponent,
+    BuscarClienteComponent,
+    BuscarProductoComponent,
+    BuscarUnidadMedidaComponent,
+    CajasComponent,
+    CategoriaComponent,
+    ClientesComponent,
+    ClientesReportesComponent,
+    ComprasComponent,
+    cotizacionesComponent,
+    DashboardComponent,
+    EmpresaComponent,
+    FacturaComponent,
+    FacturaAdministradorComponent,
+    FormaDePagoComponent,
+    GastosComponent,
+    KardexComponent,
+    ProductosComponent,
+    ProveedoresComponent,
+    ProveedoresReportesComponent,
+    RemesasComponent,
+    SucursalComponent,
+    UnidadesComponent,
+    VentasFechaComponent
      ],
   imports: [
     BrowserModule,
@@ -74,7 +137,8 @@ import SucursalComponent from './demo/ui-element/vistas/sucursal/sucursal.compon
     MatNativeDateModule,
     CommonModule,
     MatPaginatorModule,
-    HttpClientModule  ],
+    HttpClientModule,
+    MatCardModule ],
   providers: [
     provideAnimationsAsync()
   ],

@@ -34,13 +34,6 @@ export interface Producto {
 
 @Component({
   selector: 'app-cotizaciones',
-  standalone: true,
-  imports: [
-    CommonModule, MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule,
-    MatFormFieldModule, MatInputModule, MatDatepickerModule, MatSelectModule,
-    FormsModule, MatAutocompleteModule, ReactiveFormsModule, AsyncPipe,
-    MatPaginatorModule, MatTableModule
-  ],
   templateUrl: './cotizaciones.component.html',
   styleUrls: ['./cotizaciones.component.scss'],
   encapsulation: ViewEncapsulation.None

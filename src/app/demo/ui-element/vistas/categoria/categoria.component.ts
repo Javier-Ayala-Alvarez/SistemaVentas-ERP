@@ -4,8 +4,6 @@ import { AgregarCategoriaComponent } from '../agregar-categoria/agregar-categori
 
 @Component({
   selector: 'app-categoria',
-  standalone: true,
-  imports: [],
   templateUrl: './categoria.component.html',
   styleUrl: './categoria.component.scss'
 })

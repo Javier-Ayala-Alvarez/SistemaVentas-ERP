@@ -5,8 +5,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-agregar-remesa',
-  standalone: true,
-  imports: [],
   templateUrl: './agregar-remesa.component.html',
   styleUrl: './agregar-remesa.component.scss'
 })

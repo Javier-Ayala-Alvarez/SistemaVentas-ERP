@@ -32,13 +32,6 @@ export interface Producto {
 
 @Component({
   selector: 'app-factura',
-  standalone: true,
-  imports: [
-    CommonModule, MatCardModule, MatListModule, MatIconModule, MatProgressSpinnerModule,
-    MatFormFieldModule, MatInputModule, MatDatepickerModule, MatSelectModule,
-    FormsModule, MatAutocompleteModule, ReactiveFormsModule, AsyncPipe,
-    MatPaginatorModule, MatTableModule
-  ],
   templateUrl: './factura.component.html',
   styleUrls: ['./factura.component.scss'],
   encapsulation: ViewEncapsulation.None
