@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {GastosServicesService } from '../../services/gastos-services.service'; 	
+import { GastoClass } from '../../clases/gasto-class';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-agregar-gastos',
@@ -7,6 +11,33 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './agregar-gastos.component.scss'
 })
 export class AgregarGastosComponent {
-  constructor(public activeModal: NgbActiveModal) {}
+  gastoNuevo: GastoClass = new GastoClass(); // Inicialización por defecto
+  gasto?: GastoClass; // Recibe la sucursal desde el componente principal
+
+  constructor(public activeModal: NgbActiveModal, private gastoService: GastosServicesService, private router: Router, private datePipe: DatePipe) {}
+
+   //Valores de inicio
+   ngOnInit(): void {
+    if (this.gasto) {
+      this.gastoNuevo = { ...this.gasto }; // Copia los valores si está definido
+    } else {
+      this.gastoNuevo = new GastoClass(); // Asegura la inicialización
+    }
+  }
+
+   //Guardar Gasto
+   guardar(){
+    if (this.gasto != null) {
+      this.gastoService.modificar(this.gastoNuevo.id ?? 0, this.gastoNuevo).subscribe();
+
+    } else {
+      this.gastoService.agregar(this.gastoNuevo).subscribe();
+    }
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/component/gastos']);
+    });
+    this.activeModal.close(); // Cierra el modal (opcional)
+
+  }
 
 }
