@@ -9,17 +9,17 @@
     <div class="row mb-3 align-items-center">
         <div class="col-md-3">
             <label for="cliente">Nombre</label>
-            <input type="text" class="form-control" placeholder="Nombre">
+            <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="terminoBusqueda">
           </div>
 
         <!-- Botón de Búsqueda -->
         <div class="col-md-4 d-flex">
-            <button class="btn btn-warning w-100 " style="margin-top: 15px;">Buscar</button>
+            <button class="btn btn-warning w-100 " style="margin-top: 15px;"(click)="loadgastos()" >Buscar</button>
         </div>
 
         <!-- Botón de Agregar -->
         <div class="col-md-4 d-flex">
-            <button class="btn btn-primary w-100 " style="margin-top: 15px;" (click)="openModalAgregar()">Agregar</button>
+            <button class="btn btn-primary w-100 " style="margin-top: 15px;" (click)="openModal()">Agregar</button>
         </div>
     </div>
 </div>
@@ -37,19 +37,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>000</td>
-                        <td>----</td>
-                        <td>$400.00</td>
+                    <tr *ngFor="let data of gastos">
+                        <td>{{data.codigo}}</td>
+                        <td>{{data.nombre}}</td>
+                        <td>{{data.cantidad}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle me-2">
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-edit"(click)="editar(data)" ></i>
                             </button>
 
                             <!-- Botón de Eliminar -->
                             <button class="btn btn-danger btn-sm rounded-circle">
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-trash" (click)="eliminar(data)"></i>
                             </button>
                         </td>
                     </tr>
@@ -60,12 +60,12 @@
             <nav aria-label="Page navigation" class="mt-3">
                 <ul class="pagination justify-content-end">
                     <li class="page-item"><span class="page-link">Items por página</span></li>
-                    <li class="page-item"><span class="page-link">Página 1 de 10</span></li>
+                    <li class="page-item"><span class="page-link">Página {{page+1}} de {{totalPages.length}}</span></li>
                     <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-backward"></i></a>
+                        <a class="page-link"><i class="fas fa-step-backward" (click)="paginaAnterior()"></i></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-forward"></i></a>
+                        <a class="page-link"><i class="fas fa-step-forward" (click)="paginaSiguiente()"></i></a>
                     </li>
                 </ul>
             </nav>

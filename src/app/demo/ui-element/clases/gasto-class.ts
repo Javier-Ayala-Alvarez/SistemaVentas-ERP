@@ -6,6 +6,7 @@ export class GastoClass {
     nombre?: String; 
     descripcion?: String; 
     cantidad?: number; 
+    codigo?: string; // Código de la sucursal
     
 
     usuarioCreacion?: UsuarioClass;
