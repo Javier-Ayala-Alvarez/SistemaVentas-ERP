@@ -4,9 +4,10 @@ import { UsuarioClass } from "./usuario-class";
 
 export class CategoriaClass {
     id? : number;
+    codigo?: number; 
     nombre?: string;
     descripcion?:string;
-    estado?: EstadoClass;
+    estado?: String; 
     
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;

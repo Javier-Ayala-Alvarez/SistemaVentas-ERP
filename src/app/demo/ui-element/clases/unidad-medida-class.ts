@@ -8,8 +8,9 @@ export class UnidadMedidaClass {
     abreviatura?:string;
     descripcion?:string;
     factor?: string;
-    estado?: EstadoClass;
+    estado?: String;
     precio?: number;
+    codigo?: number; 
 
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;
