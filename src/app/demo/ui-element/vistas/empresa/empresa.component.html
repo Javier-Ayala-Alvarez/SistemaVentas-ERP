@@ -1,75 +1,84 @@
 <div class="container mt-4">
-    <!-- Logo de la Empresa -->
-    <div class="text-center mb-4">
-      <img src="ruta/a/tu/logo.png" alt="Logo de la Empresa" class="img-fluid" style="max-width: 150px;" id="logoEmpresa">
-    </div>
-  
-    <!-- Formulario de Empresa -->
-    <div class="card shadow-sm p-4 rounded">
-      <h3 class="mb-4 text-center">Formulario de Empresa</h3>
-      <form>
-        <!-- Nombre de la Empresa -->
-        <div class="form-group mb-3">
-          <label for="nombreEmpresa">Nombre de la Empresa</label>
-          <input type="text" class="form-control" id="nombreEmpresa" placeholder="Nombre de la empresa" required>
-        </div>
-  
-        <!-- Dirección de la Empresa -->
-        <div class="form-group mb-3">
-          <label for="direccionEmpresa">Dirección</label>
-          <input type="text" class="form-control" id="direccionEmpresa" placeholder="Dirección de la empresa" required>
-        </div>
-  
-        <!-- Teléfono de la Empresa -->
-        <div class="form-group mb-3">
-          <label for="telefonoEmpresa">Teléfono</label>
-          <input type="tel" class="form-control" id="telefonoEmpresa" placeholder="Número de teléfono" required>
-        </div>
-  
-        <!-- Correo Electrónico de la Empresa -->
-        <div class="form-group mb-3">
-          <label for="emailEmpresa">Correo Electrónico</label>
-          <input type="email" class="form-control" id="emailEmpresa" placeholder="Correo electrónico" required>
-        </div>
-  
-        <!-- NIT de la Empresa -->
-        <div class="form-group mb-3">
-          <label for="nitEmpresa">NIT</label>
-          <input type="text" class="form-control" id="nitEmpresa" placeholder="Número de NIT de la empresa" required>
-        </div>
-  
-        <!-- Campo para Seleccionar el Logo -->
-        <div class="form-group mb-3">
-          <label for="logoEmpresa">Logo de la Empresa</label>
-          <input type="file" class="form-control" id="logoEmpresa" accept="image/*" onchange="previewLogo(event)">
-          <small class="form-text text-muted">Selecciona un archivo de imagen para el logo</small>
-        </div>
-  
-  
-        <!-- Fecha de Registro -->
-        <div class="form-group mb-3">
-          <label for="fechaRegistro">Fecha de Registro</label>
-          <input type="date" class="form-control" id="fechaRegistro" required>
-        </div>
-  
-        <!-- Botones de Acción -->
-        <div class="form-group d-flex justify-content-end">
-          <button type="reset" class="btn btn-secondary mr-2">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar Empresa</button>
-        </div>
-      </form>
-    </div>
+  <!-- Logo de la Empresa -->
+  <div class="text-center mb-4">
+      <img [src]="'assets/images/imagenesAplicativo/' + empresa.direccionLogo" alt="Logo de la Empresa"
+    alt="Logo de la Empresa" class="img-fluid" style="max-width: 100px;"
+      id="logoEmpresaPreview">
   </div>
-  
-  <!-- Script para Previsualizar el Logo -->
-  <script>
-    function previewLogo(event) {
-      const reader = new FileReader();
-      reader.onload = function() {
-        const logoImage = document.getElementById('logoEmpresaPreview');
-        logoImage.src = reader.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  </script>
-  
+
+
+  <!-- Formulario de Empresa -->
+  <div class="card shadow-sm p-4 rounded">
+    <h3 class="mb-4 text-center">Formulario de Empresa</h3>
+    <form>
+      <!-- Nombre de la Empresa -->
+      <div class="form-group mb-3">
+        <label for="nombreEmpresa">Nombre de la Empresa</label>
+        <input type="text" class="form-control" id="nombreEmpresa" [(ngModel)]="empresa.nombre" name="empresa.nombre"
+          placeholder="Nombre de la empresa" required>
+      </div>
+
+      <!-- Dirección de la Empresa -->
+      <div class="form-group mb-3">
+        <label for="direccionEmpresa">Dirección</label>
+        <input type="text" class="form-control" id="direccionEmpresa" placeholder="Dirección de la empresa"
+          name="empresa.direccion" [(ngModel)]="empresa.direccion" required>
+      </div>
+
+      <!-- Teléfono de la Empresa -->
+      <div class="form-group mb-3">
+        <label for="telefonoEmpresa">Teléfono</label>
+        <input type="tel" class="form-control" id="telefonoEmpresa" placeholder="Número de teléfono"
+          [(ngModel)]="empresa.telefono" name="empresa.telefono" required>
+      </div>
+
+      <!-- Correo Electrónico de la Empresa -->
+      <div class="form-group mb-3">
+        <label for="emailEmpresa">Correo Electrónico</label>
+        <input type="email" class="form-control" id="emailEmpresa" placeholder="Correo electrónico"
+          [(ngModel)]="empresa.correo" name="empresa.correo" required>
+      </div>
+
+      <!-- NIT de la Empresa -->
+      <div class="form-group mb-3">
+        <label for="nitEmpresa">NIT</label>
+        <input type="text" class="form-control" id="nitEmpresa" placeholder="Número de NIT de la empresa"
+          [(ngModel)]="empresa.nit" name="empresa.nit" required>
+      </div>
+
+      <!-- Campo para Seleccionar el Logo -->
+      <div class="form-group mb-3">
+        <label for="logoEmpresa">Logo de la Empresa</label>
+        <input type="file" class="form-control" id="logoEmpresa" accept="image/*" (change)="onLogoSelect($event)">
+        <small class="form-text text-muted">Selecciona un archivo de imagen para el logo</small>
+      </div>
+
+
+
+      <!-- Fecha de Registro -->
+      <div class="form-group mb-3">
+        <label for="fechaRegistro">Fecha de Registro</label>
+        <input type="date" class="form-control" id="fechaRegistro" [(ngModel)]="empresa.fecha" name="empresa.fecha"
+          required>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="form-group d-flex justify-content-end">
+        <button type="reset" class="btn btn-secondary mr-2">Cancelar</button>
+        <button type="submit" class="btn btn-primary" (click)="guardar()">Guardar Empresa</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Script para Previsualizar el Logo -->
+<script>
+  function previewLogo(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const logoImage = document.getElementById('logoEmpresaPreview');
+      logoImage.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>

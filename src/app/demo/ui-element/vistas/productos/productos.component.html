@@ -19,11 +19,10 @@
                     <button class="btn btn-warning w-100">Buscar</button>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-primary w-100" (click)=" AgregarNuevo()">Agregar</button>
+                    <button class="btn btn-primary w-100" (click)="AgregarNuevo()">Agregar</button>
                 </div>
             </div>
         </div>
-
 
         <!-- Cuerpo de la Factura (Tabla de Productos) -->
         <div class="card shadow-sm mb-4 p-3 rounded table-responsive">
@@ -33,6 +32,7 @@
                         <th>Codigo</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
+                        <th>Imagen</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -41,6 +41,14 @@
                         <td>000</td>
                         <td>Tomates</td>
                         <td>Tomates rojos hondureños</td>
+                        <td>
+                            <img 
+                                src="https://via.placeholder.com/80" 
+                                alt="Imagen del producto" 
+                                class="img-thumbnail" 
+                                style="width: 80px; height: 80px;"
+                            />
+                        </td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">
@@ -52,7 +60,6 @@
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
-                        
                     </tr>
                 </tbody>
             </table>
@@ -72,6 +79,6 @@
             </nav>
         </div>
 
-
-
-     
+       
+    </div>
+</div>

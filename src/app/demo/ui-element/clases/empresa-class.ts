@@ -8,7 +8,7 @@ export class EmpresaClass {
     telefono?: string;
     correo?: string;
     nit?:string;
-    fecha?:Date;
+    fecha?: string ; // Permite manejar fechas como string o Date
     direccionLogo?:string;
 
 //usuarioCreacion?: UsuarioClass;

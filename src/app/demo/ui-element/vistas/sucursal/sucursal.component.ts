@@ -43,8 +43,12 @@ export default class SucursalComponent {
     this.openModal(sucursal);
   }
   elimiar(sucursal: SucursalClass): void {
-    this.sucursalServices.eliminar(sucursal.id ?? 0, sucursal);
-    this.loadSucursales();
+    this.sucursalServices.eliminar(sucursal.id ?? 0, sucursal).subscribe(
+      () => {
+        this.loadSucursales();
+      },
+    );
+   
   }
   
   

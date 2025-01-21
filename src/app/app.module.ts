@@ -54,7 +54,6 @@ import ClientesReportesComponent from './demo/ui-element/vistas/clientes-reporte
 import ComprasComponent from './demo/ui-element/vistas/compras/compras.component';
 import cotizacionesComponent from './demo/ui-element/vistas/cotizaciones/cotizaciones.component';
 import DashboardComponent from './demo/ui-element/vistas/dashboard/dashboard.component';
-import EmpresaComponent from './demo/ui-element/vistas/empresa/empresa.component';
 import FacturaComponent from './demo/ui-element/vistas/factura/factura.component';
 import FacturaAdministradorComponent from './demo/ui-element/vistas/factura-administrador/factura-administrador.component';
 import { FormaDePagoComponent } from './demo/ui-element/vistas/forma-de-pago/forma-de-pago.component';
@@ -67,6 +66,7 @@ import RemesasComponent from './demo/ui-element/vistas/remesas/remesas.component
 import UnidadesComponent from './demo/ui-element/vistas/unidades/unidades.component';
 import VentasFechaComponent from './demo/ui-element/vistas/ventas-fecha/ventas-fecha.component';
 import { MatCardModule } from '@angular/material/card';
+import { EmpresaComponent } from './demo/ui-element/vistas/empresa/empresa.component';
 
 @NgModule({
   declarations: [

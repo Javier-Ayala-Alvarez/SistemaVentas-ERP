@@ -7,7 +7,6 @@ import ProveedoresReportesComponent from './vistas/proveedores-reportes/proveedo
 import ClientesReportesComponent from './vistas/clientes-reportes/clientes-reportes.component';
 import VentasFechaComponent from './vistas/ventas-fecha/ventas-fecha.component';
 import KardexComponent from './vistas/kardex/kardex.component';
-import EmpresaComponent from './vistas/empresa/empresa.component';
 import ClientesComponent from './vistas/clientes/clientes.component';
 import { UnidadMedidaClass } from './clases/unidad-medida-class';
 import UnidadesComponent from './vistas/unidades/unidades.component';
@@ -23,6 +22,7 @@ import cotizacionesComponent from './vistas/cotizaciones/cotizaciones.component'
 import FacturaComponent from './vistas/factura/factura.component';
 import DashboardComponent from './vistas/dashboard/dashboard.component';
 import FacturaAdministradorComponent from './vistas/factura-administrador/factura-administrador.component';
+import { EmpresaComponent } from './vistas/empresa/empresa.component';
 
 const routes: Routes = [
   {

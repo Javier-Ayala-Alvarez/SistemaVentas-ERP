@@ -42,32 +42,38 @@ export class SucursalServicesService {
   }
 
  // Eliminar la sucursal
-eliminar(id: number, sucursal: SucursalClass): void {
-  Swal.fire({
-    title: 'Eliminar Sucursal',
-    text: '¿Estás seguro de que deseas eliminar esta sucursal?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      sucursal.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, sucursal).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'La sucursal se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
+ eliminar(id: number, sucursal: SucursalClass): Observable<any> {
+  return new Observable(observer => {
+    Swal.fire({
+      title: 'Eliminar Sucursal',
+      text: '¿Estás seguro de que deseas eliminar esta sucursal?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((resultado) => {
+      if (resultado.isConfirmed) {
+        sucursal.estado = 'N'; // Marca la sucursal como eliminada
+        this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, sucursal).pipe(
+          tap(() => {
+            this.mensajeSwal2.mensaje('Eliminada exitoso', 'La sucursal se ha modificado correctamente.');
+            observer.next(true);  // Emite true indicando que la operación fue exitosa
+          }),
+          catchError((error) => {
+            this.mensajeSwal2.handleError(error);
+            observer.error(error);  // En caso de error, emite el error
+            return throwError(error);
+          })
+        ).subscribe();
+      } else {
+        observer.next(false);  // Si el usuario cancela, emite false
+      }
+    });
   });
 }
+
 
 
 
