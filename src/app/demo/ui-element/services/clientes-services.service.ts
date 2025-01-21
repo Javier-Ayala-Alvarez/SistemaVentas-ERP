@@ -45,7 +45,8 @@ export class ClientesServicesService {
 
 
   // Eliminar Cliente
-eliminar(id: number, cliente: ClienteClass): void {
+eliminar(id: number, cliente: ClienteClass): Observable<any>  {
+  return new Observable(observer => {
   Swal.fire({
     title: 'Eliminar Cliente',
     text: '¿Estás seguro de que deseas eliminar este Cliente?',
@@ -62,13 +63,18 @@ eliminar(id: number, cliente: ClienteClass): void {
       this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, cliente).pipe(
         tap(() => {
           this.mensajeSwal2.mensaje('Eliminada exitoso', 'El cliente se ha modificado correctamente.');
+          observer.next(true);  // Emite true indicando que la operación fue exitosa
         }),
         catchError((error) => {
           this.mensajeSwal2.handleError(error);
+          observer.error(error);  // En caso de error, emite el error
           return throwError(error); 
         })
       ).subscribe(); 
+    }else {
+      observer.next(false);  // Si el usuario cancela, emite false
     }
+  });
   });
 }
 

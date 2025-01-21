@@ -38,15 +38,22 @@ export default class ClientesComponent {
       size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
       centered: true
   });
+  modalRef.componentInstance.cliente = cliente; // Pasar datos al modal (opcional)
+
   }
 
 
   editar(cliente: ClienteClass): void {
     this.openModal(cliente);
+   
   }
   eliminar(cliente: ClienteClass): void {
-    this.clienteServices.eliminar(cliente.id ?? 0, cliente);
-    this.loadclientes();
+    this.clienteServices.eliminar(cliente.id ?? 0, cliente).subscribe(
+      () => {
+        this.ngOnInit();
+      },
+    );
+   
   }
 
   //mostrar datos en la tabla
