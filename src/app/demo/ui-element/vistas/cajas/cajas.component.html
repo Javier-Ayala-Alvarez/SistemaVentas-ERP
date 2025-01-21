@@ -10,7 +10,7 @@
         <!-- Select de Sucursal -->
         <div class="form-group col-md-4">
             <label for="sucursal" class="form-label mb-0">Sucursal</label>
-            <select class="form-select mt-0" id="sucursal" required>
+            <select class="form-select mt-0" id="sucursal" [(ngModel)]="terminoBusqueda" required>
                 <option value="" selected disabled>Seleccione una sucursal</option>
                 <option value="1">San Vicente</option>
                 <option value="2">San Salvador</option>
@@ -20,12 +20,12 @@
 
         <!-- Botón de Búsqueda -->
         <div class="col-md-4 d-flex">
-            <button class="btn btn-warning w-100 " style="margin-top: 5px;">Buscar</button>
+            <button class="btn btn-warning w-100 " style="margin-top: 5px;"(click)="loadcajas()" >Buscar</button>
         </div>
 
         <!-- Botón de Agregar -->
         <div class="col-md-4 d-flex">
-            <button class="btn btn-primary w-100 " style="margin-top: 5px;" (click)="openModalAgregar()">Agregar</button>
+            <button class="btn btn-primary w-100 " style="margin-top: 5px;" (click)="openModal()">Agregar</button>
         </div>
     </div>
 </div>
@@ -48,24 +48,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>000</td>
-                        <td>San Vicente</td>
-                        <td>12/12/2024</td>
-                        <td>8:00 AM</td>
-                        <td>13/12/2024</td>
-                        <td>8:00 PM</td>
-                        <td>$20.00</td>
-                        <td>$50.50</td>
+                    <tr *ngFor="let data of cajas">
+                        <td>{{data.codigo}}</td>
+                        <td>{{data.sucursal}}</td>
+                        <td>{{data.fechaInicio}}</td>
+                        <td>{{data.horaInicio}}</td>
+                        <td>{{data.fechaCierre}}</td>
+                        <td>{{data.horaCierre}}</td>
+                        <td>{{data.efectivoApertura}}</td>
+                        <td>{{data.efectivoCierre}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle me-2">
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-edit" (click)="editar(data)"></i>
                             </button>
 
                             <!-- Botón de Eliminar -->
                             <button class="btn btn-danger btn-sm rounded-circle">
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-trash"  (click)="eliminar(data)"></i>
                             </button>
                         </td>
                     </tr>
@@ -76,12 +76,12 @@
             <nav aria-label="Page navigation" class="mt-3">
                 <ul class="pagination justify-content-end">
                     <li class="page-item"><span class="page-link">Items por página</span></li>
-                    <li class="page-item"><span class="page-link">Página 1 de 10</span></li>
+                    <li class="page-item"><span class="page-link">Página {{page+1}} de {{totalPages.length}}</span></li>
                     <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-backward"></i></a>
+                        <a class="page-link"><i class="fas fa-step-backward" (click)="paginaAnterior()" ></i></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-forward"></i></a>
+                        <a class="page-link"><i class="fas fa-step-forward" (click)="paginaSiguiente()" ></i></a>
                     </li>
                 </ul>
             </nav>

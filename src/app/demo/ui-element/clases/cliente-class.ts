@@ -4,6 +4,7 @@ import { UsuarioClass } from "./usuario-class";
 
 export class ClienteClass {
     id? : number;
+    codigo?: number; 
     nombre?: string;
     apellido?:string;
     direccion?: string;
@@ -11,7 +12,7 @@ export class ClienteClass {
     correo?: string;
     dui?:string;
     nit?: string;
-    estado?: EstadoClass;
+    estado?: string;
 
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;

@@ -6,44 +6,49 @@ import { SucursalClass } from '../clases/sucursal-class';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
-import { GastoClass } from '../clases/gasto-class';
+import { ClienteClass } from '../clases/cliente-class';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GastosServicesService {
-  private apiUrl = `${baserUrl}/Api/gastos`; // Cambia la URL según sea necesario
-
+export class ClientesServicesService {
+  private apiUrl = `${baserUrl}/Api/clientes`; // Cambia la URL según sea necesario
+  
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
-   // Agrega una nuevo gasto
-   agregar(gasto: GastoClass): Observable<any> {
-    gasto.estado = 'A';
-    return this.httpClient.post(`${this.apiUrl}/Guardar`, gasto).pipe(
+
+  // Agrega una nuevo cliente
+  agregar(cliente: ClienteClass): Observable<any> {
+    cliente.estado = 'A';
+    return this.httpClient.post(`${this.apiUrl}/Guardar`, cliente).pipe(
       tap(() => {
-        this.mensajeSwal2.mensaje('Guardado exitoso','el gasto se ha guardado correctamente.')
+        this.mensajeSwal2.mensaje('Guardado exitoso','el cliente se ha guardado correctamente.')
 
       }),
       catchError(this.mensajeSwal2.handleError) 
     );
   }
 
-  // Modifica Gasto
-  modificar(id: number, gasto: GastoClass): Observable<any> {
-    gasto.estado = 'A';
-    return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, gasto).pipe(
+
+  
+  // Modifica Cliente
+  modificar(id: number, cliente: ClienteClass): Observable<any> {
+    cliente.estado = 'A';
+    return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, cliente).pipe(
       tap(() => {
-        this.mensajeSwal2.mensaje('Guardado exitoso','El gasto se ha modificado correctamente.')
+        this.mensajeSwal2.mensaje('Guardado exitoso','El cliente se ha modificado correctamente.')
       }),
       catchError(this.mensajeSwal2.handleError) 
     );
   }
 
- // Eliminar Gasto
-eliminar(id: number, gasto: GastoClass): void {
+
+
+  // Eliminar Cliente
+eliminar(id: number, cliente: ClienteClass): void {
   Swal.fire({
-    title: 'Eliminar Gasto',
-    text: '¿Estás seguro de que deseas eliminar este Gasto?',
+    title: 'Eliminar Cliente',
+    text: '¿Estás seguro de que deseas eliminar este Cliente?',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -53,10 +58,10 @@ eliminar(id: number, gasto: GastoClass): void {
   }).then((resultado) => {
     if (resultado.isConfirmed) {
       
-      gasto.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, gasto).pipe(
+      cliente.estado = 'N';
+      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, cliente).pipe(
         tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'El gasto se ha modificado correctamente.');
+          this.mensajeSwal2.mensaje('Eliminada exitoso', 'El cliente se ha modificado correctamente.');
         }),
         catchError((error) => {
           this.mensajeSwal2.handleError(error);
@@ -67,13 +72,13 @@ eliminar(id: number, gasto: GastoClass): void {
   });
 }
 
-
-// Muestra la lista de gastos
+// Muestra la lista de clientes
 load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
   return this.httpClient.get(`${this.apiUrl}/List?busqueda=${search}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );
 }
+
 
 
 }

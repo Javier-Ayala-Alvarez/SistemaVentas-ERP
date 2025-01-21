@@ -6,10 +6,12 @@ import { EstadoClass } from "./estado-class";
 export class RemesaClass {
 
     id? : number;
-    numeroCaja?: string;
+    codigo?: number;
+
+    numCaja?: string;
     cantidad?:string;
     sucursal?: SucursalClass;
-    estado?: EstadoClass;
+    estado?: String;
 
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;

@@ -6,10 +6,12 @@ import { UsuarioClass } from "./usuario-class";
 
 export class ProductoClass {
     id? : number;
+    codigo? : number; 
     nombre?: string;
     descripcion?:string;
-    estado?: EstadoClass;
+    estado?: String;
     categoria?: CategoriaClass;
+    imagen?: string;
     unidadMedida?: UnidadMedidaClass[];
 
     usuarioCreacion?: UsuarioClass;
