@@ -38,33 +38,38 @@ export class CajasServicesService {
     );
   }
 
-   // Eliminar Caja
-eliminar(id: number, caja: CajaClass): void {
-  Swal.fire({
-    title: 'Eliminar Caja',
-    text: '¿Estás seguro de que deseas eliminar esta caja?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      caja.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, caja).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'La caja se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
-  });
-}
+   // Eliminar caja
+          eliminar(id: number, caja: CajaClass): Observable<any> {
+           return new Observable(observer => {
+             Swal.fire({
+               title: 'Eliminar Caja',
+               text: '¿Estás seguro de que deseas eliminar esta caja?',
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Eliminar',
+               cancelButtonText: 'Cancelar'
+             }).then((resultado) => {
+               if (resultado.isConfirmed) {
+                 caja.estado = 'N'; // Marca la caja como eliminado
+                 this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, caja).pipe(
+                   tap(() => {
+                     this.mensajeSwal2.mensaje('Eliminada exitoso', 'La caja se ha modificado correctamente.');
+                     observer.next(true);  // Emite true indicando que la operación fue exitosa
+                   }),
+                   catchError((error) => {
+                     this.mensajeSwal2.handleError(error);
+                     observer.error(error);  // En caso de error, emite el error
+                     return throwError(error);
+                   })
+                 ).subscribe();
+               } else {
+                 observer.next(false);  // Si el usuario cancela, emite false
+               }
+             });
+           });
+         }
 
 
 // Muestra la lista de las cajas

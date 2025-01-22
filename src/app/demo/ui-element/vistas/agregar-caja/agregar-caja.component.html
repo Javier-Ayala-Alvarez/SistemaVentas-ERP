@@ -9,7 +9,7 @@
        <!--select sucurdsal-->
        <div class="form-group mb-3">
         <label for="sucursal">Sucursal</label>
-        <select class="form-select" id="sucursal" required>
+        <select class="form-select" id="sucursal" name="sucursal" required>
           <option value="" selected disabled>Seleccione una sucursal</option>
           <option value="1">San Vicente</option>
           <option value="2">San Salvador</option>
@@ -19,35 +19,35 @@
         <!-- fecha inicio -->
         <div class="form-group mb-3">
           <label for="fechaInicio">Fecha de Inicio</label>
-          <input type="date" [(ngModel)]="cajaNuevo.fechaInicio" class="form-control" id="fechaInicio" placeholder="" required>
+          <input type="date" [(ngModel)]="cajaNuevo.fechaInicio" class="form-control" id="fechaInicio" name="fechaInicio" placeholder="" required>
         </div>
         <!-- hora inicio -->
         <div class="form-group mb-3">
           <label for="horaInicio">Hora de Inicio</label>
-          <input type="text" [(ngModel)]="cajaNuevo.horaInicio" class="form-control" id="horaInicio" placeholder="Hora Inicio" required>
+          <input type="text" [(ngModel)]="cajaNuevo.horaInicio" class="form-control" id="horaInicio" name="horaInicio" placeholder="Hora Inicio" required>
         </div>
   
         <!-- fecha cierre -->
         <div class="form-group mb-3">
           <label for="fechaCierre">Fecha de Cierre</label>
-          <input type="date" [(ngModel)]="cajaNuevo.fechaCierre" class="form-control" id="fechaCierre" placeholder="" required>
+          <input type="date" [(ngModel)]="cajaNuevo.fechaCierre" class="form-control" id="fechaCierre" name="fechaCierre" placeholder="" required>
         </div>
   
         <!-- hora cierre-->
         <div class="form-group mb-3">
           <label for="horaCierre">Hora de Cierre</label>
-          <input type="text" [(ngModel)]="cajaNuevo.horaCierre" class="form-control" id="horaCierre" placeholder="Hora Cierre" required>
+          <input type="text" [(ngModel)]="cajaNuevo.horaCierre" class="form-control" id="horaCierre" name="horaCierre" placeholder="Hora Cierre" required>
         </div>
         <!-- efectivo apertura -->
         <div class="form-group mb-3">
           <label for="efectivoApertura">Efectivo de Apertura</label>
-          <input type="number" [(ngModel)]="cajaNuevo.efectivoApertura" class="form-control" id="efectivoApertura" placeholder="Efectivo de Apertura" required>
+          <input type="number" [(ngModel)]="cajaNuevo.efectivoApertura" class="form-control" id="efectivoApertura" name="efectivoApertura" placeholder="Efectivo de Apertura" required>
         </div>
   
         <!-- efectivo cierre-->
         <div class="form-group mb-3">
           <label for="efectivoCierre">Efectivo de Cierre</label>
-          <input type="number" [(ngModel)]="cajaNuevo.efectivoCierre" class="form-control" id="efectivoCierre" placeholder="Efectivo de Cierre" required>
+          <input type="number" [(ngModel)]="cajaNuevo.efectivoCierre" class="form-control" id="efectivoCierre" name="efectivoCierre" placeholder="Efectivo de Cierre" required>
         </div>
   
     

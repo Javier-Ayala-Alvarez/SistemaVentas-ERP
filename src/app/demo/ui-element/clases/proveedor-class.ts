@@ -4,14 +4,16 @@ import { UsuarioClass } from "./usuario-class";
 
 export class ProveedorClass {
     id? : number;
+    codigo?: number;
     nombre?: string;
     apellido?:string;
     direccion?: string;
     telefono?: string;
     correo?: string;
+    fecha?: string;
     dui?:string;
     nit?: string;
-    estado?: EstadoClass;
+    estado?: String;
 
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;

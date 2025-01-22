@@ -11,19 +11,19 @@
         <!-- Nombre -->
         <div class="form-group mb-3">
           <label for="nombre">Nombre</label>
-          <input type="text" [(ngModel)]="gastoNuevo.nombre"  class="form-control" id="nombre" placeholder="Nombre" required>
+          <input type="text" [(ngModel)]="gastoNuevo.nombre"  class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
         </div>
 
         <!-- Dexcripcion -->
         <div class="form-group mb-3">
             <label for="descripcion">Descripción</label>
-            <input type="text"  [(ngModel)]="gastoNuevo.descripcion" class="form-control" id="descripcion" placeholder="Descripción" required>
+            <input type="text"  [(ngModel)]="gastoNuevo.descripcion" class="form-control" id="descripcion" name="descripcion" placeholder="Descripción" required>
           </div>
 
         <!-- cantidad -->
         <div class="form-group mb-3">
           <label for="cantidad">Cantidad</label>
-          <input type="number"  [(ngModel)]="gastoNuevo.cantidad"  class="form-control" id="cantidad" placeholder="Cantidad" required>
+          <input type="number"  [(ngModel)]="gastoNuevo.cantidad"  class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad" required>
         </div>
   
 

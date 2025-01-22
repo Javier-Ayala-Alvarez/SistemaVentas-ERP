@@ -73,7 +73,7 @@
             id="emailSucursal" 
             placeholder="Correo electrónico" 
             [(ngModel)]="sucursalNuevo.correo"
-            name="correo"
+            name="emailSucursal"
             required>
         </div>
 
@@ -84,7 +84,7 @@
             type="date" 
             class="form-control" 
             [(ngModel)]="sucursalNuevo.fecha"
-            name="fecha"
+            name="fechaApertura"
             required>
         </div>
       </div>
@@ -93,7 +93,7 @@
         <!-- Empresa -->
         <div class="col-md-6 mb-3">
           <label for="empresa">Empresa</label>
-          <select [(ngModel)]="sucursalNuevo.empresa" class="form-select" id="empresa" required name="empresa">
+          <select [(ngModel)]="sucursalNuevo.empresa" class="form-select" id="empresa" name="empresa" required name="empresa">
             <option [ngValue]="null" disabled selected>Seleccione una empresa</option>
             <option *ngFor="let emp of empresas" [ngValue]="emp">{{emp.nombre}}</option>
           </select>

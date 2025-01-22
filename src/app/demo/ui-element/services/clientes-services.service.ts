@@ -44,33 +44,38 @@ export class ClientesServicesService {
 
 
 
-  // Eliminar Cliente
-eliminar(id: number, cliente: ClienteClass): void {
-  Swal.fire({
-    title: 'Eliminar Cliente',
-    text: '¿Estás seguro de que deseas eliminar este Cliente?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      cliente.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, cliente).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'El cliente se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
-  });
-}
+  // Eliminar el cliente
+         eliminar(id: number, cliente: ClienteClass): Observable<any> {
+          return new Observable(observer => {
+            Swal.fire({
+              title: 'Eliminar cliente',
+              text: '¿Estás seguro de que deseas eliminar este cliente?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Eliminar',
+              cancelButtonText: 'Cancelar'
+            }).then((resultado) => {
+              if (resultado.isConfirmed) {
+                cliente.estado = 'N'; // Marca el cliente como eliminado
+                this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, cliente).pipe(
+                  tap(() => {
+                    this.mensajeSwal2.mensaje('Eliminada exitoso', 'El cliente se ha modificado correctamente.');
+                    observer.next(true);  // Emite true indicando que la operación fue exitosa
+                  }),
+                  catchError((error) => {
+                    this.mensajeSwal2.handleError(error);
+                    observer.error(error);  // En caso de error, emite el error
+                    return throwError(error);
+                  })
+                ).subscribe();
+              } else {
+                observer.next(false);  // Si el usuario cancela, emite false
+              }
+            });
+          });
+        }
 
 // Muestra la lista de clientes
 load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {

@@ -16,10 +16,10 @@
                 </div>
                 <!-- Botón de Búsqueda -->
                 <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-warning w-100" (click)="loadSucursales()">Buscar</button>
+                    <button class="btn btn-warning w-100" name="buscar" (click)="loadSucursales()">Buscar</button>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-primary w-100" (click)="agregar()">Agregar</button>
+                    <button class="btn btn-primary w-100" name="agregar" (click)="agregar()">Agregar</button>
                 </div>
             </div>
         </div>
@@ -44,12 +44,12 @@
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">
-                                <i class="fas fa-edit"(click)="editar(data)"></i>
+                                <i class="fas fa-edit"(click)="editar(data)" name="editar"></i>
                             </button>
                         
                             <!-- Botón de Eliminar -->
                             <button class="btn btn-danger btn-sm rounded-circle" data-toggle="modal" data-target="#deleteModal">
-                                <i class="fas fa-trash" (click)="elimiar(data)"></i>
+                                <i class="fas fa-trash" (click)="elimiar(data)" name="eliminar"></i>
                             </button>
                         </td>
                         

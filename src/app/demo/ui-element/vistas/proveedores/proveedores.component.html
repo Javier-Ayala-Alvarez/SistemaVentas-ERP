@@ -11,15 +11,15 @@
                 <div class="col-md-3">
                     <label for="producto">Nombre</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Nombre">
+                        <input type="text" [(ngModel)]="terminoBusqueda" class="form-control" placeholder="Nombre" name="terminoBusqueda">
                     </div>
                 </div>
                 <!-- Botón de Búsqueda -->
                 <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-warning w-100">Buscar</button>
+                    <button class="btn btn-warning w-100" (click)="loadProveedores()">Buscar</button>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-primary w-100" (click)="openModalAgregar()">Agregar</button>
+                    <button class="btn btn-primary w-100" (click)="agregar()">Agregar</button>
                 </div>
             </div>
         </div>
@@ -34,24 +34,26 @@
                         <th>Nombre</th>
                         <th>Dui</th>
                         <th>Nit</th>
+                        <th>Telefono</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>000</td>
-                        <td>Francisco Javier Ayala Alvarez</td>
-                        <td>123456789</td>
-                        <td>9232323</td>
+                    <tr *ngFor="let data of proveedores">
+                        <td>{{data.codigo}}</td>
+                        <td>{{data.nombre}}</td>
+                        <td>{{data.dui}}</td>
+                        <td>{{data.nit}}</td>
+                        <td>{{data.telefono}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-edit" (click)="editar(data)"></i>
                             </button>
                         
                             <!-- Botón de Eliminar -->
                             <button class="btn btn-danger btn-sm rounded-circle" data-toggle="modal" data-target="#deleteModal">
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-trash" (click)="eliminar(data)"></i>
                             </button>
                         </td>
                         
@@ -63,12 +65,12 @@
             <nav aria-label="Page navigation" class="mt-3">
                 <ul class="pagination justify-content-end">
                     <li class="page-item"><span class="page-link">Items por página</span></li>
-                    <li class="page-item"><span class="page-link">Página 1 de 10</span></li>
+                    <li class="page-item"><span class="page-link">Página {{page+1}} de {{totalPages.length}}</span></li>
                     <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-backward"></i></a>
+                        <a class="page-link"><i class="fas fa-step-backward" (click)="paginaAnterior()"></i></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-forward"></i></a>
+                        <a class="page-link"><i class="fas fa-step-forward" (click)="paginaSiguiente()"></i></a>
                     </li>
                 </ul>
             </nav>

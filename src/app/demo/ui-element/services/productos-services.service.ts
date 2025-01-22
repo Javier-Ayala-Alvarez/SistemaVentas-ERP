@@ -40,33 +40,38 @@ export class ProductosServicesService {
     );
   }
 
- // Eliminar Gasto
-eliminar(id: number, producto: ProductoClass): void {
-  Swal.fire({
-    title: 'Eliminar producto',
-    text: '¿Estás seguro de que deseas eliminar este Producto?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      producto.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, producto).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'El producto se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
-  });
-}
+ // Eliminar el producto
+        eliminar(id: number, producto: ProductoClass): Observable<any> {
+         return new Observable(observer => {
+           Swal.fire({
+             title: 'Eliminar Producto',
+             text: '¿Estás seguro de que deseas eliminar este producto?',
+             icon: 'warning',
+             showCancelButton: true,
+             confirmButtonColor: '#3085d6',
+             cancelButtonColor: '#d33',
+             confirmButtonText: 'Eliminar',
+             cancelButtonText: 'Cancelar'
+           }).then((resultado) => {
+             if (resultado.isConfirmed) {
+               producto.estado = 'N'; // Marca el productp como eliminado
+               this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, producto).pipe(
+                 tap(() => {
+                   this.mensajeSwal2.mensaje('Eliminada exitoso', 'El producto se ha modificado correctamente.');
+                   observer.next(true);  // Emite true indicando que la operación fue exitosa
+                 }),
+                 catchError((error) => {
+                   this.mensajeSwal2.handleError(error);
+                   observer.error(error);  // En caso de error, emite el error
+                   return throwError(error);
+                 })
+               ).subscribe();
+             } else {
+               observer.next(false);  // Si el usuario cancela, emite false
+             }
+           });
+         });
+       }
 
 // Muestra la lista de gastos
 load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {

@@ -9,46 +9,46 @@
       <!-- Nombre del Proveedor -->
       <div class="form-group mb-3">
         <label for="nombreProveedor">Nombre del Proveedor</label>
-        <input type="text" class="form-control" id="nombreProveedor" placeholder="Nombre del proveedor" required>
+        <input type="text"  [(ngModel)]="proveedorNuevo.nombre" class="form-control" id="nombreProveedor" name="nombreProveedor" placeholder="Nombre del proveedor" required>
       </div>
       <!-- Nombre del Proveedor -->
       <div class="form-group mb-3">
-        <label for="nombreProveedor">Apellido del Proveedor</label>
-        <input type="text" class="form-control" id="nombreProveedor" placeholder="Nombre del proveedor" required>
+        <label for="apellidoProveedor">Apellido del Proveedor</label>
+        <input type="text" [(ngModel)]="proveedorNuevo.apellido" class="form-control" id="apellidoProveedor" name="apellidoProveedor" placeholder="Apellido del proveedor" required>
       </div>
       <!-- Dirección del Proveedor -->
       <div class="form-group mb-3">
         <label for="direccionProveedor">Dirección</label>
-        <input type="text" class="form-control" id="direccionProveedor" placeholder="Dirección del proveedor" required>
+        <input type="text" [(ngModel)]="proveedorNuevo.direccion" class="form-control" id="direccionProveedor" name="direccionProveedor" placeholder="Dirección del proveedor" required>
       </div>
 
       <!-- Teléfono del Proveedor -->
       <div class="form-group mb-3">
         <label for="telefonoProveedor">Teléfono</label>
-        <input type="tel" class="form-control" id="telefonoProveedor" placeholder="Número de teléfono" required>
+        <input type="tel" [(ngModel)]="proveedorNuevo.telefono" class="form-control" id="telefonoProveedor" name="telefonoProveedor" placeholder="Número de teléfono" required>
       </div>
 
       <!-- Correo Electrónico del Proveedor -->
       <div class="form-group mb-3">
         <label for="emailProveedor">Correo Electrónico</label>
-        <input type="email" class="form-control" id="emailProveedor" placeholder="Correo electrónico" required>
+        <input type="email"  [(ngModel)]="proveedorNuevo.correo" class="form-control" id="emailProveedor" name="emailProveedor" placeholder="Correo electrónico" required>
       </div>
-      <!-- NIT del Proveedor -->
+      <!-- DUI del Proveedor -->
       <div class="form-group mb-3">
-        <label for="nitProveedor">DUI</label>
-        <input type="text" class="form-control" id="nitProveedor" placeholder="NIT del proveedor" required>
+        <label for="duiProveedor">DUI</label>
+        <input type="text" [(ngModel)]="proveedorNuevo.dui" class="form-control" id="duiProveedor" name="duiProveedor" placeholder="DUI de el proveedor" required>
       </div>
 
       <!-- NIT del Proveedor -->
       <div class="form-group mb-3">
         <label for="nitProveedor">NIT</label>
-        <input type="text" class="form-control" id="nitProveedor" placeholder="NIT del proveedor" required>
+        <input type="text" [(ngModel)]="proveedorNuevo.nit" class="form-control" id="nitProveedor" name="nitProveedor" placeholder="NIT del proveedor" required>
       </div>
 
       <!-- Estado del Proveedor -->
       <div class="form-group mb-3">
         <label for="estadoProveedor">Estado</label>
-        <select class="form-select" id="estadoProveedor" required>
+        <select class="form-select" id="estadoProveedor" name="estadoProveedor" required>
           <option value="activo">Activo</option>
           <option value="inactivo">Inactivo</option>
         </select>
@@ -61,5 +61,5 @@
 
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-  <button type="button" class="btn btn-primary">Guardar Proveedor</button>
+  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Proveedor</button>
 </div>

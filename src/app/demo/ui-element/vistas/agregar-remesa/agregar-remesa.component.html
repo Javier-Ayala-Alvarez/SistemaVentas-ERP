@@ -9,7 +9,7 @@
         <!--select sucurdsal-->
         <div class="form-group mb-3">
             <label for="sucursal">Sucursal</label>
-            <select class="form-select" id="sucursal" [(ngModel)]="remesaNuevo.sucursal" required >
+            <select class="form-select" id="sucursal" name="Sucursal" [(ngModel)]="remesaNuevo.sucursal" required >
               <option value="" selected disabled>Seleccione una sucursal</option>
               <option value="1">San Vicente</option>
               <option value="2">San Salvador</option>
@@ -20,12 +20,12 @@
         <!-- N° caja -->
         <div class="form-group mb-3">
           <label for="numCaja">N° de Caja</label>
-          <input type="number" [(ngModel)]="remesaNuevo.numCaja" class="form-control" id="numCaja" placeholder="N° de Caja" value="0" min="0" required>
+          <input type="number" [(ngModel)]="remesaNuevo.numCaja" class="form-control" id="numCaja" name="numCaja" placeholder="N° de Caja" value="0" min="0" required>
         </div>
         <!-- cantidad -->
         <div class="form-group mb-3">
           <label for="cantidad">Cantidad</label>
-          <input type="text" [(ngModel)]="remesaNuevo.cantidad" class="form-control" id="cantidad" placeholder="Cantidad" required>
+          <input type="text" [(ngModel)]="remesaNuevo.cantidad" class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad" required>
         </div>
   
 

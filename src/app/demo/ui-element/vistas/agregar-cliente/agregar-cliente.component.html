@@ -9,46 +9,46 @@
         <!-- Nombre -->
         <div class="form-group mb-3">
           <label for="nombreCliente">Nombre del Cliente</label>
-          <input type="text" [(ngModel)]="clienteNuevo.nombre" class="form-control" id="nombreCliente" placeholder="Nombre del cliente" required>
+          <input type="text" [(ngModel)]="clienteNuevo.nombre" class="form-control" id="nombreCliente" name="nombreCliente" placeholder="Nombre del cliente" required>
         </div>
         <!-- Apellido -->
         <div class="form-group mb-3">
           <label for="apellidoCLiente">Apellido del Cliente</label>
-          <input type="text" [(ngModel)]="clienteNuevo.apellido" class="form-control" id="apellidoCLiente" placeholder="Apellido del Cliente" required>
+          <input type="text" [(ngModel)]="clienteNuevo.apellido" class="form-control" id="apellidoCLiente" name="apellidoCLiente" placeholder="Apellido del Cliente" required>
         </div>
         <!-- Dirección -->
         <div class="form-group mb-3">
           <label for="direccionCliente">Dirección</label>
-          <input type="text" [(ngModel)]="clienteNuevo.direccion" class="form-control" id="direccionCliente" placeholder="Dirección del cliente" required>
+          <input type="text" [(ngModel)]="clienteNuevo.direccion" class="form-control" id="direccionCliente" name="direccionCliente" placeholder="Dirección del cliente" required>
         </div>
   
         <!-- Teléfono -->
         <div class="form-group mb-3">
           <label for="telefono">Teléfono</label>
-          <input type="tel" [(ngModel)]="clienteNuevo.telefono" class="form-control" id="telefono" placeholder="Número de teléfono" required>
+          <input type="tel" [(ngModel)]="clienteNuevo.telefono" class="form-control" id="telefono" name="telefono" placeholder="Número de teléfono" required>
         </div>
   
         <!-- Correo Electrónico del Proveedor -->
         <div class="form-group mb-3">
           <label for="email">Correo Electrónico</label>
-          <input type="email" [(ngModel)]="clienteNuevo.correo" class="form-control" id="email" placeholder="Correo electrónico" required>
+          <input type="email" [(ngModel)]="clienteNuevo.correo" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
         </div>
         <!-- DUI -->
         <div class="form-group mb-3">
           <label for="dui">DUI</label>
-          <input type="text" [(ngModel)]="clienteNuevo.dui" class="form-control" id="dui" placeholder="DUI del Cliente" required>
+          <input type="text" [(ngModel)]="clienteNuevo.dui" class="form-control" id="dui" name="dui" placeholder="DUI del Cliente" required>
         </div>
   
         <!-- NIT del Proveedor -->
         <div class="form-group mb-3">
           <label for="nit">NIT</label>
-          <input type="text" [(ngModel)]="clienteNuevo.nit" class="form-control" id="nit" placeholder="NIT del cliente" required>
+          <input type="text" [(ngModel)]="clienteNuevo.nit" class="form-control" id="nit" name="nit" placeholder="NIT del cliente" required>
         </div>
   
         <!-- Estado del Proveedor -->
         <div class="form-group mb-3">
           <label for="estado">Estado</label>
-          <select class="form-select" id="estado" required>
+          <select class="form-select" id="estado" name="estado" required>
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
           </select>

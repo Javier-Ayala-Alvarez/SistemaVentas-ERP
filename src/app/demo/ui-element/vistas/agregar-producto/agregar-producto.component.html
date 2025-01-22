@@ -9,12 +9,12 @@
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="producto">Nombre del producto</label>
-          <input type="text" [(ngModel)]="productoNuevo.nombre" class="form-control" placeholder="Ingrese el nombre del producto">
+          <input type="text" [(ngModel)]="productoNuevo.nombre" class="form-control" name="nombre" placeholder="Ingrese el nombre del producto">
         </div>
 
         <div class="col-md-6">
           <label for="descripción">Descripción del producto</label>
-          <input type="text" [(ngModel)]="productoNuevo.descripcion" class="form-control" placeholder="Ingrese la descripción del producto">
+          <input type="text" [(ngModel)]="productoNuevo.descripcion" name="descripcion" class="form-control" placeholder="Ingrese la descripción del producto">
         </div>
       </div>
 
@@ -22,7 +22,7 @@
         <!-- Categoría -->
         <div class="form-group mb-3 col-md-6">
           <label for="categoriaProducto" >Categoría</label>
-          <select class="form-select" [(ngModel)]="productoNuevo.categoria" id="categoriaProducto" required>
+          <select class="form-select" [(ngModel)]="productoNuevo.categoria" id="categoriaProducto" name="categoriaProducto" required>
             <option>prueba</option>
           </select>
         </div>
@@ -30,7 +30,7 @@
         <!-- Estado -->
         <div class="form-group mb-3 col-md-6">
           <label for="estadoProducto">Estado</label>
-          <select class="form-select" [(ngModel)]="productoNuevo.estado" id="estadoProducto" required>
+          <select class="form-select" [(ngModel)]="productoNuevo.estado" id="estadoProducto" name="estadoProducto" required>
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
           </select>
@@ -43,6 +43,7 @@
             type="file" 
             [(ngModel)]="productoNuevo.imagen"
             class="form-control" 
+            name="iamgen"
             (change)="onImageSelected($event)">
         </div>
         <div class="col-md-6 text-center">

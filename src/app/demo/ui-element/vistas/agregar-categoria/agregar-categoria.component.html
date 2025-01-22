@@ -9,19 +9,19 @@
         <!-- Nombre de la Unidad -->
         <div class="form-group mb-3">
           <label for="nombreUnidad">Nombre de la categoria</label>
-          <input type="text" [value]="categoriaNuevo.nombre"  class="form-control" id="nombre" placeholder="Nombre de categoria" required>
+          <input type="text" [value]="categoriaNuevo.nombre"  class="form-control" id="nombre" name="nombre" placeholder="Nombre de categoria" required>
         </div>
         
        <!-- Descripción -->
        <div class="form-group mb-3">
         <label for="descripcionUnidad">Descripción</label>
-        <textarea class="form-control" [value]="categoriaNuevo.descripcion" id="descripcion" rows="3" placeholder="Descripción adicional (opcional)"></textarea>
+        <textarea class="form-control" [value]="categoriaNuevo.descripcion" id="descripcion" name="descripcion" rows="3" placeholder="Descripción adicional (opcional)"></textarea>
       </div>
   
         <!-- Estado -->
         <div class="form-group mb-3">
           <label for="estadoUnidad">Estado</label>
-          <select class="form-select" id="estado" required>
+          <select class="form-select" id="estado" name="estado" required>
             <option value="activo">Activo</option>
             <option value="inactivo">Inactivo</option>
           </select>

@@ -40,33 +40,38 @@ export class UnidadesServicesService {
   }
 
 
-  // Eliminar Unidad
-eliminar(id: number, unidad: UnidadMedidaClass): void {
-  Swal.fire({
-    title: 'Eliminar Unidad',
-    text: '¿Estás seguro de que deseas eliminar esta Unidad?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      unidad.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, unidad).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'La Unidad se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
-  });
-}
+  // Eliminar el proveedor 
+         eliminar(id: number, unidadMedida: UnidadMedidaClass): Observable<any> {
+          return new Observable(observer => {
+            Swal.fire({
+              title: 'Eliminar Unidad de Medida',
+              text: '¿Estás seguro de que deseas eliminar esta Unidad de Medida?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Eliminar',
+              cancelButtonText: 'Cancelar'
+            }).then((resultado) => {
+              if (resultado.isConfirmed) {
+                unidadMedida.estado = 'N'; // Marca el proveedor como eliminado
+                this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, unidadMedida).pipe(
+                  tap(() => {
+                    this.mensajeSwal2.mensaje('Eliminada exitoso', 'La Unidad de Medida se ha modificado correctamente.');
+                    observer.next(true);  // Emite true indicando que la operación fue exitosa
+                  }),
+                  catchError((error) => {
+                    this.mensajeSwal2.handleError(error);
+                    observer.error(error);  // En caso de error, emite el error
+                    return throwError(error);
+                  })
+                ).subscribe();
+              } else {
+                observer.next(false);  // Si el usuario cancela, emite false
+              }
+            });
+          });
+        }
 
 // Muestra la lista de gastos
 load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {

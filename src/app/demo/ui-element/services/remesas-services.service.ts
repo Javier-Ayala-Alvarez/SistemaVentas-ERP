@@ -39,33 +39,38 @@ modificar(id: number, remesa: RemesaClass): Observable<any> {
   );
 }
 
-// Eliminar Gasto
-eliminar(id: number, remesa: RemesaClass): void {
-  Swal.fire({
-    title: 'Eliminar Remesa',
-    text: '¿Estás seguro de que deseas eliminar esta Remesa?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      remesa.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, remesa).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'La remesa se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
-  });
-}
+// Eliminar la remesa
+       eliminar(id: number, remesa: RemesaClass): Observable<any> {
+        return new Observable(observer => {
+          Swal.fire({
+            title: 'Eliminar Remesa',
+            text: '¿Estás seguro de que deseas eliminar esta remesa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+          }).then((resultado) => {
+            if (resultado.isConfirmed) {
+              remesa.estado = 'N'; // Marca la remesa como eliminado
+              this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, remesa).pipe(
+                tap(() => {
+                  this.mensajeSwal2.mensaje('Eliminada exitoso', 'La remesa se ha modificado correctamente.');
+                  observer.next(true);  // Emite true indicando que la operación fue exitosa
+                }),
+                catchError((error) => {
+                  this.mensajeSwal2.handleError(error);
+                  observer.error(error);  // En caso de error, emite el error
+                  return throwError(error);
+                })
+              ).subscribe();
+            } else {
+              observer.next(false);  // Si el usuario cancela, emite false
+            }
+          });
+        });
+      }
 
 // Muestra la lista de remesas
 load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {

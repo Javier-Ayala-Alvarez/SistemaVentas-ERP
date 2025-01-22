@@ -40,33 +40,38 @@ export class CategoriasServicesService {
     );
   }
 
-  // Eliminar categoria
-eliminar(id: number, categoria: CategoriaClass): void {
-  Swal.fire({
-    title: 'Eliminar Categoria',
-    text: '¿Estás seguro de que deseas eliminar esta Categoria?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      categoria.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, categoria).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'La Categoria se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
-  });
-}
+  // Eliminar ña categoria 
+         eliminar(id: number, categoria: CategoriaClass): Observable<any> {
+          return new Observable(observer => {
+            Swal.fire({
+              title: 'Eliminar categoria',
+              text: '¿Estás seguro de que deseas eliminar esta categoria?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Eliminar',
+              cancelButtonText: 'Cancelar'
+            }).then((resultado) => {
+              if (resultado.isConfirmed) {
+                categoria.estado = 'N'; // Marca la categoria como eliminado
+                this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, categoria).pipe(
+                  tap(() => {
+                    this.mensajeSwal2.mensaje('Eliminada exitoso', 'La vategoria se ha modificado correctamente.');
+                    observer.next(true);  // Emite true indicando que la operación fue exitosa
+                  }),
+                  catchError((error) => {
+                    this.mensajeSwal2.handleError(error);
+                    observer.error(error);  // En caso de error, emite el error
+                    return throwError(error);
+                  })
+                ).subscribe();
+              } else {
+                observer.next(false);  // Si el usuario cancela, emite false
+              }
+            });
+          });
+        }
 
 // Muestra la lista de categorias
 load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {

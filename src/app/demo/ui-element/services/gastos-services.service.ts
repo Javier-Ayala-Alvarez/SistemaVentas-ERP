@@ -39,33 +39,38 @@ export class GastosServicesService {
     );
   }
 
- // Eliminar Gasto
-eliminar(id: number, gasto: GastoClass): void {
-  Swal.fire({
-    title: 'Eliminar Gasto',
-    text: '¿Estás seguro de que deseas eliminar este Gasto?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Eliminar',
-    cancelButtonText: 'Cancelar'
-  }).then((resultado) => {
-    if (resultado.isConfirmed) {
-      
-      gasto.estado = 'N';
-      this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, gasto).pipe(
-        tap(() => {
-          this.mensajeSwal2.mensaje('Eliminada exitoso', 'El gasto se ha modificado correctamente.');
-        }),
-        catchError((error) => {
-          this.mensajeSwal2.handleError(error);
-          return throwError(error); 
-        })
-      ).subscribe(); 
-    }
-  });
-}
+ // Eliminar el gasto
+        eliminar(id: number, gasto: GastoClass): Observable<any> {
+         return new Observable(observer => {
+           Swal.fire({
+             title: 'Eliminar Gasto',
+             text: '¿Estás seguro de que deseas eliminar este gasto?',
+             icon: 'warning',
+             showCancelButton: true,
+             confirmButtonColor: '#3085d6',
+             cancelButtonColor: '#d33',
+             confirmButtonText: 'Eliminar',
+             cancelButtonText: 'Cancelar'
+           }).then((resultado) => {
+             if (resultado.isConfirmed) {
+               gasto.estado = 'N'; // Marca el gasto como eliminado
+               this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, gasto).pipe(
+                 tap(() => {
+                   this.mensajeSwal2.mensaje('Eliminada exitoso', 'El gasto se ha modificado correctamente.');
+                   observer.next(true);  // Emite true indicando que la operación fue exitosa
+                 }),
+                 catchError((error) => {
+                   this.mensajeSwal2.handleError(error);
+                   observer.error(error);  // En caso de error, emite el error
+                   return throwError(error);
+                 })
+               ).subscribe();
+             } else {
+               observer.next(false);  // Si el usuario cancela, emite false
+             }
+           });
+         });
+       }
 
 
 // Muestra la lista de gastos
