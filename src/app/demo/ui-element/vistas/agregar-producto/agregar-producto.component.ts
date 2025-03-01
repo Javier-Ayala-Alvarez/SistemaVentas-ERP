@@ -17,7 +17,7 @@ export default class AgregarProductoComponent {
   productoNuevo: ProductoClass = new ProductoClass(); // Inicialización por defecto
   producto?: ProductoClass; // Recibe la sucursal desde el componente principal
 
-  constructor(private modalService: NgbModal, public activeModal: NgbActiveModal, private productoService: ProductosServicesService, private router: Router, private datePipe: DatePipe) {}
+  constructor(private modalService: NgbModal, private productoService: ProductosServicesService, private router: Router, private datePipe: DatePipe) {}
 
   //Valores de inicio
   ngOnInit(): void {
@@ -60,7 +60,6 @@ export default class AgregarProductoComponent {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/component/productos']);
     });
-    this.activeModal.close(); // Cierra el modal (opcional)
 
   }
 }
