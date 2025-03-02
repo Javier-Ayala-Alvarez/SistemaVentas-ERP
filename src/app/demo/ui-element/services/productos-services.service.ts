@@ -12,7 +12,7 @@ import { ProductoClass } from '../clases/producto-class';
 })
 export class ProductosServicesService {
 
-  private apiUrl = `${baserUrl}/Api/productos`; // Cambia la URL según sea necesario
+  private apiUrl = `${baserUrl}/Api/producto`; // Cambia la URL según sea necesario
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
