@@ -56,8 +56,12 @@ export default class CajasComponent {
     this.openModal(caja);
   }
   eliminar(caja: CajaClass): void {
-    this.cajasServices.eliminar(caja.id ?? 0, caja);
-    this.loadcajas();
+    this.cajasServices.eliminar(caja.id ?? 0, caja).subscribe(
+     () => {
+      this.loadcajas();
+     } 
+    );
+    
   }
 
 

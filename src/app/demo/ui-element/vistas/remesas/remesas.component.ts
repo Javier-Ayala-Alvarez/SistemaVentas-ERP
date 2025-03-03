@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemesasServicesService } from '../../services/remesas-services.service';
 import { RemesaClass } from '../../clases/remesa-class';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
+import { CajasServicesService } from '../../services/cajas-services.service';
 
 @Component({
   selector: 'app-remesas',
@@ -24,12 +25,15 @@ export default class RemesasComponent {
   totalPages: any[] = [];
   sucursales: any[] = []; 
   sucursalSelect: any; 
+  cajas: any [] = [];
+  caja:any;
 
-  constructor(private modalService: NgbModal, private remesasServices: RemesasServicesService, private sucursalServices: SucursalServicesService) { }
+  constructor(private modalService: NgbModal, private cajaServices:CajasServicesService , private remesasServices: RemesasServicesService, private sucursalServices: SucursalServicesService) { }
 
   ngOnInit(): void {
     this.loadremesas();
     this.loadSucursal();
+    this.loadCaja();
   }
 
   agregar(): void {
@@ -74,6 +78,19 @@ export default class RemesasComponent {
       (dato: any) => {
         console.log("Sucursales recibidas:", dato.nombre); // Verifica los datos en la consola
         this.sucursales = dato;
+        // Si hay una sucursal y una empresa, la seleccionamos en el combo
+        //if (this.sucursalNuevo.empresa) {
+          //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
+        }
+      //}
+    );
+  }
+
+   //mostrar datos de la caja
+   loadCaja() {
+    this.cajaServices.buscarCaja().subscribe(
+      (dato: any) => {
+        this.cajas = dato;
         // Si hay una sucursal y una empresa, la seleccionamos en el combo
         //if (this.sucursalNuevo.empresa) {
           //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);

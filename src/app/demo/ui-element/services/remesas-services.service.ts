@@ -26,6 +26,8 @@ export class RemesasServicesService {
     catchError(this.mensajeSwal2.handleError) 
   );
 }
+
+
   
 
 // Modifica remesa

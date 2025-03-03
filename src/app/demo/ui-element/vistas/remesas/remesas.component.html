@@ -44,7 +44,7 @@
                 <tbody>
                     <tr *ngFor="let data of remesas">
                         <td>{{data.id}}</td>
-                        <td>{{data.sucursal}}</td>
+                        <td>{{data.sucursal?.nombre || 'N/A'}}</td>
                         <td>{{data.numCaja}}</td>
                         <td>{{data.cantidad}}</td>
                         <td class="d-flex justify-content-center">

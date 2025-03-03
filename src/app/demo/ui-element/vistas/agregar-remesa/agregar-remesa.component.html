@@ -10,8 +10,8 @@
         <div class="form-group mb-3">
             <label for="sucursal">Sucursal</label>
             <select [(ngModel)]="sucursalSelect" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
-              <option [ngValue]="null" disabled selected>Seleccione una sucursal</option>
-              <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
+              <option [ngValue]="null" selected>Seleccione una sucursal</option>
+              <option *ngFor="let dato of sucursales"  [ngValue]="dato">{{dato.nombre}}</option>
             </select>
           </div>
           

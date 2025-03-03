@@ -9,7 +9,7 @@ export class RemesaClass {
     codigo?: number;
     numCaja?: number;
     cantidad?:string;
-    sucursal?: SucursalClass= new SucursalClass();
+    sucursal?: SucursalClass = new SucursalClass();
     estado?: String;
 
     usuarioCreacion?: UsuarioClass;
