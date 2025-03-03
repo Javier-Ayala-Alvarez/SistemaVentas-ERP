@@ -3,6 +3,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgregarCajaComponent } from '../agregar-caja/agregar-caja.component';
 import { CajasServicesService } from '../../services/cajas-services.service';
 import { CajaClass } from '../../clases/caja-class';
+import { SucursalServicesService } from '../../services/sucursal-services.service';
+import { SucursalClass } from '../../clases/sucursal-class';
 
 
 
@@ -19,13 +21,17 @@ export default class CajasComponent {
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
-  terminoBusqueda: string = '';
+  selectComboSucursal?: SucursalClass = new SucursalClass();
   totalPages: any[] = [];
-  constructor(private modalService: NgbModal, private cajasServices: CajasServicesService) { }
+  sucursales: any[]= [];
+  constructor(private modalService: NgbModal, private cajasServices: CajasServicesService, private sucursalServices: SucursalServicesService) { }
 
 
   ngOnInit(): void {
     this.loadcajas();
+    this.loadSucursal();
+    
+    
   }
 
   agregar(): void {
@@ -37,26 +43,33 @@ export default class CajasComponent {
       size: 'lg',
       centered: true
     });
+    // Pasar datos al modal
+  if (caja) {
+    modalRef.componentInstance.caja = caja;
+  }
     
   }
+
+
   
-  editar(gasto: CajaClass): void {
-    this.openModal(gasto);
+  editar(caja: CajaClass): void {
+    this.openModal(caja);
   }
-  eliminar(gasto: CajaClass): void {
-    this.cajasServices.eliminar(gasto.id ?? 0, gasto);
+  eliminar(caja: CajaClass): void {
+    this.cajasServices.eliminar(caja.id ?? 0, caja);
     this.loadcajas();
   }
 
 
   //mostrar datos en la tabla
   loadcajas() {
-    this.cajasServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+    this.cajasServices.load(this.selectComboSucursal?.id || 0, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.cajas = dato.content;
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
+        console.log("Datos<",this.cajas)
       }
     );
   }
@@ -76,6 +89,20 @@ export default class CajasComponent {
       this.ngOnInit();
     }
   }
+
+  //mostrar datos de la sucursal
+loadSucursal() {
+  this.sucursalServices.buscar().subscribe(
+    (dato: any) => {
+      console.log("Sucursales recibidas:", dato); // Verifica los datos en la consola
+      this.sucursales = dato;
+      // Si hay una sucursal y una empresa, la seleccionamos en el combo
+      //if (this.sucursalNuevo.empresa) {
+        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
+      }
+    //}
+  );
+}
 
   
 

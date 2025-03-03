@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">Cliente</h5>
+    <h5 class="modal-title">Caja</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
@@ -9,11 +9,9 @@
        <!--select sucurdsal-->
        <div class="form-group mb-3">
         <label for="sucursal">Sucursal</label>
-        <select class="form-select" id="sucursal" name="sucursal" required>
-          <option value="" selected disabled>Seleccione una sucursal</option>
-          <option value="1">San Vicente</option>
-          <option value="2">San Salvador</option>
-          <option value="3">San Miguel</option>
+        <select [(ngModel)]="selectComboSucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
+          <option [ngValue]="null" selected>Seleccione una sucursal</option>
+          <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
         </select>
       </div>
         <!-- fecha inicio -->
@@ -58,5 +56,5 @@
   
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary">Guardar Caja</button>
+    <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Caja</button>
   </div>

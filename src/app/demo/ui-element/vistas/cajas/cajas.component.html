@@ -10,12 +10,10 @@
         <!-- Select de Sucursal -->
         <div class="form-group col-md-4">
             <label for="sucursal" class="form-label mb-0">Sucursal</label>
-            <select class="form-select mt-0" id="sucursal" name="sucursal" [(ngModel)]="terminoBusqueda" required>
-                <option value="" selected disabled>Seleccione una sucursal</option>
-                <option value="1">San Vicente</option>
-                <option value="2">San Salvador</option>
-                <option value="3">San Miguel</option>
-            </select>
+            <select [(ngModel)]="selectComboSucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
+                <option [ngValue]="null" selected>Seleccione una sucursal</option>
+                <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
+              </select>
         </div>
 
         <!-- Botón de Búsqueda -->
@@ -49,8 +47,8 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of cajas">
-                        <td>{{data.codigo}}</td>
-                        <td>{{data.sucursal}}</td>
+                        <td>{{data.id}}</td>
+                        <td>{{data.sucursal?.nombre}}</td>
                         <td>{{data.fechaInicio}}</td>
                         <td>{{data.horaInicio}}</td>
                         <td>{{data.fechaCierre}}</td>
@@ -64,8 +62,8 @@
                             </button>
 
                             <!-- Botón de Eliminar -->
-                            <button class="btn btn-danger btn-sm rounded-circle">
-                                <i class="fas fa-trash"  (click)="eliminar(data)"></i>
+                            <button class="btn btn-danger btn-sm rounded-circle" (click)="eliminar(data)">
+                                <i class="fas fa-trash"  ></i>
                             </button>
                         </td>
                     </tr>

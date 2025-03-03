@@ -30,6 +30,7 @@ export class RemesasServicesService {
 
 // Modifica remesa
 modificar(id: number, remesa: RemesaClass): Observable<any> {
+  console.log("entre");
   remesa.estado = 'A';
   return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, remesa).pipe(
     tap(() => {
@@ -73,8 +74,12 @@ modificar(id: number, remesa: RemesaClass): Observable<any> {
       }
 
 // Muestra la lista de remesas
-load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
-  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${search}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
+load(idSucursal: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
+console.log("Id "+idSucursal);
+if(idSucursal == undefined){
+  idSucursal = 0;
+}
+  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${idSucursal}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );
 }

@@ -16,6 +16,12 @@ export class SucursalServicesService {
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
+  buscar(): Observable<any[]> {
+    return this.httpClient.get<any>(`${this.apiUrl}/ListCombo`).pipe(
+        catchError(this.mensajeSwal2.handleError) 
+    );
+  }
+
   
 
   // Agrega una nueva sucursal
@@ -32,7 +38,9 @@ export class SucursalServicesService {
 
   // Modifica la sucursal
   modificar(id: number, sucursal: SucursalClass): Observable<any> {
+    console.log ("sucursal " +sucursal  );
     sucursal.estado = 'A';
+    
     return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, sucursal).pipe(
       tap(() => {
         this.mensajeSwal2.mensaje('Guardado exitoso','La sucursal se ha modificado correctamente.')

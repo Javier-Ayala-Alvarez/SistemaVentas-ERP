@@ -9,11 +9,9 @@
         <!--select sucurdsal-->
         <div class="form-group mb-3">
             <label for="sucursal">Sucursal</label>
-            <select class="form-select" id="sucursal" name="Sucursal" [(ngModel)]="remesaNuevo.sucursal" required >
-              <option value="" selected disabled>Seleccione una sucursal</option>
-              <option value="1">San Vicente</option>
-              <option value="2">San Salvador</option>
-              <option value="3">San Miguel</option>
+            <select [(ngModel)]="sucursalSelect" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
+              <option [ngValue]="null" disabled selected>Seleccione una sucursal</option>
+              <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
             </select>
           </div>
           
@@ -35,5 +33,5 @@
   
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary">Guardar Remesa</button>
+    <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Remesa</button>
   </div>

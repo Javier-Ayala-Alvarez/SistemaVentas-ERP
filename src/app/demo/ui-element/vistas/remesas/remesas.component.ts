@@ -3,6 +3,7 @@ import { AgregarRemesaComponent } from '../agregar-remesa/agregar-remesa.compone
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemesasServicesService } from '../../services/remesas-services.service';
 import { RemesaClass } from '../../clases/remesa-class';
+import { SucursalServicesService } from '../../services/sucursal-services.service';
 
 @Component({
   selector: 'app-remesas',
@@ -21,11 +22,14 @@ export default class RemesasComponent {
   isLast: boolean = false;
   terminoBusqueda: string = '';
   totalPages: any[] = [];
+  sucursales: any[] = []; 
+  sucursalSelect: any; 
 
-  constructor(private modalService: NgbModal, private remesasServices: RemesasServicesService) { }
+  constructor(private modalService: NgbModal, private remesasServices: RemesasServicesService, private sucursalServices: SucursalServicesService) { }
 
   ngOnInit(): void {
     this.loadremesas();
+    this.loadSucursal();
   }
 
   agregar(): void {
@@ -37,6 +41,10 @@ export default class RemesasComponent {
       size: 'lg',
       centered: true
     });
+    // Pasar datos al modal
+  if (remesa) {
+    modalRef.componentInstance.caja = remesa;
+  }
     
   }
   
@@ -50,13 +58,27 @@ export default class RemesasComponent {
 
   //mostrar datos en la tabla
   loadremesas() {
-    this.remesasServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+    this.remesasServices.load(this.sucursalSelect, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.remesas = dato.content;
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
       }
+    );
+  }
+
+  //mostrar datos de la empresa
+  loadSucursal() {
+    this.sucursalServices.buscar().subscribe(
+      (dato: any) => {
+        console.log("Sucursales recibidas:", dato.nombre); // Verifica los datos en la consola
+        this.sucursales = dato;
+        // Si hay una sucursal y una empresa, la seleccionamos en el combo
+        //if (this.sucursalNuevo.empresa) {
+          //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
+        }
+      //}
     );
   }
 

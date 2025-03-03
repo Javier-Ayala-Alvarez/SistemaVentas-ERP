@@ -13,10 +13,22 @@ import { CajaClass } from '../clases/caja-class';
 export class CajasServicesService {
   private apiUrl = `${baserUrl}/Api/cajas`; // Cambia la URL según sea necesario
 
+  
+
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
+
+  ngOnInit(): void {
+    Swal.fire({
+      title: 'Prueba',
+      text: 'Si ves esto, SweetAlert2 funciona',
+      icon: 'info'
+    });
+  }
+  
 
   // Agrega una nueva caja 
   agregar(caja: CajaClass): Observable<any> {
+
     caja.estado = 'A';
     return this.httpClient.post(`${this.apiUrl}/Guardar`, caja).pipe(
       tap(() => {
@@ -29,6 +41,7 @@ export class CajasServicesService {
 
   // Modifica Caja
   modificar(id: number, caja: CajaClass): Observable<any> {
+    console.log("Caja antes de enviar:", JSON.stringify(caja, null, 2));
     caja.estado = 'A';
     return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, caja).pipe(
       tap(() => {
@@ -39,41 +52,52 @@ export class CajasServicesService {
   }
 
    // Eliminar caja
-          eliminar(id: number, caja: CajaClass): Observable<any> {
-           return new Observable(observer => {
-             Swal.fire({
-               title: 'Eliminar Caja',
-               text: '¿Estás seguro de que deseas eliminar esta caja?',
-               icon: 'warning',
-               showCancelButton: true,
-               confirmButtonColor: '#3085d6',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Eliminar',
-               cancelButtonText: 'Cancelar'
-             }).then((resultado) => {
-               if (resultado.isConfirmed) {
-                 caja.estado = 'N'; // Marca la caja como eliminado
-                 this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, caja).pipe(
-                   tap(() => {
-                     this.mensajeSwal2.mensaje('Eliminada exitoso', 'La caja se ha modificado correctamente.');
-                     observer.next(true);  // Emite true indicando que la operación fue exitosa
-                   }),
-                   catchError((error) => {
-                     this.mensajeSwal2.handleError(error);
-                     observer.error(error);  // En caso de error, emite el error
-                     return throwError(error);
-                   })
-                 ).subscribe();
-               } else {
-                 observer.next(false);  // Si el usuario cancela, emite false
-               }
-             });
-           });
-         }
-
+   eliminar(id: number, caja: CajaClass): Observable<any> {
+    console.log("📌 ID recibido para eliminar:", id);
+  
+    return new Observable(observer => {
+      console.log("entre");
+      Swal.fire({
+        title: 'Eliminar Caja',
+        text: '¿Estás seguro de que deseas eliminar esta caja?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((resultado) => {  // Asegura que "result" tiene datos
+        console.log("📌 Resultado del Swal.fire:", resultado);
+  
+        if (resultado.isConfirmed) {
+          console.log("✅ Usuario confirmó la eliminación");
+  
+          caja.estado = 'N'; // Marca la caja como eliminada
+  
+          this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, caja).pipe(
+            tap(() => {
+              console.log("✅ Caja eliminada exitosamente");
+              this.mensajeSwal2.mensaje('Eliminada exitosamente', 'La caja se ha modificado correctamente.');
+              observer.next(true);
+            }),
+            catchError((error) => {
+              console.error("❌ Error al eliminar la caja:", error);
+              this.mensajeSwal2.handleError(error);
+              observer.error(error);
+              return throwError(error);
+            })
+          ).subscribe();
+        } else {
+          console.log("❌ Eliminación cancelada por el usuario");
+          observer.next(false);
+        }
+      }).catch((error: any) => console.error("❌ Error en Swal.fire:", error)); // Maneja errores
+    });
+  }
+  
 
 // Muestra la lista de las cajas
-load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
+load(search: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
   return this.httpClient.get(`${this.apiUrl}/List?busqueda=${search}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );

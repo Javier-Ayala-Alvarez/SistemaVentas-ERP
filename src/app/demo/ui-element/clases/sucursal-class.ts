@@ -3,9 +3,9 @@ import { EmpresaClass } from "./empresa-class";
 import { UsuarioClass } from "./usuario-class";
 
 export class SucursalClass {
-    id?: number; // ID único de la sucursal
+    id?: number = 0; // ID único de la sucursal
     codigo?: string; // Código de la sucursal
-    nombre?: string; // Nombre de la sucursal
+    nombre?: string = ""; // Nombre de la sucursal
     direccion?: string; // Dirección de la sucursal
     telefono?: string; // Teléfono de contacto
     correo?: string; // Correo electrónico de contacto

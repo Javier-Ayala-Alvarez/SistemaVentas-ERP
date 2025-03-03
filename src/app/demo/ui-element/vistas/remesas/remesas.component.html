@@ -10,12 +10,10 @@
         <!-- Select de Sucursal -->
         <div class="form-group col-md-4">
             <label for="sucursal" class="form-label mb-0">Sucursal</label>
-            <select class="form-select mt-0" id="sucursal" name="sucursal" [(ngModel)]="terminoBusqueda" required>
-                <option value="" selected disabled>Seleccione una sucursal</option>
-                <option value="1">San Vicente</option>
-                <option value="2">San Salvador</option>
-                <option value="3">San Miguel</option>
-            </select>
+            <select [(ngModel)]="sucursalSelect" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
+                <option [ngValue]="null" disabled selected>Seleccione una sucursal</option>
+                <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
+              </select>
         </div>
 
         <!-- Botón de Búsqueda -->
@@ -45,18 +43,18 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of remesas">
-                        <td>{{data.codigo}}</td>
+                        <td>{{data.id}}</td>
                         <td>{{data.sucursal}}</td>
                         <td>{{data.numCaja}}</td>
                         <td>{{data.cantidad}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
-                            <button class="btn btn-warning btn-sm rounded-circle me-2">
+                            <button class="btn btn-warning btn-sm rounded-circle me-2" (click)="editar(data)">
                                 <i class="fas fa-edit"></i>
                             </button>
 
                             <!-- Botón de Eliminar -->
-                            <button class="btn btn-danger btn-sm rounded-circle">
+                            <button class="btn btn-danger btn-sm rounded-circle" (click)="eliminar(data)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>

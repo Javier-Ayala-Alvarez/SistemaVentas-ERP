@@ -1,10 +1,11 @@
 import { Data } from "@angular/router";
 import { UsuarioClass } from "./usuario-class";
+import { SucursalClass } from "./sucursal-class";
 
 export class CajaClass {
-    id?: number; 
+    id?: number = 0; 
     codigo?: number;
-    sucursal?: string;
+    sucursal?: SucursalClass = new SucursalClass();
     fechaInicio?: string | Date;
     horaInicio?: string;
     fechaCierre?: string | Date;
@@ -22,5 +23,6 @@ export class CajaClass {
 
     constructor(init?: Partial<CajaClass>) {
         Object.assign(this, init); // Permite inicializar propiedades parcialmente
+
     }
 }
