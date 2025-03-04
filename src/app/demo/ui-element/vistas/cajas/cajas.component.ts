@@ -43,10 +43,10 @@ export default class CajasComponent {
       size: 'lg',
       centered: true
     });
-    // Pasar datos al modal
+    //Pasar datos al modal
   if (caja) {
     modalRef.componentInstance.caja = caja;
-  }
+ }
     
   }
 
