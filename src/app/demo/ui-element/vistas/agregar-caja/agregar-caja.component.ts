@@ -39,6 +39,7 @@ export class AgregarCajaComponent {
 
   //Guardar Caja
   guardar(){
+    console.log("entree");
     if (!this.cajaNuevo.sucursal) {
       this.cajaNuevo.sucursal = new SucursalClass();
   }
@@ -46,6 +47,7 @@ export class AgregarCajaComponent {
   
     if (this.caja != null) {
       this.cajaService.modificar(this.cajaNuevo.id ?? 0, this.cajaNuevo).subscribe();
+      console.log("id a guardar de caja" , this.cajaNuevo.id);
 
     } else {
       this.cajaService.agregar(this.cajaNuevo).subscribe();
