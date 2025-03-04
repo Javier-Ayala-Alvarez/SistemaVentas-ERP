@@ -24,6 +24,8 @@ export class SucursalServicesService {
 
   
 
+  
+
   // Agrega una nueva sucursal
   agregar(sucursal: SucursalClass): Observable<any> {
     sucursal.estado = 'A';

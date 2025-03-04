@@ -57,9 +57,15 @@ export default class CajasComponent {
   }
   eliminar(caja: CajaClass): void {
     this.cajasServices.eliminar(caja.id ?? 0, caja).subscribe(
+<<<<<<< HEAD
+     () => {
+      this.loadcajas();
+     } 
+=======
       () => {
         this.loadcajas();
       }
+>>>>>>> 49465e1f85b6f8b3b8a12540f088e6df8909ea88
     );
     
   }
