@@ -6,6 +6,7 @@ import { ProductosServicesService } from '../../services/productos-services.serv
 import { ProductoClass } from '../../clases/producto-class'; 
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { CategoriasServicesService } from '../../services/categorias-services.service';
 
 @Component({
   selector: 'app-agregar-producto',
@@ -16,8 +17,9 @@ export default class AgregarProductoComponent {
 
   productoNuevo: ProductoClass = new ProductoClass(); // Inicialización por defecto
   producto?: ProductoClass; // Recibe la sucursal desde el componente principal
-
-  constructor(private modalService: NgbModal, private productoService: ProductosServicesService, private router: Router, private datePipe: DatePipe) {}
+  categorias:any[] =[];
+  categiriaSelect:any; 
+  constructor(private modalService: NgbModal, private productoService: ProductosServicesService,private categoria: CategoriasServicesService, private router: Router, private datePipe: DatePipe) {}
 
   //Valores de inicio
   ngOnInit(): void {
@@ -25,7 +27,8 @@ export default class AgregarProductoComponent {
       this.productoNuevo = { ...this.producto }; // Copia los valores si está definido
     } else {
       this.productoNuevo = new ProductoClass(); // Asegura la inicialización
-    }
+    } 
+    this.loadCategoria();
   }
   imagenPreview: string | null = null;
 
@@ -62,4 +65,14 @@ export default class AgregarProductoComponent {
     });
 
   }
+  //mostrar datos de la sucursal
+loadCategoria() {
+  this.categoria.listaCombo().subscribe(
+    (dato: any) => {
+      this.categorias = dato;
+
+      }
+
+  );
+}
 }

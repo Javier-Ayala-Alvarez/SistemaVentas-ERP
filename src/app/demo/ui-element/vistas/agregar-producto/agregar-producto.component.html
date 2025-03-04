@@ -23,18 +23,12 @@
         <div class="form-group mb-3 col-md-6">
           <label for="categoriaProducto" >Categoría</label>
           <select class="form-select" [(ngModel)]="productoNuevo.categoria" id="categoriaProducto" name="categoriaProducto" required>
-            <option>prueba</option>
+            <option [ngValue]="null" disabled selected>Seleccione la categoria</option>
+          <option *ngFor="let dato of categorias" [ngValue]="dato">{{dato.nombre}}</option>
           </select>
         </div>
-
-        <!-- Estado -->
-        <div class="form-group mb-3 col-md-6">
-          <label for="estadoProducto">Estado</label>
-          <select class="form-select" [(ngModel)]="productoNuevo.estado" id="estadoProducto" name="estadoProducto" required>
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-        </div>
+      
+     
          <!-- Imagen del Producto -->
       <div class="row mb-3">
         <div class="col-md-6">

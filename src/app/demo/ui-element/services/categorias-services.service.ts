@@ -80,6 +80,12 @@ load(search: string, page: number, size: number, order: string, asc: boolean): O
   );
 }
 
+listaCombo(): Observable<any[]> {
+  return this.httpClient.get<any>(`${this.apiUrl}/ListCombo`).pipe(
+      catchError(this.mensajeSwal2.handleError) 
+  );
+}
+
 
 
 
