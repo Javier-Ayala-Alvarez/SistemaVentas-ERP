@@ -6,6 +6,8 @@ import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ProductoClass } from '../clases/producto-class'; 
+import { UnidadMedidaClass } from '../clases/unidad-medida-class';
+import { UnidadMedidaProductoClass } from '../clases/unidadMedidaProducto';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,11 @@ export class ProductosServicesService {
   private apiUrl = `${baserUrl}/Api/producto`; // Cambia la URL según sea necesario
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
-
+ 
+  unidadMedidaProducto: UnidadMedidaProductoClass[] = [];
+  agregarUnidadMedida(unidadMedidaProducto: UnidadMedidaProductoClass): void {
+    this.unidadMedidaProducto.push({ ...unidadMedidaProducto });
+  }
   // Agrega una nuevo producto
   agregar(producto : ProductoClass): Observable<any> {
     producto.estado = 'A';

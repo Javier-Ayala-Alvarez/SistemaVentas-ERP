@@ -19,7 +19,7 @@ export default class SucursalComponent {
   isFirst: boolean = false;
   isLast: boolean = false;
   terminoBusqueda: string = '';
-  totalPages: any[] = [];
+  totalPages: any[] = []; 
 
   constructor(private modalService: NgbModal, private sucursalServices: SucursalServicesService) {
   }
