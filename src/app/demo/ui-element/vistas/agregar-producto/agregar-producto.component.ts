@@ -7,6 +7,8 @@ import { ProductoClass } from '../../clases/producto-class';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { CategoriasServicesService } from '../../services/categorias-services.service';
+import { UnidadMedidaClass } from '../../clases/unidad-medida-class';
+import { UnidadMedidaProductoClass } from '../../clases/unidadMedidaProducto';
 
 @Component({
   selector: 'app-agregar-producto',
@@ -14,6 +16,8 @@ import { CategoriasServicesService } from '../../services/categorias-services.se
   styleUrl: './agregar-producto.component.scss'
 })
 export default class AgregarProductoComponent {
+    unidadMedidaProducto: UnidadMedidaProductoClass[] = [];
+  
 
   productoNuevo: ProductoClass = new ProductoClass(); // Inicialización por defecto
   producto?: ProductoClass; // Recibe la sucursal desde el componente principal
@@ -29,6 +33,7 @@ export default class AgregarProductoComponent {
       this.productoNuevo = new ProductoClass(); // Asegura la inicialización
     } 
     this.loadCategoria();
+    this.unidadMedidaProducto = this.productoService.unidadMedidaProducto;
   }
   imagenPreview: string | null = null;
 

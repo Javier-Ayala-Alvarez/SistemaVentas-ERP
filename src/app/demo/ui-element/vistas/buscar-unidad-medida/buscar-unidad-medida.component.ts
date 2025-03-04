@@ -4,6 +4,7 @@ import { UnidadMedidaClass } from '../../clases/unidad-medida-class';
 import { UnidadesServicesService } from '../../services/unidades-services.service';
 import { ProductosServicesService } from '../../services/productos-services.service';
 import { UnidadMedidaProductoClass } from '../../clases/unidadMedidaProducto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buscar-unidad-medida',
@@ -22,7 +23,7 @@ export class BuscarUnidadMedidaComponent {
     terminoBusqueda: string = '';
     totalPages: any[] = [];
   
-  constructor(public activeModal: NgbActiveModal, private unidadServices: UnidadesServicesService, private productoServices: ProductosServicesService) {}
+  constructor(public activeModal: NgbActiveModal, private unidadServices: UnidadesServicesService, private productoServices: ProductosServicesService,private router: Router,) {}
 
   ngOnInit(): void {
     this.loadUnidadMedida();
@@ -42,6 +43,9 @@ export class BuscarUnidadMedidaComponent {
     this.unidadMedidaProducto = new UnidadMedidaProductoClass();
     this.unidadMedidaProducto.unidaMedida = unidadMedida;
     this.productoServices.agregarUnidadMedida(this.unidadMedidaProducto);
+    this.router.navigate(['/component/AgregarProducto']);
+    this.activeModal.close(); // Cierra el modal (opcional)
+
   }
   
 
