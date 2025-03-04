@@ -41,7 +41,7 @@ export class BuscarUnidadMedidaComponent {
   }
   guardar(unidadMedida: UnidadMedidaClass) {
     this.unidadMedidaProducto = new UnidadMedidaProductoClass();
-    this.unidadMedidaProducto.unidaMedida = unidadMedida;
+    this.unidadMedidaProducto.unidadMedida = unidadMedida;
     this.productoServices.agregarUnidadMedida(this.unidadMedidaProducto);
     this.router.navigate(['/component/AgregarProducto']);
     this.activeModal.close(); // Cierra el modal (opcional)

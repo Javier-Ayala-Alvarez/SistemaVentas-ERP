@@ -19,20 +19,45 @@ export class ProductosServicesService {
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
  
   unidadMedidaProducto: UnidadMedidaProductoClass[] = [];
+
   agregarUnidadMedida(unidadMedidaProducto: UnidadMedidaProductoClass): void {
     this.unidadMedidaProducto.push({ ...unidadMedidaProducto });
   }
-  // Agrega una nuevo producto
-  agregar(producto : ProductoClass): Observable<any> {
+  
+  // Agrega un nuevo producto
+  agregar(producto: ProductoClass): Observable<any> {
     producto.estado = 'A';
     return this.httpClient.post(`${this.apiUrl}/Guardar`, producto).pipe(
-      tap(() => {
-        this.mensajeSwal2.mensaje('Guardado exitoso','el producto se ha guardado correctamente.')
-
+      tap((respuesta: any) => {
+        if (respuesta?.producto?.id) {
+          this.AgregarUnidadMedida(respuesta.producto.id).subscribe(); // Llamada para agregar unidad de medida
+          this.mensajeSwal2.mensaje('Guardado exitoso', 'El producto se ha guardado correctamente.');
+        } else {
+          this.mensajeSwal2.mensaje('Error', 'No se pudo obtener el ID del producto.');
+        }
       }),
-      catchError(this.mensajeSwal2.handleError) 
+      catchError(this.mensajeSwal2.handleError)
     );
   }
+  
+  AgregarUnidadMedida(idProducto: number): Observable<any> {
+    // Asigna el idProducto a cada item si el producto existe
+    this.unidadMedidaProducto.forEach((item) => {
+      if (item.producto) {
+        item.producto.id = idProducto; // Asigna el idProducto
+      }
+    });
+    console.log(this.unidadMedidaProducto)
+
+    return this.httpClient.post(`${baserUrl}/Api/unidadMedidaProducto/Guardar`, this.unidadMedidaProducto).pipe(
+      tap(() => {
+        this.mensajeSwal2.mensaje('Guardado exitoso', 'Las unidades de medida se han modificado correctamente.');
+      }),
+      catchError(this.mensajeSwal2.handleError)
+    );
+  }
+  
+  
 
 
   // Modifica Producto

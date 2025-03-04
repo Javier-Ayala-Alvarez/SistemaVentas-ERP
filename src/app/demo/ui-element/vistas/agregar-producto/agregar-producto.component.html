@@ -75,9 +75,9 @@
         </thead>
         <tbody>
             <tr *ngFor="let data of unidadMedidaProducto">
-              <td>{{data.unidaMedida?.nombre}}</td>
-              <td>{{data.unidaMedida?.abreviatura}}</td>
-              <td>{{data.unidaMedida?.factor}}</td>
+              <td>{{data.unidadMedida?.nombre}}</td>
+              <td>{{data.unidadMedida?.abreviatura}}</td>
+              <td>{{data.unidadMedida?.factor}}</td>
            
             <td> 
               <input type="text" class="form-control" placeholder="Ingrese el precio del producto" [(ngModel)]="data.precio">

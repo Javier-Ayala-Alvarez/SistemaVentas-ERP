@@ -6,7 +6,7 @@ import { UnidadMedidaClass } from "./unidad-medida-class";
 export class UnidadMedidaProductoClass {
     id? : number;
     producto?: ProductoClass = new ProductoClass();
-    unidaMedida?:UnidadMedidaClass = new UnidadMedidaClass();
+    unidadMedida?:UnidadMedidaClass = new UnidadMedidaClass();
     precio?: number;
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;
