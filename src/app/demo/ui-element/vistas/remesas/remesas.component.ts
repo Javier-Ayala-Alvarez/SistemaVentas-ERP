@@ -47,7 +47,7 @@ export default class RemesasComponent {
     });
     // Pasar datos al modal
   if (remesa) {
-    modalRef.componentInstance.caja = remesa;
+    modalRef.componentInstance.remesa = remesa;
   }
     
   }
@@ -56,8 +56,13 @@ export default class RemesasComponent {
     this.openModal(remesa);
   }
   eliminar(remesa: RemesaClass): void {
-    this.remesasServices.eliminar(remesa.id ?? 0, remesa);
-    this.loadremesas();
+    this.remesasServices.eliminar(remesa.id ?? 0, remesa).subscribe(
+      
+      () => {
+      this.loadremesas();
+      }
+
+    );
   }
 
   //mostrar datos en la tabla

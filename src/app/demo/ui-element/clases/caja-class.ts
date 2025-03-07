@@ -1,6 +1,7 @@
 import { Data } from "@angular/router";
 import { UsuarioClass } from "./usuario-class";
 import { SucursalClass } from "./sucursal-class";
+import { isNull } from "lodash";
 
 export class CajaClass {
     id?: number = 0; 
@@ -11,7 +12,7 @@ export class CajaClass {
     fechaCierre?: string | Date;
     horaCierre?: string;
     efectivoApertura?: number; 
-    efectivoCierre?: number;
+    afectivoCierre?: number ;
     estado?:string;
 
 

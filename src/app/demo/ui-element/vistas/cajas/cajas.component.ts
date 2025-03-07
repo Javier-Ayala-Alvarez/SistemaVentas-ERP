@@ -21,7 +21,7 @@ export default class CajasComponent {
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
-  selectComboSucursal?: SucursalClass = new SucursalClass();
+  selectComboSucursal: any | null= null;
   totalPages: any[] = [];
   sucursales: any[]= [];
   constructor(private modalService: NgbModal, private cajasServices: CajasServicesService, private sucursalServices: SucursalServicesService) { }
@@ -102,6 +102,7 @@ loadSucursal() {
     (dato: any) => {
       console.log("Sucursales recibidas:", dato); // Verifica los datos en la consola
       this.sucursales = dato;
+      console.log("sucursal: ", dato[0].nombre);
       // Si hay una sucursal y una empresa, la seleccionamos en el combo
       //if (this.sucursalNuevo.empresa) {
         //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);

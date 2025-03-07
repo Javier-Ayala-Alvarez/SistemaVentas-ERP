@@ -11,14 +11,14 @@
         <div class="form-group col-md-4">
             <label for="sucursal" class="form-label mb-0">Sucursal</label>
             <select [(ngModel)]="sucursalSelect" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
-                <option [ngValue]="null" disabled selected>Seleccione una sucursal</option>
+                <option [ngValue]="null"  selected>Seleccione una sucursal</option>
                 <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
               </select>
         </div>
 
         <!-- Botón de Búsqueda -->
         <div class="col-md-4 d-flex">
-            <button class="btn btn-warning w-100 " style="margin-top: 5px;" [(ngModel)]="loadremesas">Buscar</button>
+            <button class="btn btn-warning w-100 " style="margin-top: 5px;" (click)="loadremesas()">Buscar</button>
         </div>
 
         <!-- Botón de Agregar -->
@@ -45,7 +45,7 @@
                     <tr *ngFor="let data of remesas">
                         <td>{{data.id}}</td>
                         <td>{{data.sucursal?.nombre || 'N/A'}}</td>
-                        <td>{{data.numCaja}}</td>
+                        <td>{{data.caja?.id}}</td>
                         <td>{{data.cantidad}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->

@@ -16,7 +16,7 @@
                 </div>
                 <!-- Botón de Búsqueda -->
                 <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-warning w-100" (click)="loadcategorias()" >Buscar</button>
+                    <button class="btn btn-warning w-100" (click)="loadCategorias()" >Buscar</button>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
                     <button class="btn btn-primary w-100" (click)="openModal()">Agregar</button>
@@ -38,7 +38,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of categorias">
-                        <td>{{data.codigo}}</td>
+                        <td>{{data.id}}</td>
                         <td>{{data.nombre}}</td>
                         <td>{{data.descripcion}}</td>
                         <td class="d-flex justify-content-center">

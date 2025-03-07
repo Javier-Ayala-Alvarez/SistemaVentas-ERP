@@ -25,7 +25,7 @@ export default class CategoriaComponent {
 
   constructor(private modalService: NgbModal, private categoriasServices: CategoriasServicesService) { }
   ngOnInit(): void {
-    this.loadcategorias();
+    this.loadCategorias();
   }
 
   agregar(): void {
@@ -46,18 +46,19 @@ export default class CategoriaComponent {
   }
   eliminar(categoria: CategoriaClass): void {
     this.categoriasServices.eliminar(categoria.id ?? 0, categoria);
-    this.loadcategorias();
+    this.loadCategorias();
  
  }
 
  //mostrar datos en la tabla
- loadcategorias() {
-  this.categoriasServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+ loadCategorias() {
+  this.categoriasServices.load(this.terminoBusqueda || '', this.page, this.size, this.order, this.asc).subscribe(
     (dato: any) => {
       this.categorias = dato.content;
       this.isFirst = dato.first;
       this.isLast = dato.last;
       this.totalPages = new Array(dato.totalPages);
+      console.log("categorias",this.categorias);
     }
   );
 }

@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { RemesasServicesService } from '../../services/remesas-services.service';
 import { RemesaClass } from '../../clases/remesa-class';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
+import { CajasServicesService } from '../../services/cajas-services.service';
 
 
 @Component({
@@ -16,14 +17,23 @@ export  class AgregarRemesaComponent {
 
   sucursales:any[] =[];
   sucursalSelect:any; 
+  cajas: any[] = [];
+  selectComboCaja: any[]=[];
 
   remesaNuevo: RemesaClass = new RemesaClass(); // Inicialización por defecto
   remesa?: RemesaClass; // Recibe la sucursal desde el componente principal
-  constructor(public activeModal: NgbActiveModal, private RemesaService: RemesasServicesService, private router: Router, private datePipe: DatePipe, private sucursalServices: SucursalServicesService) { }
+  constructor(public activeModal: NgbActiveModal, private RemesaService: RemesasServicesService, private router: Router, private datePipe: DatePipe, private sucursalServices: SucursalServicesService, private cajasServices: CajasServicesService) { }
 
  //Valores de inicio
  ngOnInit(): void {
   this.loadSucursal();
+  if (this.remesa) {
+    this.remesaNuevo = { ...this.remesa }; // Copia los valores si está definido
+  } else {
+    this.remesaNuevo = new RemesaClass(); // Asegura la inicialización
+  }
+
+  this.loadCajas();
   if (this.remesa) {
     this.remesaNuevo = { ...this.remesa }; // Copia los valores si está definido
   } else {
@@ -50,8 +60,22 @@ guardar(){
 loadSucursal() {
   this.sucursalServices.buscar().subscribe(
     (dato: any) => {
-      console.log("Sucursales recibidas:", dato.nombre); // Verifica los datos en la consola
+      console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
       this.sucursales = dato;
+      // Si hay una sucursal y una empresa, la seleccionamos en el combo
+      //if (this.sucursalNuevo.empresa) {
+        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
+      }
+    //}
+  );
+}
+
+//mostrar datos de la sucursal
+loadCajas() {
+  this.cajasServices.buscarCaja().subscribe(
+    (dato: any) => {
+      console.log("cajas recibidas:", dato[0].id); // Verifica los datos en la consola
+      this.cajas = dato;
       // Si hay una sucursal y una empresa, la seleccionamos en el combo
       //if (this.sucursalNuevo.empresa) {
         //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);

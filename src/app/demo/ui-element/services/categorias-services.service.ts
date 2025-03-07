@@ -16,6 +16,8 @@ export class CategoriasServicesService {
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
+
+
   // Agrega una nueva categoria
   agregar(categoria: CategoriaClass): Observable<any> {
     categoria.estado = 'A';
@@ -74,9 +76,11 @@ export class CategoriasServicesService {
         }
 
 // Muestra la lista de categorias
-load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
-  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${search}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
+load(terminoBusqueda: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
+  console.log("entre");
+  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
+    
   );
 }
 

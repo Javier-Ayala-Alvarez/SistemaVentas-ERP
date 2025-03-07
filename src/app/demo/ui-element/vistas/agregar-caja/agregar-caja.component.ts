@@ -24,6 +24,7 @@ export class AgregarCajaComponent {
   //Valores de inicio
   ngOnInit(): void {
     this.loadSucursal();
+
     if (this.caja) {
       console.log("✅ Caja recibida en ngOnInit():", JSON.stringify(this.caja, null, 2));
   
@@ -34,12 +35,13 @@ export class AgregarCajaComponent {
       console.log("⚠️ No se recibió ninguna caja, inicializando cajaNueva.");
       this.cajaNuevo = new CajaClass(); // Asegura la inicialización
     }
-  }
+    }
 
 
   //Guardar Caja
   guardar(){
     console.log("entree");
+
     if (!this.cajaNuevo.sucursal) {
       this.cajaNuevo.sucursal = new SucursalClass();
   }

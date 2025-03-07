@@ -11,14 +11,17 @@
             <label for="sucursal">Sucursal</label>
             <select [(ngModel)]="sucursalSelect" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
               <option [ngValue]="null" selected>Seleccione una sucursal</option>
-              <option *ngFor="let dato of sucursales"  [ngValue]="dato">{{dato.nombre}}</option>
+              <option *ngFor="let dato of sucursales"  [ngValue]="dato.id">{{dato.nombre}}</option>
             </select>
           </div>
           
         <!-- N° caja -->
         <div class="form-group mb-3">
-          <label for="numCaja">N° de Caja</label>
-          <input type="number" [(ngModel)]="remesaNuevo.numCaja" class="form-control" id="numCaja" name="numCaja" placeholder="N° de Caja" value="0" min="0" required>
+          <label for="caja">N° Caja</label>
+          <select [(ngModel)]="selectComboCaja" class="form-select" id="caja" name="caja" required>
+            <option [ngValue]="null" selected>Seleccione una caja</option>
+            <option *ngFor="let dato of cajas" [ngValue]="dato.id">{{dato.id}}</option>
+          </select>
         </div>
         <!-- cantidad -->
         <div class="form-group mb-3">

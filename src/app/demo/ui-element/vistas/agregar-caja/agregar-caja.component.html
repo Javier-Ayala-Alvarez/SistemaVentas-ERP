@@ -11,7 +11,7 @@
         <label for="sucursal">Sucursal</label>
         <select [(ngModel)]="selectComboSucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
           <option [ngValue]="null" selected>Seleccione una sucursal</option>
-          <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
+          <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
         </select>
       </div>
         <!-- fecha inicio -->
@@ -45,7 +45,7 @@
         <!-- efectivo cierre-->
         <div class="form-group mb-3">
           <label for="efectivoCierre">Efectivo de Cierre</label>
-          <input type="number" [(ngModel)]="cajaNuevo.efectivoCierre" class="form-control" id="efectivoCierre" name="efectivoCierre" placeholder="Efectivo de Cierre" required>
+          <input type="number" [(ngModel)]="cajaNuevo.afectivoCierre" class="form-control" id="afectivoCierre" name="afectivoCierre" placeholder="Efectivo de Cierre" required>
         </div>
   
     

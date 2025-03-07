@@ -17,17 +17,13 @@ export class CajasServicesService {
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
-  ngOnInit(): void {
-    Swal.fire({
-      title: 'Prueba',
-      text: 'Si ves esto, SweetAlert2 funciona',
-      icon: 'info'
-    });
-  }
+
   
 
   // Agrega una nueva caja 
   agregar(caja: CajaClass): Observable<any> {
+    console.log("entre");
+
 
     caja.estado = 'A';
     return this.httpClient.post(`${this.apiUrl}/Guardar`, caja).pipe(
@@ -35,6 +31,7 @@ export class CajasServicesService {
         this.mensajeSwal2.mensaje('Guardado exitoso','La caja se ha guardado correctamente.')
 
       }),
+      
       catchError(this.mensajeSwal2.handleError) 
     );
   }
@@ -103,8 +100,8 @@ export class CajasServicesService {
   
 
 // Muestra la lista de las cajas
-load(search: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
-  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${search}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
+load(selectComboSucursal: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
+  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${selectComboSucursal}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );
 }

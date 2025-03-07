@@ -74,8 +74,8 @@ export class GastosServicesService {
 
 
 // Muestra la lista de gastos
-load(search: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
-  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${search}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
+load(terminoBusqueda: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
+  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );
 }

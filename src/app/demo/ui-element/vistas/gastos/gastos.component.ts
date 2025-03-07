@@ -37,6 +37,11 @@ export default class GastosComponent {
       size: 'lg',
       centered: true
     });
+
+      //Pasar datos al modal
+  if (gasto) {
+    modalRef.componentInstance.gasto = gasto;
+ }
     
   }
   
@@ -44,8 +49,12 @@ export default class GastosComponent {
     this.openModal(gasto);
   }
   eliminar(gasto: GastoClass): void {
-    this.gastoServices.eliminar(gasto.id ?? 0, gasto);
-    this.loadgastos();
+    this.gastoServices.eliminar(gasto.id ?? 0, gasto).subscribe(
+
+      () => {
+        this.loadgastos();
+      }
+    );
   }
 
 

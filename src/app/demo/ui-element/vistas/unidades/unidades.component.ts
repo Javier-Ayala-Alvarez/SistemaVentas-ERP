@@ -37,14 +37,23 @@ export default class UnidadesComponent {
       size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
       centered: true
   });
+
+   //Pasar datos al modal
+   if (unidad) {
+    modalRef.componentInstance.unidad = unidad;
+ }
   }
 
   editar(unidad: UnidadMedidaClass): void {
     this.openModal(unidad);
   }
   eliminar(unidad: UnidadMedidaClass): void {
-    this.unidadesServices.eliminar(unidad.id ?? 0, unidad);
-    this.loadunidades();
+    this.unidadesServices.eliminar(unidad.id ?? 0, unidad).subscribe(
+
+      () => {
+        this.loadunidades();
+      }
+    );
   }
 
    //mostrar datos en la tabla

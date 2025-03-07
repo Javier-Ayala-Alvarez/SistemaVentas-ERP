@@ -2,12 +2,12 @@ import { Data } from "@angular/router";
 import { UsuarioClass } from "./usuario-class";
 import { SucursalClass } from "./sucursal-class";
 import { EstadoClass } from "./estado-class";
+import { CajaClass } from "./caja-class";
 
 export class RemesaClass {
 
     id? : number;
-    codigo?: number;
-    numCaja?: number;
+    caja?: CajaClass = new CajaClass();
     cantidad?:string;
     sucursal?: SucursalClass = new SucursalClass();
     estado?: String;
