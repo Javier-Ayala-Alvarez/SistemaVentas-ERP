@@ -32,16 +32,24 @@ export class AgregarProveedorComponent {
     //Guardar Sucursal
   guardar(){
     if (this.proveedor != null) {
-      this.proveedorServices.modificar(this.proveedorNuevo.id ?? 0, this.proveedorNuevo).subscribe();
+      this.proveedorServices.modificar(this.proveedorNuevo.id ?? 0, this.proveedorNuevo).subscribe(()=>{
+        this.cerrarYRecargar();
+      });
 
     } else {
-      this.proveedorServices.agregar(this.proveedorNuevo).subscribe();
+      this.proveedorServices.agregar(this.proveedorNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      });
     }
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/component/proveedor']);
-    });
-    this.activeModal.close(); // Cierra el modal (opcional)
-
+   
+  }
+  cerrarYRecargar() {
+    this.activeModal.close(); // Cierra el modal primero
+    setTimeout(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/component/proveedores']);
+      });
+    }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
   }
 
 }

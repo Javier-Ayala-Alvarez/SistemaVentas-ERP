@@ -56,7 +56,7 @@ export default class AgregarProductoComponent {
   });
   }
 
-  eliminarUnidadmedida(producto: ProductoClass): void {
+  eliminarUnidadmedida(producto: UnidadMedidaProductoClass): void {
     if (this.producto?.id) {
       // Simplemente asigna null a la propiedad unidadMedida
       producto.unidadMedida = undefined;
@@ -83,6 +83,7 @@ export default class AgregarProductoComponent {
     });
 
   }
+  
   //mostrar datos de la sucursal
 loadCategoria() {
   this.categoria.listaCombo().subscribe(

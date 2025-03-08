@@ -39,14 +39,18 @@ export default class CategoriaComponent {
       size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
       centered: true
   });
+  modalRef.componentInstance.categoria = categoria; // Pasar datos al modal (opcional)
+
   }
 
   editar(categoria: CategoriaClass): void {
     this.openModal(categoria);
   }
   eliminar(categoria: CategoriaClass): void {
-    this.categoriasServices.eliminar(categoria.id ?? 0, categoria);
-    this.loadCategorias();
+    this.categoriasServices.eliminar(categoria.id ?? 0, categoria).subscribe(()=>{
+      this.loadCategorias();
+    });
+    
  
  }
 

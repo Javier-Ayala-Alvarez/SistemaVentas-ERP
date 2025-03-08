@@ -29,16 +29,26 @@ export class AgregarUnidadMedidaComponent {
   //Guardar Gasto
   guardar(){
     if (this.unidad != null) {
-      this.unidadService.modificar(this.unidadNuevo.id ?? 0, this.unidadNuevo).subscribe();
+      this.unidadService.modificar(this.unidadNuevo.id ?? 0, this.unidadNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      })
 
     } else {
-      this.unidadService.agregar(this.unidadNuevo).subscribe();
+      this.unidadService.agregar(this.unidadNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      })
+       
+      
     }
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/component/unidades']);
-    });
-    this.activeModal.close(); // Cierra el modal (opcional)
-
+    
+  }
+  cerrarYRecargar() {
+    this.activeModal.close(); // Cierra el modal primero
+    setTimeout(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/component/unidades']);
+      });
+    }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
   }
 
 

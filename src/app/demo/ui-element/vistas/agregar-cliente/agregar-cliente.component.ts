@@ -27,18 +27,25 @@ export class AgregarClienteComponent {
   }
 
   //Guardar Gasto
-  guardar(){
+  guardar() {
     if (this.cliente != null) {
-      this.clienteService.modificar(this.clienteNuevo.id ?? 0, this.clienteNuevo).subscribe();
-
+      this.clienteService.modificar(this.clienteNuevo.id ?? 0, this.clienteNuevo).subscribe(() => {
+        this.cerrarYRecargar();
+      });
     } else {
-      this.clienteService.agregar(this.clienteNuevo).subscribe();
+      this.clienteService.agregar(this.clienteNuevo).subscribe(() => {
+        this.cerrarYRecargar();
+      });
     }
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/component/clientes']);
-    });
-    this.activeModal.close(); // Cierra el modal (opcional)
-
   }
-
+  
+  cerrarYRecargar() {
+    this.activeModal.close(); // Cierra el modal primero
+    setTimeout(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/component/clientes']);
+      });
+    }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
+  }
+  
 }

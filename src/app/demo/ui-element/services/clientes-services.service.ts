@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import baserUrl from '../services/helper';
+import {loadConfig, baseUrl, imagenes} from '../services/helper';
 import { SucursalClass } from '../clases/sucursal-class';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { DatePipe } from '@angular/common';
@@ -12,7 +12,7 @@ import { ClienteClass } from '../clases/cliente-class';
   providedIn: 'root'
 })
 export class ClientesServicesService {
-  private apiUrl = `${baserUrl}/Api/clientes`; // Cambia la URL según sea necesario
+  private apiUrl = `${baseUrl}/Api/clientes`; // Cambia la URL según sea necesario
   
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 

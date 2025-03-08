@@ -48,17 +48,26 @@ export class AgregarCajaComponent {
   this.cajaNuevo.sucursal = this.selectComboSucursal;
   
     if (this.caja != null) {
-      this.cajaService.modificar(this.cajaNuevo.id ?? 0, this.cajaNuevo).subscribe();
+      this.cajaService.modificar(this.cajaNuevo.id ?? 0, this.cajaNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      });
       console.log("id a guardar de caja" , this.cajaNuevo.id);
 
     } else {
-      this.cajaService.agregar(this.cajaNuevo).subscribe();
+      this.cajaService.agregar(this.cajaNuevo).subscribe(() => {
+        this.cerrarYRecargar();
+      });
     }
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/component/cajas']);
-    });
-    this.activeModal.close(); // Cierra el modal (opcional)
+  
 
+  }
+  cerrarYRecargar() {
+    this.activeModal.close(); // Cierra el modal primero
+    setTimeout(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/component/cajas']);
+      });
+    }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
   }
 
   //mostrar datos de la sucursal

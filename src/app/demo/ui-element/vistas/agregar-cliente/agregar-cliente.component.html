@@ -1,93 +1,62 @@
 <div class="modal-header">
-    <h5 class="modal-title">Agregar Cliente</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div class="container mt-3">
-      <!-- Formulario -->
-      <form>
+  <h5 class="modal-title">Agregar Cliente</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <div class="container mt-3">
+    <!-- Formulario -->
+    <form>
+      <div class="row">
         <!-- Nombre -->
-        <div class="form-group mb-3">
+        <div class="form-group mb-3 col-12 col-md-6">
           <label for="nombreCliente">Nombre del Cliente</label>
-<<<<<<< HEAD
-          <input type="text" [(ngModel)]="clienteNuevo.nombre" class="form-control" id="nombreCliente" name="nombreCliente" placeholder="Nombre del cliente" required>
-=======
-          <input type="text" [(ngModel)]="clienteNuevo.nombre" name="clienteNuevo.nombre" 
-          class="form-control" id="nombreCliente" placeholder="Nombre del cliente" required>
->>>>>>> b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2
+          <input type="text" [(ngModel)]="clienteNuevo.nombre" name="clienteNuevo.nombre" class="form-control" id="nombreCliente" placeholder="Nombre del cliente" required>
         </div>
         <!-- Apellido -->
-        <div class="form-group mb-3">
-          <label for="apellidoCLiente">Apellido del Cliente</label>
-<<<<<<< HEAD
-          <input type="text" [(ngModel)]="clienteNuevo.apellido" class="form-control" id="apellidoCLiente" name="apellidoCLiente" placeholder="Apellido del Cliente" required>
-=======
-          <input type="text" [(ngModel)]="clienteNuevo.apellido" name="clienteNuevo.apellido" class="form-control" id="apellidoCLiente" placeholder="Apellido del Cliente" required>
->>>>>>> b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2
+        <div class="form-group mb-3 col-12 col-md-6">
+          <label for="apellidoCliente">Apellido del Cliente</label>
+          <input type="text" [(ngModel)]="clienteNuevo.apellido" name="clienteNuevo.apellido" class="form-control" id="apellidoCliente" placeholder="Apellido del Cliente" required>
         </div>
+      </div>
+      
+      <div class="row">
         <!-- Dirección -->
-        <div class="form-group mb-3">
+        <div class="form-group mb-3 col-12 col-md-6">
           <label for="direccionCliente">Dirección</label>
-<<<<<<< HEAD
-          <input type="text" [(ngModel)]="clienteNuevo.direccion" class="form-control" id="direccionCliente" name="direccionCliente" placeholder="Dirección del cliente" required>
-=======
           <input type="text" [(ngModel)]="clienteNuevo.direccion" name="clienteNuevo.direccion" class="form-control" id="direccionCliente" placeholder="Dirección del cliente" required>
->>>>>>> b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2
         </div>
-  
         <!-- Teléfono -->
-        <div class="form-group mb-3">
+        <div class="form-group mb-3 col-12 col-md-6">
           <label for="telefono">Teléfono</label>
-<<<<<<< HEAD
-          <input type="tel" [(ngModel)]="clienteNuevo.telefono" class="form-control" id="telefono" name="telefono" placeholder="Número de teléfono" required>
-=======
           <input type="tel" [(ngModel)]="clienteNuevo.telefono" name="clienteNuevo.telefono" class="form-control" id="telefono" placeholder="Número de teléfono" required>
->>>>>>> b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2
         </div>
-  
-        <!-- Correo Electrónico del Proveedor -->
-        <div class="form-group mb-3">
+      </div>
+      
+      <div class="row">
+        <!-- Correo Electrónico -->
+        <div class="form-group mb-3 col-12 col-md-6">
           <label for="email">Correo Electrónico</label>
-<<<<<<< HEAD
-          <input type="email" [(ngModel)]="clienteNuevo.correo" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
-=======
           <input type="email" [(ngModel)]="clienteNuevo.correo" name="clienteNuevo.correo" class="form-control" id="email" placeholder="Correo electrónico" required>
->>>>>>> b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2
         </div>
         <!-- DUI -->
-        <div class="form-group mb-3">
+        <div class="form-group mb-3 col-12 col-md-6">
           <label for="dui">DUI</label>
-<<<<<<< HEAD
-          <input type="text" [(ngModel)]="clienteNuevo.dui" class="form-control" id="dui" name="dui" placeholder="DUI del Cliente" required>
-=======
           <input type="text" [(ngModel)]="clienteNuevo.dui" name="clienteNuevo.dui" class="form-control" id="dui" placeholder="DUI del Cliente" required>
->>>>>>> b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2
         </div>
-  
-        <!-- NIT del Proveedor -->
-        <div class="form-group mb-3">
-          <label for="nit">NIT</label>
-<<<<<<< HEAD
-          <input type="text" [(ngModel)]="clienteNuevo.nit" class="form-control" id="nit" name="nit" placeholder="NIT del cliente" required>
-=======
-          <input type="text" [(ngModel)]="clienteNuevo.nit" name="clienteNuevo.nit"  class="form-control" id="nit" placeholder="NIT del cliente" required>
->>>>>>> b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2
-        </div>
-  
-        <!-- Estado del Proveedor -->
-        <div class="form-group mb-3">
-          <label for="estado">Estado</label>
-          <select class="form-select" id="estado" name="estado" required>
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-        </div>
+      </div>
 
-      </form>
-    </div>
+      <div class="row">
+        <!-- NIT -->
+        <div class="form-group mb-3 col-12 col-md-6">
+          <label for="nit">NIT</label>
+          <input type="text" [(ngModel)]="clienteNuevo.nit" name="clienteNuevo.nit" class="form-control" id="nit" placeholder="NIT del cliente" required>
+        </div>
+      </div>
+    </form>
   </div>
-  
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary"(click)="guardar()">Guardar Cliente</button>
-  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Cliente</button>
+</div>

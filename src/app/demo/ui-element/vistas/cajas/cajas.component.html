@@ -57,13 +57,13 @@
                         <td>{{data.afectivoCierre}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
-                            <button class="btn btn-warning btn-sm rounded-circle me-2">
-                                <i class="fas fa-edit" (click)="editar(data)"></i>
+                            <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">
+                                <i class="fas fa-edit" (click)="editar(data)" ></i>
                             </button>
-
+                        
                             <!-- Botón de Eliminar -->
-                            <button class="btn btn-danger btn-sm rounded-circle" (click)="eliminar(data)">
-                                <i class="fas fa-trash"  ></i>
+                            <button class="btn btn-danger btn-sm rounded-circle" data-toggle="modal" data-target="#deleteModal">
+                                <i class="fas fa-trash" (click)="eliminar(data)" ></i>
                             </button>
                         </td>
                     </tr>

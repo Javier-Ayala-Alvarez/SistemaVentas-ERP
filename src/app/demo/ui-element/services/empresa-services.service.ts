@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
-import baserUrl from '../services/helper';
+import {loadConfig, baseUrl, imagenes} from '../services/helper';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { EmpresaClass } from '../clases/empresa-class';
 
@@ -10,7 +10,7 @@ import { EmpresaClass } from '../clases/empresa-class';
 })
 export class EmpresaServicesService {
 
-  private apiUrl = `${baserUrl}/Api/Empresa`; // Cambia la URL según sea necesario
+  private apiUrl = `${baseUrl}/Api/Empresa`; // Cambia la URL según sea necesario
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
@@ -20,10 +20,15 @@ export class EmpresaServicesService {
     );
   }
   modificar(empresa: EmpresaClass, formData: FormData): Observable<any> {
-    // Crear un nuevo FormData y agregar los datos de la empresa
     const form = new FormData();
-    form.append('empresa', JSON.stringify(empresa)); // Convertir el objeto empresa en un string JSON
-    form.append('logo', formData.get('logo') as Blob); // Suponiendo que 'logo' es el archivo
+  
+    // Enviar el JSON como un String en lugar de un Blob
+    form.append('empresa', JSON.stringify(empresa));  // Cambié de Blob a String
+  
+    // Enviar el logo como está
+    form.append('logo', formData.get('logo') as Blob);
+  
+    console.log('FormData antes de enviar:', form); // Depuración
   
     return this.httpClient.post(`${this.apiUrl}/save`, form).pipe(
       tap(() => {
@@ -32,6 +37,8 @@ export class EmpresaServicesService {
       catchError(this.mensajeSwal2.handleError)
     );
   }
+  
+  
   
 
 

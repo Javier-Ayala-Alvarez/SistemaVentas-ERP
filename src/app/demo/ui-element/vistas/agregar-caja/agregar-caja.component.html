@@ -1,60 +1,70 @@
 <div class="modal-header">
-    <h5 class="modal-title">Caja</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div class="container mt-3">
-      <!-- Formulario -->
-      <form>
-       <!--select sucurdsal-->
-       <div class="form-group mb-3">
-        <label for="sucursal">Sucursal</label>
-        <select [(ngModel)]="selectComboSucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
-          <option [ngValue]="null" selected>Seleccione una sucursal</option>
-          <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
-        </select>
-      </div>
-        <!-- fecha inicio -->
-        <div class="form-group mb-3">
-          <label for="fechaInicio">Fecha de Inicio</label>
-          <input type="date" [(ngModel)]="cajaNuevo.fechaInicio" class="form-control" id="fechaInicio" name="fechaInicio" placeholder="" required>
+  <h5 class="modal-title">Caja</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+
+<div class="modal-body">
+  <div class="container mt-3">
+    <!-- Formulario -->
+    <form>
+      <div class="row">
+        <!-- Sucursal -->
+        <div class="col-md-6 form-group mb-3">
+          <label for="sucursal">Sucursal</label>
+          <select [(ngModel)]="selectComboSucursal" class="form-select" id="sucursal" name="sucursal" required>
+            <option [ngValue]="null" selected>Seleccione una sucursal</option>
+            <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
+          </select> 
         </div>
-        <!-- hora inicio -->
-        <div class="form-group mb-3">
+
+        <!-- Fecha de Inicio -->
+        <div class="col-md-6 form-group mb-3">
+          <label for="fechaInicio">Fecha de Inicio</label>
+          <input type="date" [(ngModel)]="cajaNuevo.fechaInicio" class="form-control" id="fechaInicio" name="fechaInicio" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Hora de Inicio -->
+        <div class="col-md-6 form-group mb-3">
           <label for="horaInicio">Hora de Inicio</label>
           <input type="text" [(ngModel)]="cajaNuevo.horaInicio" class="form-control" id="horaInicio" name="horaInicio" placeholder="Hora Inicio" required>
         </div>
-  
-        <!-- fecha cierre -->
-        <div class="form-group mb-3">
+
+        <!-- Fecha de Cierre -->
+        <div class="col-md-6 form-group mb-3">
           <label for="fechaCierre">Fecha de Cierre</label>
-          <input type="date" [(ngModel)]="cajaNuevo.fechaCierre" class="form-control" id="fechaCierre" name="fechaCierre" placeholder="" required>
+          <input type="date" [(ngModel)]="cajaNuevo.fechaCierre" class="form-control" id="fechaCierre" name="fechaCierre" required>
         </div>
-  
-        <!-- hora cierre-->
-        <div class="form-group mb-3">
+      </div>
+
+      <div class="row">
+        <!-- Hora de Cierre -->
+        <div class="col-md-6 form-group mb-3">
           <label for="horaCierre">Hora de Cierre</label>
           <input type="text" [(ngModel)]="cajaNuevo.horaCierre" class="form-control" id="horaCierre" name="horaCierre" placeholder="Hora Cierre" required>
         </div>
-        <!-- efectivo apertura -->
-        <div class="form-group mb-3">
+
+        <!-- Efectivo de Apertura -->
+        <div class="col-md-6 form-group mb-3">
           <label for="efectivoApertura">Efectivo de Apertura</label>
           <input type="number" [(ngModel)]="cajaNuevo.efectivoApertura" class="form-control" id="efectivoApertura" name="efectivoApertura" placeholder="Efectivo de Apertura" required>
         </div>
-  
-        <!-- efectivo cierre-->
-        <div class="form-group mb-3">
+      </div>
+
+      <div class="row">
+        <!-- Efectivo de Cierre -->
+        <div class="col-md-6 form-group mb-3">
           <label for="efectivoCierre">Efectivo de Cierre</label>
           <input type="number" [(ngModel)]="cajaNuevo.afectivoCierre" class="form-control" id="afectivoCierre" name="afectivoCierre" placeholder="Efectivo de Cierre" required>
         </div>
-  
-    
+      </div>
 
-      </form>
-    </div>
+    </form>
   </div>
-  
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Caja</button>
-  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Caja</button>
+</div>

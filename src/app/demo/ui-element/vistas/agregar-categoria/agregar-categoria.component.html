@@ -1,40 +1,30 @@
 <div class="modal-header">
-    <h5 class="modal-title">Categoria</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div class="container mt-3">
-      <!-- Formulario -->
-      <form>
-        <!-- Nombre de la Unidad -->
-        <div class="form-group mb-3">
-          <label for="nombreUnidad">Nombre de la categoria</label>
+  <h5 class="modal-title">Categoria</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
 
-          <input type="text" name="categoriaNuevo.nombre" [value]="categoriaNuevo.nombre"  class="form-control" id="nombre" placeholder="Nombre de categoria" required>
+<div class="modal-body">
+  <div class="container mt-3">
+    <!-- Formulario -->
+    <form>
+      <div class="row">
+        <!-- Nombre de la Categoria -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="nombre">Nombre de la categoria</label>
+          <input type="text" name="nombre" [(ngModel)]="categoriaNuevo.nombre" class="form-control" id="nombre" placeholder="Nombre de categoria" required>
         </div>
-        
-       <!-- Descripción -->
-       <div class="form-group mb-3">
-        <label for="descripcionUnidad">Descripción</label>
 
-        <textarea class="form-control" name="categoriaNuevo.descripcion" [value]="categoriaNuevo.descripcion" id="descripcion" rows="3" placeholder="Descripción adicional (opcional)"></textarea>
+        <!-- Descripción -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="descripcion">Descripción</label>
+          <textarea class="form-control" name="descripcion" [(ngModel)]="categoriaNuevo.descripcion" id="descripcion" rows="3" placeholder="Descripción adicional (opcional)"></textarea>
+        </div>
       </div>
-  
-        <!-- Estado -->
-        <div class="form-group mb-3">
-          <label for="estadoUnidad">Estado</label>
-          <select class="form-select" id="estado" name="estado" required>
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-        </div>
-  
-        
-      </form>
-    </div>
+    </form>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary" (click)="guardar()" >Guardar Categoria</button>
-  </div>
-  
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Categoria</button>
+</div>

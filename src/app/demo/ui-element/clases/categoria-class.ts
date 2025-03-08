@@ -5,7 +5,7 @@ import { UsuarioClass } from "./usuario-class";
 export class CategoriaClass {
     id? : number;
     codigo?: number; 
-    nombre?: string;
+    nombre?: string ;
     descripcion?:string;
     estado?: String; 
     

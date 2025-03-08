@@ -6,55 +6,52 @@
   <div class="container mt-3">
     <!-- Formulario de Proveedor -->
     <form>
-      <!-- Nombre del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="nombreProveedor">Nombre del Proveedor</label>
-        <input type="text"  [(ngModel)]="proveedorNuevo.nombre" class="form-control" id="nombreProveedor" name="nombreProveedor" placeholder="Nombre del proveedor" required>
-      </div>
-      <!-- Nombre del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="apellidoProveedor">Apellido del Proveedor</label>
-        <input type="text" [(ngModel)]="proveedorNuevo.apellido" class="form-control" id="apellidoProveedor" name="apellidoProveedor" placeholder="Apellido del proveedor" required>
-      </div>
-      <!-- Dirección del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="direccionProveedor">Dirección</label>
-        <input type="text" [(ngModel)]="proveedorNuevo.direccion" class="form-control" id="direccionProveedor" name="direccionProveedor" placeholder="Dirección del proveedor" required>
+      <div class="row">
+        <!-- Nombre del Proveedor -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="nombreProveedor">Nombre del Proveedor</label>
+          <input type="text" [(ngModel)]="proveedorNuevo.nombre" class="form-control" id="nombreProveedor" name="nombreProveedor" placeholder="Nombre del proveedor" required>
+        </div>
+        <!-- Apellido del Proveedor -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="apellidoProveedor">Apellido del Proveedor</label>
+          <input type="text" [(ngModel)]="proveedorNuevo.apellido" class="form-control" id="apellidoProveedor" name="apellidoProveedor" placeholder="Apellido del proveedor" required>
+        </div>
       </div>
 
-      <!-- Teléfono del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="telefonoProveedor">Teléfono</label>
-        <input type="tel" [(ngModel)]="proveedorNuevo.telefono" class="form-control" id="telefonoProveedor" name="telefonoProveedor" placeholder="Número de teléfono" required>
+      <div class="row">
+        <!-- Dirección del Proveedor -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="direccionProveedor">Dirección</label>
+          <input type="text" [(ngModel)]="proveedorNuevo.direccion" class="form-control" id="direccionProveedor" name="direccionProveedor" placeholder="Dirección del proveedor" required>
+        </div>
+        <!-- Teléfono del Proveedor -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="telefonoProveedor">Teléfono</label>
+          <input type="tel" [(ngModel)]="proveedorNuevo.telefono" class="form-control" id="telefonoProveedor" name="telefonoProveedor" placeholder="Número de teléfono" required>
+        </div>
       </div>
 
-      <!-- Correo Electrónico del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="emailProveedor">Correo Electrónico</label>
-        <input type="email"  [(ngModel)]="proveedorNuevo.correo" class="form-control" id="emailProveedor" name="emailProveedor" placeholder="Correo electrónico" required>
-      </div>
-      <!-- DUI del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="duiProveedor">DUI</label>
-        <input type="text" [(ngModel)]="proveedorNuevo.dui" class="form-control" id="duiProveedor" name="duiProveedor" placeholder="DUI de el proveedor" required>
-      </div>
-
-      <!-- NIT del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="nitProveedor">NIT</label>
-        <input type="text" [(ngModel)]="proveedorNuevo.nit" class="form-control" id="nitProveedor" name="nitProveedor" placeholder="NIT del proveedor" required>
+      <div class="row">
+        <!-- Correo Electrónico del Proveedor -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="emailProveedor">Correo Electrónico</label>
+          <input type="email" [(ngModel)]="proveedorNuevo.correo" class="form-control" id="emailProveedor" name="emailProveedor" placeholder="Correo electrónico" required>
+        </div>
+        <!-- DUI del Proveedor -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="duiProveedor">DUI</label>
+          <input type="text" [(ngModel)]="proveedorNuevo.dui" class="form-control" id="duiProveedor" name="duiProveedor" placeholder="DUI de el proveedor" required>
+        </div>
       </div>
 
-      <!-- Estado del Proveedor -->
-      <div class="form-group mb-3">
-        <label for="estadoProveedor">Estado</label>
-        <select class="form-select" id="estadoProveedor" name="estadoProveedor" required>
-          <option value="activo">Activo</option>
-          <option value="inactivo">Inactivo</option>
-        </select>
+      <div class="row">
+        <!-- NIT del Proveedor -->
+        <div class="form-group col-md-6 mb-3">
+          <label for="nitProveedor">NIT</label>
+          <input type="text" [(ngModel)]="proveedorNuevo.nit" class="form-control" id="nitProveedor" name="nitProveedor" placeholder="NIT del proveedor" required>
+        </div>
       </div>
-
-   
     </form>
   </div>
 </div>

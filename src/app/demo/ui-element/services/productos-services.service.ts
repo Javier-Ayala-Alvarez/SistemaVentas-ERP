@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import baserUrl from '../services/helper';
+import {loadConfig, baseUrl, imagenes} from '../services/helper';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -14,7 +14,7 @@ import { UnidadMedidaProductoClass } from '../clases/unidadMedidaProducto';
 })
 export class ProductosServicesService {
 
-  private apiUrl = `${baserUrl}/Api/producto`; // Cambia la URL según sea necesario
+  private apiUrl = `${baseUrl}/Api/producto`; // Cambia la URL según sea necesario
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
  
@@ -49,7 +49,7 @@ export class ProductosServicesService {
     });
     console.log(this.unidadMedidaProducto)
 
-    return this.httpClient.post(`${baserUrl}/Api/unidadMedidaProducto/Guardar`, this.unidadMedidaProducto).pipe(
+    return this.httpClient.post(`${baseUrl}/Api/unidadMedidaProducto/Guardar`, this.unidadMedidaProducto).pipe(
       tap(() => {
         this.mensajeSwal2.mensaje('Guardado exitoso', 'Las unidades de medida se han modificado correctamente.');
       }),

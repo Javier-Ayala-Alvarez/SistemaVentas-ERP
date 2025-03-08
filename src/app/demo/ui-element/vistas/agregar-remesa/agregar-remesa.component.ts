@@ -26,34 +26,40 @@ export  class AgregarRemesaComponent {
 
  //Valores de inicio
  ngOnInit(): void {
-  this.loadSucursal();
+  this.remesaNuevo = new RemesaClass(); // Asegura la inicialización
+
   if (this.remesa) {
     this.remesaNuevo = { ...this.remesa }; // Copia los valores si está definido
-  } else {
-    this.remesaNuevo = new RemesaClass(); // Asegura la inicialización
-  }
+  } 
+  console.log("Remesa",this.remesaNuevo)
 
   this.loadCajas();
-  if (this.remesa) {
-    this.remesaNuevo = { ...this.remesa }; // Copia los valores si está definido
-  } else {
-    this.remesaNuevo = new RemesaClass(); // Asegura la inicialización
-  }
+ 
+  this.loadSucursal();
+
 }
 
 //Guardar Remesa
 guardar(){
+  console.log("Remesa: ",this.remesaNuevo)
   if (this.remesa != null) {
-    this.RemesaService.modificar(this.remesaNuevo.id ?? 0, this.remesaNuevo).subscribe();
+    this.RemesaService.modificar(this.remesaNuevo.id ?? 0, this.remesaNuevo).subscribe(()=>{
+      this.cerrarYRecargar();
+    });
 
   } else {
-    this.RemesaService.agregar(this.remesaNuevo).subscribe();
+    this.RemesaService.agregar(this.remesaNuevo).subscribe(()=>{
+      this.cerrarYRecargar();
+    });
   }
-  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    this.router.navigate(['/component/remesas']);
-  });
-  this.activeModal.close(); // Cierra el modal (opcional)
-
+}
+cerrarYRecargar() {
+  this.activeModal.close(); // Cierra el modal primero
+  setTimeout(() => {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/component/remesas']);
+    });
+  }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
 }
 
 //mostrar datos de la sucursal
@@ -62,11 +68,10 @@ loadSucursal() {
     (dato: any) => {
       console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
       this.sucursales = dato;
-      // Si hay una sucursal y una empresa, la seleccionamos en el combo
-      //if (this.sucursalNuevo.empresa) {
-        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
+      if (this.remesa) {
+        this.remesaNuevo.sucursal = this.sucursales?.find(emp => emp.id === this.remesaNuevo.sucursal?.id);
       }
-    //}
+    }
   );
 }
 
@@ -76,11 +81,12 @@ loadCajas() {
     (dato: any) => {
       console.log("cajas recibidas:", dato[0].id); // Verifica los datos en la consola
       this.cajas = dato;
-      // Si hay una sucursal y una empresa, la seleccionamos en el combo
-      //if (this.sucursalNuevo.empresa) {
-        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
+     
+      if (this.remesa) {
+        this.remesaNuevo.caja = this.cajas?.find(emp => emp.id === this.remesaNuevo.caja?.id);
       }
-    //}
+      }
+    
   );
 }
 

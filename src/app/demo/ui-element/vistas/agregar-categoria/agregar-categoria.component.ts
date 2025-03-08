@@ -19,6 +19,8 @@ export class AgregarCategoriaComponent {
 
   //Valores de inicio
   ngOnInit(): void {
+    console.log("Categoria"+this.categoria);
+
     if (this.categoria) {
       this.categoriaNuevo = { ...this.categoria }; // Copia los valores si está definido
     } else {
@@ -29,17 +31,24 @@ export class AgregarCategoriaComponent {
    //Guardar Categoria
    guardar(){
     if (this.categoria != null) {
-      this.categoriaService.modificar(this.categoriaNuevo.id ?? 0, this.categoriaNuevo).subscribe();
+      this.categoriaService.modificar(this.categoriaNuevo.id ?? 0, this.categoriaNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      });
 
     } else {
-      this.categoriaService.agregar(this.categoriaNuevo).subscribe();
+      this.categoriaService.agregar(this.categoriaNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      });
     }
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/component/categorias']);
-    });
-    this.activeModal.close(); // Cierra el modal (opcional)
-
+    
   }
-
+  cerrarYRecargar() {
+    this.activeModal.close(); // Cierra el modal primero
+    setTimeout(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/component/categoria']);
+      });
+    }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
+  }
 
 }

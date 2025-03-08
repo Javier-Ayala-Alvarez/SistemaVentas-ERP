@@ -67,7 +67,14 @@ export default class RemesasComponent {
 
   //mostrar datos en la tabla
   loadremesas() {
-    this.remesasServices.load(this.sucursalSelect, this.page, this.size, this.order, this.asc).subscribe(
+    console.log(this.sucursalSelect)
+    if(this.sucursalSelect == undefined){
+      this.sucursalSelect =new  RemesaClass();
+      this.sucursalSelect.id =0;
+    }
+    console.log(this.sucursalSelect.id)
+
+    this.remesasServices.load(this.sucursalSelect.id, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.remesas = dato.content;
         this.isFirst = dato.first;

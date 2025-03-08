@@ -94,7 +94,7 @@
         <div class="col-md-6 mb-3">
           <label for="empresa">Empresa</label>
           <select [(ngModel)]="sucursalNuevo.empresa" class="form-select" id="empresa" name="empresa" required name="empresa">
-            <option [ngValue]="null" disabled selected>Seleccione una empresa</option>
+            <option [ngValue]="null" disabled sucursalSelect>Seleccione una empresa</option>
             <option *ngFor="let emp of empresas" [ngValue]="emp">{{emp.nombre}}</option>
           </select>
         </div>

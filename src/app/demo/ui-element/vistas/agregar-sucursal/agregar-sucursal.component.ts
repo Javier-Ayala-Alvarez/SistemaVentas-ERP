@@ -36,17 +36,27 @@ export class AgregarSucursalComponent {
 
   //Guardar Sucursal
   guardar(){
-    if (this.sucursal != null) {
-      this.sucursalServices.modificar(this.sucursalNuevo.id ?? 0, this.sucursalNuevo).subscribe();
+    if (this.sucursal != null && this.sucursal.id != 0) {
+      console.log("ENTRO 1")
+      this.sucursalServices.modificar(this.sucursalNuevo.id ?? 0, this.sucursalNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      });
 
     } else {
-      this.sucursalServices.agregar(this.sucursalNuevo).subscribe();
+      console.log("ENTRO")
+      this.sucursalServices.agregar(this.sucursalNuevo).subscribe(() =>{
+        this.cerrarYRecargar();
+      });
     }
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/component/sucursal']);
-    });
-    this.activeModal.close(); // Cierra el modal (opcional)
-
+    
+  }
+  cerrarYRecargar() {
+    this.activeModal.close(); // Cierra el modal primero
+    setTimeout(() => {
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/component/sucursal']);
+      });
+    }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
   }
 
   //mostrar datos de la empresa

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import baserUrl from '../services/helper';
+import {loadConfig, baseUrl, imagenes} from '../services/helper';
 import { SucursalClass } from '../clases/sucursal-class';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { DatePipe } from '@angular/common';
@@ -11,7 +11,7 @@ import { CajaClass } from '../clases/caja-class';
   providedIn: 'root'
 })
 export class CajasServicesService {
-  private apiUrl = `${baserUrl}/Api/cajas`; // Cambia la URL según sea necesario
+  private apiUrl = `${baseUrl}/Api/cajas`; // Cambia la URL según sea necesario
 
   
 
