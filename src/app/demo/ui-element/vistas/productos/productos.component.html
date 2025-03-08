@@ -38,9 +38,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of productos">
-                        <td>{{data.codigo}}</td>
+                        <td>{{data.id}}</td>
                         <td>{{data.nombre}}</td>
                         <td>{{data.descripcion}}</td>
+                        <td>{{data.imagen}}</td>
+
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">

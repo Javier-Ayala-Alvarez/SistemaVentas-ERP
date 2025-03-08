@@ -29,7 +29,15 @@ export default class ProductosComponent {
   }
 
   AgregarNuevo(producto?: ProductoClass): void {
-   this.router.navigate(['/component/AgregarProducto']);
+    if (producto) {
+      // Navegar con parámetros
+      this.router.navigate(['/component/AgregarProducto'], { 
+        queryParams: { id: producto.id }
+      });
+    } else {
+      // Navegar sin parámetros para nuevo producto
+      this.router.navigate(['/component/AgregarProducto']);
+    }
   }
 
   
@@ -39,9 +47,12 @@ export default class ProductosComponent {
     this.AgregarNuevo(producto);
   }
   eliminar(producto: ProductoClass): void {
-    this.productosService.eliminar(producto.id ?? 0, producto);
-    this.loadproductos();
-  }
+    this.productosService.eliminar(producto.id ?? 0, producto).subscribe(
+
+      () => {
+        this.loadproductos();
+      });
+      }
 
 
 
@@ -53,6 +64,7 @@ export default class ProductosComponent {
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
+        console.log("esta es la ruta de la imagen ",this.productos);
       }
     );
   }

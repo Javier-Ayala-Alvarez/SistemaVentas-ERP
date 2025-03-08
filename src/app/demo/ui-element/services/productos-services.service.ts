@@ -59,7 +59,6 @@ export class ProductosServicesService {
   
   
 
-
   // Modifica Producto
   modificar(id: number, producto: ProductoClass): Observable<any> {
     producto.estado = 'A';

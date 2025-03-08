@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { CategoriasServicesService } from '../../services/categorias-services.service';
 import { UnidadMedidaClass } from '../../clases/unidad-medida-class';
 import { UnidadMedidaProductoClass } from '../../clases/unidadMedidaProducto';
-
+import { UnidadesServicesService } from '../../services/unidades-services.service';
 @Component({
   selector: 'app-agregar-producto',
   templateUrl: './agregar-producto.component.html',
@@ -23,7 +23,7 @@ export default class AgregarProductoComponent {
   producto?: ProductoClass; // Recibe la sucursal desde el componente principal
   categorias:any[] =[];
   categiriaSelect:any; 
-  constructor(private modalService: NgbModal, private productoService: ProductosServicesService,private categoria: CategoriasServicesService, private router: Router, private datePipe: DatePipe) {}
+  constructor(private modalService: NgbModal, private unidadesServices: UnidadesServicesService ,private productoService: ProductosServicesService,private categoria: CategoriasServicesService, private router: Router, private datePipe: DatePipe) {}
 
   //Valores de inicio
   ngOnInit(): void {
@@ -54,6 +54,19 @@ export default class AgregarProductoComponent {
       size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
       centered: true
   });
+  }
+
+  eliminarUnidadmedida(producto: ProductoClass): void {
+    if (this.producto?.id) {
+      // Simplemente asigna null a la propiedad unidadMedida
+      producto.unidadMedida = undefined;
+      
+      // Si necesitas actualizar en backend
+       //this.productoService.modificar(producto.id, producto).subscribe(
+        // () => console.log('Unidad de medida eliminada'),
+        //error => console.error('Error al eliminar unidad de medida', error)
+       //);
+    }
   }
 
 
