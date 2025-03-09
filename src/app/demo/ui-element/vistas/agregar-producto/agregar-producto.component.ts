@@ -64,10 +64,10 @@ export default class AgregarProductoComponent {
     });
   }
 
-  eliminarUnidadmedida(producto: UnidadMedidaProductoClass): void {
-    if (this.producto?.id) {
-      producto.unidadMedida = undefined;
-    }
+  eliminarUnidadmedida(unidad: UnidadMedidaProductoClass): void {
+      this.productoService.eliminarUnidadMedida(unidad).subscribe(()=>{
+        this.unidadMedidaProducto = this.productoService.unidadMedidaProducto;
+      });
   }
 
 

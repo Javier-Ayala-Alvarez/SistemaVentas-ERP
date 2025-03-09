@@ -24,6 +24,40 @@ export class ProductosServicesService {
   agregarUnidadMedida(unidadMedidaProducto: UnidadMedidaProductoClass): void {
     this.unidadMedidaProducto.push({ ...unidadMedidaProducto });
   }
+  eliminarUnidadMedida(unidadMedidaProducto: UnidadMedidaProductoClass): Observable<any> {
+    return new Observable((observer) => {
+      Swal.fire({
+        title: 'Eliminar la Unidad de medida',
+        text: '¿Estás seguro de que deseas eliminar la unidad de medida?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((resultado) => {
+        if (resultado.isConfirmed) {
+          // Eliminamos la unidad de medida de la lista
+          this.unidadMedidaProducto = this.unidadMedidaProducto.filter(item =>
+            JSON.stringify(item) !== JSON.stringify(unidadMedidaProducto)
+          );
+          // Mostramos el mensaje de éxito
+          this.mensajeSwal2.mensaje('Eliminada exitosamente', 'La unidad de medida se ha eliminado correctamente.');
+  
+          // Emitimos el valor verdadero indicando que la operación fue exitosa
+          observer.next(true);
+        } else {
+          // Si el usuario no confirma, no se hace nada, pero emitimos false
+          observer.next(false);
+        }
+  
+        // Completamos el Observable
+        observer.complete();
+      });
+    });
+  }
+  
+
 
   // Agrega un nuevo producto
   agregar(producto: ProductoClass, formData: FormData): Observable<any> {
@@ -32,7 +66,7 @@ export class ProductosServicesService {
     form.append('producto', JSON.stringify(producto));
     form.append('imagen', formData.get('imagen') as Blob);
     form.append('unidades', JSON.stringify(this.unidadMedidaProducto));
-    
+
     producto.estado = 'A';
     return this.httpClient.post(`${this.apiUrl}/Guardar`, form).pipe(
       tap((respuesta: any) => {
@@ -57,9 +91,9 @@ export class ProductosServicesService {
       })
     );
   }
-  
-  
-  
+
+
+
 
 
 
