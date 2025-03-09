@@ -23,35 +23,27 @@ export class AgregarCajaComponent {
 
   //Valores de inicio
   ngOnInit(): void {
-    this.loadSucursal();
 
     if (this.caja) {
-      console.log("✅ Caja recibida en ngOnInit():", JSON.stringify(this.caja, null, 2));
-  
       this.cajaNuevo = { ...this.caja }; // Copia los valores si están definidos
-  
-      console.log("📦 Datos copiados a cajaNuevo:", JSON.stringify(this.cajaNuevo, null, 2));
-    } else {
-      console.log("⚠️ No se recibió ninguna caja, inicializando cajaNueva.");
+      } else {
       this.cajaNuevo = new CajaClass(); // Asegura la inicialización
     }
+    this.loadSucursal();
+
     }
 
 
   //Guardar Caja
   guardar(){
-    console.log("entree");
-
     if (!this.cajaNuevo.sucursal) {
       this.cajaNuevo.sucursal = new SucursalClass();
   }
-  this.cajaNuevo.sucursal = this.selectComboSucursal;
   
     if (this.caja != null) {
       this.cajaService.modificar(this.cajaNuevo.id ?? 0, this.cajaNuevo).subscribe(() =>{
         this.cerrarYRecargar();
       });
-      console.log("id a guardar de caja" , this.cajaNuevo.id);
 
     } else {
       this.cajaService.agregar(this.cajaNuevo).subscribe(() => {
@@ -75,11 +67,12 @@ loadSucursal() {
   this.sucursalServices.buscar().subscribe(
     (dato: any) => {
       this.sucursales = dato;
-      // Si hay una sucursal y una empresa, la seleccionamos en el combo
-      //if (this.sucursalNuevo.empresa) {
-        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
+      if (this.caja) {
+        console.log("Entre")
+        this.cajaNuevo.sucursal = this.sucursales?.find(emp => emp.id === this.cajaNuevo.sucursal?.id);
       }
-    //}
+      }
+    
   );
 }
 

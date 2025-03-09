@@ -12,7 +12,7 @@ export class CajaClass {
     fechaCierre?: string | Date;
     horaCierre?: string;
     efectivoApertura?: number; 
-    afectivoCierre?: number ;
+    efectivoCierre?: number ;
     estado?:string;
 
 
