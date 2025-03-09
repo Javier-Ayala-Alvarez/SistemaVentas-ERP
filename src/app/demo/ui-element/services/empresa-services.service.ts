@@ -21,13 +21,10 @@ export class EmpresaServicesService {
   }
   modificar(empresa: EmpresaClass, formData: FormData): Observable<any> {
     const form = new FormData();
-  
     // Enviar el JSON como un String en lugar de un Blob
     form.append('empresa', JSON.stringify(empresa));  // Cambié de Blob a String
-  
     // Enviar el logo como está
     form.append('logo', formData.get('logo') as Blob);
-  
     console.log('FormData antes de enviar:', form); // Depuración
   
     return this.httpClient.post(`${this.apiUrl}/save`, form).pipe(

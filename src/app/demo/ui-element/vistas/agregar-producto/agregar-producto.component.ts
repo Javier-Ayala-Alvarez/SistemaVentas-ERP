@@ -22,7 +22,9 @@ export default class AgregarProductoComponent {
   productoNuevo: ProductoClass = new ProductoClass(); // Inicialización por defecto
   producto?: ProductoClass; // Recibe la sucursal desde el componente principal
   categorias:any[] =[];
-  categiriaSelect:any; 
+  categoriaSelect:any; 
+  selectedImage: File | undefined; // Para almacenar el archivo de logo seleccionado
+
   constructor(private modalService: NgbModal, private unidadesServices: UnidadesServicesService ,private productoService: ProductosServicesService,private categoria: CategoriasServicesService, private router: Router, private datePipe: DatePipe) {}
 
   //Valores de inicio
@@ -72,15 +74,25 @@ export default class AgregarProductoComponent {
 
   //Guardar Producto
   guardar(){
+    const formData = new FormData();
+    // Verificar que selectedLogo no sea null y sea de tipo File
+    if (this.selectedImage) {
+      formData.append('imagen', this.selectedImage);
+    }
+    
     if (this.producto != null) {
-      this.productoService.modificar(this.productoNuevo.id ?? 0, this.productoNuevo).subscribe();
+      this.productoService.modificar(this.productoNuevo.id ?? 0, this.productoNuevo, formData).subscribe(()=>
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['/component/productos']);
+        }));
 
     } else {
-      this.productoService.agregar(this.productoNuevo).subscribe();
+      this.productoService.agregar(this.productoNuevo, formData).subscribe(() =>
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['/component/productos']);
+        }));
     }
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['/component/productos']);
-    });
+    
 
   }
   
@@ -93,5 +105,17 @@ loadCategoria() {
       }
 
   );
+}
+onLogoSelect(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input?.files && input.files.length > 0) {
+    this.selectedImage = input.files[0]; // Guardar el archivo seleccionado
+    // Leer el archivo y generar una vista previa
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imagenPreview = e.target?.result as string; // Asignar la vista previa del archivo
+    };
+    reader.readAsDataURL(this.selectedImage);
+  }
 }
 }

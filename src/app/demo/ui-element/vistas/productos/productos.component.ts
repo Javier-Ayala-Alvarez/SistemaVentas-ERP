@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductoClass } from '../../clases/producto-class';
 import { ProductosServicesService } from '../../services/productos-services.service'; 
+import { loadConfig, baseUrl, imagenes } from '../../services/helper';
 
 @Component({
   selector: 'app-productos',
@@ -20,11 +21,13 @@ export default class ProductosComponent {
   isLast: boolean = false;
   terminoBusqueda: string = '';
   totalPages: any[] = [];
+  imagenRuta: string = "";
 
   constructor(private router: Router, private modalService: NgbModal, private productosService: ProductosServicesService) { }
 
 
   ngOnInit(): void {
+    this.imagenRuta = imagenes;
     this.loadproductos();
   }
 
@@ -64,6 +67,7 @@ export default class ProductosComponent {
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
+        
         console.log("esta es la ruta de la imagen ",this.productos);
       }
     );

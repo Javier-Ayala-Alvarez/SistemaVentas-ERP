@@ -11,7 +11,7 @@ export class ProductoClass {
     descripcion?:string;
     estado?: String;
     categoria?: CategoriaClass;
-    imagen?: string;
+    nombreImagen?: string;
     unidadMedida?: UnidadMedidaClass[] ;
 
     usuarioCreacion?: UsuarioClass;

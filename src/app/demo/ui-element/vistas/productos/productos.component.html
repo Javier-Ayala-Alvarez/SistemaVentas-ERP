@@ -41,8 +41,10 @@
                         <td>{{data.id}}</td>
                         <td>{{data.nombre}}</td>
                         <td>{{data.descripcion}}</td>
-                        <td>{{data.imagen}}</td>
-
+                        <td>
+                            <img *ngIf="data.nombreImagen" [src]="imagenRuta+data.nombreImagen" alt="Imagen del producto" class="img-fluid" style="max-height: 50px;">
+                          </td>
+                          
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">

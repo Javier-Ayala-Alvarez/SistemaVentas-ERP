@@ -35,10 +35,9 @@
           <label for="imagenProducto">Imagen del Producto</label>
           <input 
             type="file" 
-            [(ngModel)]="productoNuevo.imagen"
             class="form-control" 
             name="iamgen"
-            (change)="onImageSelected($event)">
+            accept="image/*" (change)="onLogoSelect($event)">
         </div>
         <div class="col-md-6 text-center">
           <!-- Vista previa de la imagen -->

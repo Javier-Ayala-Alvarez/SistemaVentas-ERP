@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { ProductoClass } from '../clases/producto-class'; 
 import { UnidadMedidaClass } from '../clases/unidad-medida-class';
 import { UnidadMedidaProductoClass } from '../clases/unidadMedidaProducto';
+import { Form } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -25,12 +26,23 @@ export class ProductosServicesService {
   }
   
   // Agrega un nuevo producto
-  agregar(producto: ProductoClass): Observable<any> {
+  agregar(producto: ProductoClass, formData: FormData): Observable<any> {
+    producto.estado = "A";
+    const form =  new FormData();
+    form.append('producto', JSON.stringify(producto));
+    form.append('imagen', formData.get('imagen') as Blob) ;
+    form.append('unidades',JSON.stringify(this.unidadMedidaProducto));
+      // Verificar si 'imagen' está en formData
+  if (formData.has('imagen')) {
+    form.append('imagen', formData.get('imagen') as Blob);
+  } else {
+    console.error('No se ha añadido imagen');
+  }
     producto.estado = 'A';
-    return this.httpClient.post(`${this.apiUrl}/Guardar`, producto).pipe(
+    return this.httpClient.post(`${this.apiUrl}/Guardar`, form).pipe(
       tap((respuesta: any) => {
         if (respuesta?.producto?.id) {
-          this.AgregarUnidadMedida(respuesta.producto.id).subscribe(); // Llamada para agregar unidad de medida
+          //this.AgregarUnidadMedida(respuesta.producto.id).subscribe(); // Llamada para agregar unidad de medida
           this.mensajeSwal2.mensaje('Guardado exitoso', 'El producto se ha guardado correctamente.');
         } else {
           this.mensajeSwal2.mensaje('Error', 'No se pudo obtener el ID del producto.');
@@ -40,29 +52,18 @@ export class ProductosServicesService {
     );
   }
   
-  AgregarUnidadMedida(idProducto: number): Observable<any> {
-    // Asigna el idProducto a cada item si el producto existe
-    this.unidadMedidaProducto.forEach((item) => {
-      if (item.producto) {
-        item.producto.id = idProducto; // Asigna el idProducto
-      }
-    });
-    console.log(this.unidadMedidaProducto)
 
-    return this.httpClient.post(`${baseUrl}/Api/unidadMedidaProducto/Guardar`, this.unidadMedidaProducto).pipe(
-      tap(() => {
-        this.mensajeSwal2.mensaje('Guardado exitoso', 'Las unidades de medida se han modificado correctamente.');
-      }),
-      catchError(this.mensajeSwal2.handleError)
-    );
-  }
   
   
 
   // Modifica Producto
-  modificar(id: number, producto: ProductoClass): Observable<any> {
+  modificar(id: number, producto: ProductoClass, formData: FormData): Observable<any> {
+    const form =  new FormData();
+    form.append('producto', JSON.stringify(producto));
+    form.append('imagen', formData.get('imagen') as Blob) ;
+    form.append('unidades',JSON.stringify(this.unidadMedidaProducto));
     producto.estado = 'A';
-    return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, producto).pipe(
+    return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, form).pipe(
       tap(() => {
         this.mensajeSwal2.mensaje('Guardado exitoso','El producto se ha modificado correctamente.')
       }),
@@ -72,6 +73,9 @@ export class ProductosServicesService {
 
  // Eliminar el producto
         eliminar(id: number, producto: ProductoClass): Observable<any> {
+          const form =  new FormData();
+          form.append('producto', JSON.stringify(producto));
+          form.append('unidades',JSON.stringify(this.unidadMedidaProducto));
          return new Observable(observer => {
            Swal.fire({
              title: 'Eliminar Producto',
@@ -85,7 +89,7 @@ export class ProductosServicesService {
            }).then((resultado) => {
              if (resultado.isConfirmed) {
                producto.estado = 'N'; // Marca el productp como eliminado
-               this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, producto).pipe(
+               this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, form).pipe(
                  tap(() => {
                    this.mensajeSwal2.mensaje('Eliminada exitoso', 'El producto se ha modificado correctamente.');
                    observer.next(true);  // Emite true indicando que la operación fue exitosa
