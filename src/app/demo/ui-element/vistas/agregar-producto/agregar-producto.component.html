@@ -48,6 +48,11 @@
               [src]="imagenPreview" 
               alt="Vista previa" 
               style="max-height: 100%; max-width: 100%;">
+              <img 
+              *ngIf="!imagenPreview && productoNuevo?.nombreImagen" 
+              [src]="imagenRuta + productoNuevo.nombreImagen" 
+              alt="Vista previa" 
+              style="max-height: 100%; max-width: 100%;">
           </div>
         </div>
       </div>
