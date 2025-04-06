@@ -1,0 +1,484 @@
+[33mcommit 8b9b7eb41ae6685c57eff311e9b646671fb2cb36[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Mar 9 15:18:27 2025 -0600
+
+    sds
+
+[33mcommit cda00ee20d47e95c0df84e01f76692fe4d2bc86b[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Mar 9 10:25:54 2025 -0600
+
+    Editarproducto
+
+[33mcommit 1816a269bac37706bc38198b8001b47a1edc9596[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Mar 9 10:02:59 2025 -0600
+
+    Editarproducto
+
+[33mcommit b06538295c6157994b2d16f70569f05e9e012291[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sat Mar 8 20:54:57 2025 -0600
+
+    productos
+
+[33mcommit 20fb3244fc4a6e26a31cf3bc279fc36f6eb4b78f[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sat Mar 8 17:50:37 2025 -0600
+
+    cambios generales
+
+[33mcommit e3f3cc771b365eab59e8d0c6af5c71a05fe72cd8[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Fri Mar 7 20:49:29 2025 -0600
+
+    asds
+
+[33mcommit a2a94c861e8224a424018b731867815b08d557fc[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Fri Mar 7 11:42:08 2025 -0600
+
+    gastos y cajas
+
+[33mcommit d104fd590bea89f471365e64af32edd81a6128e3[m
+Merge: 9dba3e3 346d380
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Mar 3 20:25:32 2025 -0600
+
+    Merge branch 'master' of https://github.com/Javier-Ayala-Alvarez/SistemaVentas-ERP
+
+[33mcommit 9dba3e361ebb88da9db1fb0fa45c8f815d90beab[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Mar 3 20:25:18 2025 -0600
+
+    guardar producto
+
+[33mcommit 346d3805c0d92cd6a1cbb121a903dd94d18c9bdf[m
+Merge: f443128 442c6e6
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Mar 3 19:50:07 2025 -0600
+
+    sfd
+
+[33mcommit f443128bf5a949c19d2d0b7542aad615f949421d[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Mar 3 19:47:42 2025 -0600
+
+    asd
+
+[33mcommit 442c6e6b7ef09bafbdee45ca684180cdec6d2f7f[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Mar 3 19:39:52 2025 -0600
+
+    unidad medida a producto
+
+[33mcommit 5dfba664624215740c6e1516abe7490828b3efe7[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Mar 3 19:12:58 2025 -0600
+
+    unidad medida
+
+[33mcommit aabb6bc9c4f05e20a27002918617c47781d35c30[m
+Merge: 9e882f6 d235343
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Mar 3 19:12:19 2025 -0600
+
+    Merge branch 'master' of https://github.com/Javier-Ayala-Alvarez/SistemaVentas-ERP
+
+[33mcommit 9e882f61917da60c56e324757e5d1d953049499b[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Mar 3 19:12:10 2025 -0600
+
+    unidad medida
+
+[33mcommit d235343abc22873979b41a065bd6e9760ea924a3[m
+Merge: a68f9fa 49465e1
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Mar 2 22:01:14 2025 -0600
+
+    asd
+
+[33mcommit a68f9fa36ff5b5eb3d37a42699649f83e43cd121[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Mar 2 22:00:46 2025 -0600
+
+    sdfd
+
+[33mcommit 49465e1f85b6f8b3b8a12540f088e6df8909ea88[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Mar 2 21:43:54 2025 -0600
+
+    eliminar
+
+[33mcommit 647b97fb09559be6ddc7cd39c8f557921cb84d50[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Mar 2 21:06:22 2025 -0600
+
+    cajas
+
+[33mcommit a0d186bb2d38f7dc01dbe21af61e3e8af3bdf26a[m
+Merge: 52a149a d83d68e
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Mar 2 10:54:49 2025 -0600
+
+    datos
+
+[33mcommit 52a149a1d90b3b2a55748b46e232ebe6076d4076[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Mar 2 10:53:41 2025 -0600
+
+    dato
+
+[33mcommit d83d68ef1838f783fc49638e3711dcb47764adc2[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Mar 2 09:51:30 2025 -0600
+
+    productos
+
+[33mcommit f964d177fbb088e9fc3711c0b8518a9cddaf1194[m
+Merge: f4e7249 ecc5307
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sat Mar 1 12:35:42 2025 -0600
+
+    Merge branch 'master' of https://github.com/Javier-Ayala-Alvarez/SistemaVentas-ERP
+
+[33mcommit f4e72496ddebebf003917ac0aa7854c93b373262[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sat Mar 1 12:35:32 2025 -0600
+
+    sistema
+
+[33mcommit ecc5307390c18370eeff43af9e5dd86c348aef00[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Wed Jan 22 21:35:47 2025 -0600
+
+    todos los forms con name en sus campos
+
+[33mcommit 4f3038b45e21df30ff7b2b46a3ce8d9ecc46ad68[m
+Merge: 9041f44 fd9322c
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Wed Jan 22 21:16:56 2025 -0600
+
+    mergin
+
+[33mcommit 9041f4493cb192461c229e638b6f7624351d07fd[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Wed Jan 22 21:13:55 2025 -0600
+
+    corrigiendo merge
+
+[33mcommit fd9322c0b32b2d526b2af5ffc5574c62d645c6e3[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Wed Jan 22 00:56:54 2025 -0600
+
+    cambios
+
+[33mcommit 403de9f4d3baad996cd43d82f2249ada90c4c4cb[m
+Merge: 4887715 b04da1d
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Tue Jan 21 22:52:38 2025 -0600
+
+    crud,  name en formularios y refrescar la tabla cuando se elimina un componente
+
+[33mcommit 4887715dfb88ed169af849b8c6d5c9c745a98586[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Tue Jan 21 22:52:13 2025 -0600
+
+    crud,  name en formularios y refrescar la tabla cuando se elimina un componente
+
+[33mcommit b04da1dfbfd7ec2aaff3f25ddc0fb1fc1f6ba7f2[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Tue Jan 21 17:44:21 2025 -0600
+
+    Cliente
+
+[33mcommit e92a85928e31f8f555bb76d685aaeb662c2626a8[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Tue Jan 21 17:07:10 2025 -0600
+
+    Cliente
+
+[33mcommit 9630bfc26204c939df111bf725854ea44ff4c01c[m
+Merge: 9c95bab 1a06369
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Jan 20 18:12:42 2025 -0600
+
+    empresa
+
+[33mcommit 9c95bab69cae94294cebe558d98d40c31cc4d10f[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Jan 20 18:08:20 2025 -0600
+
+    empresa
+
+[33mcommit 1a06369f306b6c044b8c949eecb70cf0a80cfb0f[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Fri Dec 20 22:11:58 2024 -0600
+
+    avances CRUD's
+
+[33mcommit 315e2c97f60afcdfaf151fd2a62998e796c1f14a[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Fri Dec 20 20:57:25 2024 -0600
+
+    avances en CRUD's
+
+[33mcommit c78b3179024ca98d58319b7ab9d741c9f65c00f5[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Dec 2 03:49:24 2024 -0600
+
+    error en agregar nuevo producto
+
+[33mcommit 36afa41b1f63a4256bec5fef20672012d1687376[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Dec 2 02:23:37 2024 -0600
+
+    Avances de CRUD
+
+[33mcommit 5343362b55fb750c96839e9763dfa6c8f120277e[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 25 03:51:57 2024 -0600
+
+    crud de gastos
+
+[33mcommit 08942d643003486b50bdc6d736a31a36982c7803[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Nov 24 11:13:20 2024 -0600
+
+    CRUD SUCURSAL
+
+[33mcommit d5e5f061593196869b0d40a0a65276033d8c8cfb[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Nov 24 09:35:25 2024 -0600
+
+    CRUD SUCURSAL
+
+[33mcommit 7e5c5e369c9783fb9e4fa556a078b635324e4089[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sat Nov 23 18:34:36 2024 -0600
+
+    Cambio de metodo standalone
+
+[33mcommit fe122a4eb65a013afc1f5a277b005ec8f32c68a2[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sat Nov 23 18:08:56 2024 -0600
+
+    Crud sucursales
+
+[33mcommit 6f50a8bf8ca97103bb06455bd2ccb70fef7a7759[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sat Nov 23 18:03:29 2024 -0600
+
+    Crud sucursales
+
+[33mcommit b204db923824bfe20ee20a7513af2dc5147faa89[m
+Merge: 6acf20e 9f02aa3
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 18 22:12:55 2024 -0600
+
+    gastos
+
+[33mcommit 6acf20e7f1f8294525052abbf4d5b7740f29c566[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 18 22:12:08 2024 -0600
+
+    gastos
+
+[33mcommit 9f02aa3b558116d64959b4b4ddbf7a01a70ae27f[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Nov 18 06:57:13 2024 -0600
+
+    login
+
+[33mcommit cc023e1b1f25e8b504041d2293f2f88d91d2a4be[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Nov 17 21:32:43 2024 -0600
+
+    cotizacion
+
+[33mcommit 1fc47876eacd537be65ad4e276be00def4ccc435[m
+Merge: 9138cc8 07ec441
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Nov 17 21:08:19 2024 -0600
+
+    caja completo
+
+[33mcommit 9138cc879d002623cb749d342aa738f2626e195a[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Nov 17 21:07:28 2024 -0600
+
+    caja completo
+
+[33mcommit 07ec441754aa593d4e6c850a81720294a16cd2eb[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Nov 17 20:36:30 2024 -0600
+
+    llenar las clases
+
+[33mcommit d9e405db1e1f133a7873413f114934c3fb7d94e3[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Nov 17 20:10:49 2024 -0600
+
+    se creo la clases
+
+[33mcommit 743b1fbf2026efbf719bebe8a8ba8e89e495f9c2[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Sun Nov 17 16:14:57 2024 -0600
+
+    remesas
+
+[33mcommit 4131b535f94eee63b0c5e273f0529492e6947664[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Sun Nov 17 09:10:52 2024 -0600
+
+    Cambios en producto
+
+[33mcommit 8ea6552e05ce08da2467c4e488df747f0303babf[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Fri Nov 15 08:22:07 2024 -0600
+
+    Compra
+
+[33mcommit a778cac5007fd580719a4d0b769aac0c95bf83ea[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Nov 14 21:42:30 2024 -0600
+
+    Cambios
+
+[33mcommit b8c83e8bdb9e64d813b71e03a346a962eea2e9d1[m
+Merge: e28616c cc8aa4e
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Thu Nov 14 21:10:02 2024 -0600
+
+    administrador de factura
+
+[33mcommit e28616cb2651af4cb44121b7948a46b20632f4d6[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Thu Nov 14 21:08:40 2024 -0600
+
+    administrador de factura
+
+[33mcommit cc8aa4e4ac552a37928b5c1a60de12876c469c43[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Nov 14 21:04:05 2024 -0600
+
+    Cambios en la pantalla de factura
+
+[33mcommit 0b6fbc22810b877b7af3370c946a6b626065e0f6[m
+Merge: adec6b0 ef588cb
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Thu Nov 14 20:42:25 2024 -0600
+
+    administrador de factura
+
+[33mcommit adec6b0284be4e45901b5d375fc2b8d5616dbe75[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Thu Nov 14 20:36:57 2024 -0600
+
+    factura administrador
+
+[33mcommit ef588cb3ace57cf0f89c139e7c127792bdaa79fc[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Nov 14 20:36:02 2024 -0600
+
+    Cambios en la pantalla de factura
+
+[33mcommit 1bbec794cc81d2754d1f8926f74ce6ca78c539e8[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Nov 14 19:53:25 2024 -0600
+
+    Cambios en la pantalla de factura
+
+[33mcommit ea906fd228f743df577d0f1100b823b298230b37[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Thu Nov 14 19:51:56 2024 -0600
+
+    navegations completo
+
+[33mcommit 31f548838e6a48e84bac401743d58d0cb8d20261[m
+Merge: 50d3fea 4961054
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Thu Nov 14 18:14:38 2024 -0600
+
+    mergueee
+
+[33mcommit 50d3feadb41c794f256f93c3c5eacdc5a05581a1[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Thu Nov 14 18:14:06 2024 -0600
+
+    mergue
+
+[33mcommit 496105423b544b65c71228fed2f41631a3b9506f[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Nov 14 18:13:21 2024 -0600
+
+    cambios
+
+[33mcommit 3e4f377bbedbec4194fb525351659c454d3c4e4f[m
+Merge: 6403680 bd31182
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Nov 14 17:33:38 2024 -0600
+
+    cambios
+
+[33mcommit 640368065a106f68abb6f834caa08dbca07956f9[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Nov 14 17:32:52 2024 -0600
+
+    cambios
+
+[33mcommit bd311820e7a6535aee1b48065f8b1e7373a11270[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 11 21:55:52 2024 -0600
+
+    factura
+
+[33mcommit d5a1c797445b3959c2b6a02fee2d26182fbfe026[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 11 08:22:06 2024 -0600
+
+    avances en interfaces admin-factura y facturas
+
+[33mcommit ee37428ce7bed66425a57ce6642e583d92f8d140[m
+Merge: fd54ad8 72a52e8
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Nov 11 06:55:45 2024 -0600
+
+    cambios
+
+[33mcommit 72a52e880bd42a1c1f823a31842302270281d224[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 4 22:46:39 2024 -0600
+
+    componente de dashboard
+
+[33mcommit 10f9d27396d0299b2a6391a5045d5abc989a0e28[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 4 22:06:24 2024 -0600
+
+    facturacion con tabla integrada e instalacion de los modulos para angular material
+
+[33mcommit fd54ad82baad7e87c02b17b010f8a8876a817b04[m
+Merge: 07a91b7 c571c11
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Nov 4 18:47:21 2024 -0600
+
+    Merge branch 'master' of https://github.com/Javier-Ayala-Alvarez/SistemaVentas-ERP
+
+[33mcommit 07a91b77a07e379ad261a5136ad3024f0e4335da[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Mon Nov 4 18:47:11 2024 -0600
+
+    m
+
+[33mcommit c571c11af53eb610591a093e7c7f4e5ed73997a9[m
+Author: Edgar Ayala <ayalaalvarezedgarorlando@gmail.com>
+Date:   Mon Nov 4 18:43:29 2024 -0600
+
+    componente factura
+
+[33mcommit ad10d2ea6b98274a6c6a59608641cc71afdc8ee5[m
+Author: Javier Ayala <franciscojavier20002017@gmail.com>
+Date:   Thu Oct 31 08:02:28 2024 -0600
+
+    Inicio de sistema
