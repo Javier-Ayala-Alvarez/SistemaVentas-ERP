@@ -68,6 +68,8 @@ import VentasFechaComponent from './demo/ui-element/vistas/ventas-fecha/ventas-f
 import { MatCardModule } from '@angular/material/card';
 import { EmpresaComponent } from './demo/ui-element/vistas/empresa/empresa.component';
 import { AgregarCategoriaComponent } from './demo/ui-element/vistas/agregar-categoria/agregar-categoria.component';
+import { AgregarCotizacionComponent } from './demo/ui-element/vistas/agregar-cotizacion/agregar-cotizacion.component';
+import { BuscarProveedorComponent } from './demo/ui-element/vistas/buscar-proveedor/buscar-proveedor.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +121,10 @@ import { AgregarCategoriaComponent } from './demo/ui-element/vistas/agregar-cate
     RemesasComponent,
     SucursalComponent,
     UnidadesComponent,
-    VentasFechaComponent
+    VentasFechaComponent,
+    AgregarCotizacionComponent,
+    BuscarProveedorComponent,
+    BuscarProductoComponent
      ],
   imports: [
     BrowserModule,

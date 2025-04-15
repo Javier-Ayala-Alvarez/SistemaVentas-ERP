@@ -72,4 +72,26 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 
-
+label {
+  font-size: 11px;
+}
+th {
+  font-size: 12px;
+}
+td {
+  font-size: 12px;
+}
+li {
+  font-size: 14px; 
+}
+form div {
+  margin-bottom: 0px;
+}
+page-link{
+  font-size: 10px;
+}
+input, textarea, select {
+  font-size: 2px;      
+  padding: 2px 4px;     
+  height: auto;        
+}

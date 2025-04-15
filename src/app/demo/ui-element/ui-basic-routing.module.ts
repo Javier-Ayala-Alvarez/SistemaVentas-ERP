@@ -23,6 +23,7 @@ import FacturaComponent from './vistas/factura/factura.component';
 import DashboardComponent from './vistas/dashboard/dashboard.component';
 import FacturaAdministradorComponent from './vistas/factura-administrador/factura-administrador.component';
 import { EmpresaComponent } from './vistas/empresa/empresa.component';
+import { AgregarCotizacionComponent } from './vistas/agregar-cotizacion/agregar-cotizacion.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,9 @@ const routes: Routes = [
         path: 'cotizaciones',component:cotizacionesComponent
       }
       , 
+      {
+        path: 'Nuevacotizacion',component:AgregarCotizacionComponent
+      },
       {
         path: 'compras',component:ComprasComponent
       },

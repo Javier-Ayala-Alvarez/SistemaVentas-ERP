@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild,ViewEncapsulation } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +18,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.component';
 import { BuscarClienteComponent } from '../buscar-cliente/buscar-cliente.component';
 import { FormaDePagoComponent } from '../forma-de-pago/forma-de-pago.component';
+import { Router, ActivatedRoute } from '@angular/router';
+import { OperacionClass } from '../../clases/operaciones-class';
+import { DepartamentosServicesService } from '../../services/departamentos-services.service';
+import { DistritosServicesService } from '../../services/distritos-services.service';
+import { MunicipioServicesService } from '../../services/municipio-services.service';
+import { SucursalServicesService } from '../../services/sucursal-services.service';
+import { TipoOperacionServicesService } from '../../services/tipo-operacion-services.service';
+import { OperacionDetalleClass } from '../../clases/operacionDetalle';
+import { OperacionServicesService } from '../../services/operacion-services.service';
 
 export interface Producto {
   codigo: string;
@@ -39,28 +48,100 @@ export interface Producto {
 })
 export default class FacturaComponent implements OnInit {
   
-  constructor(private modalService: NgbModal) {}
 
-
-  clientes = [
-    { nombre: 'Cliente 1' },
-    { nombre: 'Cliente 2' },
-    { nombre: 'Cliente 3' },
-  ];
-
-  departamentos = ['Departamento A', 'Departamento B', 'Departamento C'];
-  municipios = ['Municipio X', 'Municipio Y', 'Municipio Z'];
-  distritos = ['Distrito 1', 'Distrito 2', 'Distrito 3'];
-  tiposOperacion = ['Operación 1', 'Operación 2', 'Operación 3'];
-
-
-  subtotal = 0;
-  iva = 0;
-  retencion = 0;
-  totalVenta = 0;
-
-  ngOnInit() {
+ operacion: OperacionClass = new OperacionClass();
+    operacionDetalle: OperacionDetalleClass [] = [];
+       sucursales: any[]= [];
+       tipoOperaciones: any[]= [];
+       departamentos: any[]= [];
+       municipios: any[]= [];
+       distritos: any[]= [];
+       subtotal = 0;
+       iva = 0;
+       retencion = 0;
+       totalVenta = 0;
+ 
+ 
+   ngOnInit(): void {
+     this.loadDepartamento();
+     this.loadMunicipio();
+     this.loadDistrito();
+     this.loadTipoOperacion();
+     this.loadSucursal();
+     this.operacionDetalle = this.operacionServices.operacionDetalle;
+    this.operacion = this.operacionServices.operacion;
+   }
+    constructor(private modalService: NgbModal,private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService,private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService,  private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
+     ) { 
+ 
+     }
+  
+     eliminarDetalle(detalle: OperacionDetalleClass): void {
+      this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(()=>{
+        this.operacionDetalle = this.operacionServices.operacionDetalle;
+      });
   }
+   loadDepartamento(){
+     this.departamentoServices.buscar().subscribe(
+       (dato: any) => {
+         this.departamentos = dato;
+         if (this.operacion.departamento) {
+           this.operacion.departamento = this.departamentos?.find(emp => emp.id === this.operacion.departamento?.id);
+         }
+       }
+ 
+     );
+   }
+ 
+ //mostrar datos de la sucursal
+ loadSucursal() {
+   this.sucursalServices.buscar().subscribe(
+     (dato: any) => {
+       console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
+       this.sucursales = dato;
+       if (this.operacion) {
+         this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);
+       }
+     }
+   );
+ }
+   loadMunicipio(){
+     this.municipioServices.buscar().subscribe(
+       (dato: any) => {
+         this.municipios = dato;
+         if (this.operacion.municipio) {
+           this.operacion.municipio = this.municipios?.find(emp => emp.id === this.operacion.municipio?.id);
+         }
+       }
+ 
+     );
+ 
+   }
+   loadDistrito(){
+     this.distritoServices.buscar().subscribe(
+       (dato: any) => {
+         this.distritos = dato;
+         if (this.operacion.distrito) {
+           this.operacion.distrito = this.distritos?.find(emp => emp.id === this.operacion.distrito?.id);
+         }
+       }
+ 
+     );
+ 
+   }
+ 
+   loadTipoOperacion(){
+     this.tipoOperacionServices.buscarTipoOperacion().subscribe(
+       (dato: any) => {
+         this.tipoOperaciones = dato;
+         if (this.operacion.tipoOperacion) {
+           this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.id === this.operacion.tipoOperacion?.id);
+         }
+       }
+ 
+     );
+ 
+   }
 
 
   openModalCliente() {
@@ -73,9 +154,11 @@ export default class FacturaComponent implements OnInit {
   }
   openModalProducto() {
     const modalRef = this.modalService.open(BuscarProductoComponent, {
-      size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      size: 'xl', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
       centered: true // para centrar el modal
     });
+    modalRef.componentInstance.identificador = "factura"; // ← acá mandás el parámetro
+
     
   }
 
@@ -85,5 +168,8 @@ export default class FacturaComponent implements OnInit {
       centered: true
   });
   }
+
+ 
+  
 }
 

@@ -15,7 +15,7 @@ export class BuscarUnidadMedidaComponent {
     unidadMedida: UnidadMedidaClass[] | undefined;
     unidadMedidaProducto: UnidadMedidaProductoClass = new UnidadMedidaProductoClass();
     page: number = 0;
-    size: number = 8;
+    size: number = 8; 
     order: string = 'id';
     asc: boolean = true;
     isFirst: boolean = false;

@@ -29,21 +29,24 @@
     <div class="row mb-3">
       <div class="col-md-3">
         <label for="departamento">Departamento</label>
-        <select class="form-select" [disabled]="true" name="departamento">
-          <option *ngFor="let departamento of departamentos">{{ departamento }}</option>
-        </select>
+          <select [(ngModel)]="operacion.departamento" class="form-select" id="departamento" name="departamento" required name="departamento">
+            <option [ngValue]="null" selected>Seleccione el departamento</option>
+            <option *ngFor="let dato of departamentos" [ngValue]="dato">{{dato.nombre}}</option>
+          </select>
       </div>
       <div class="col-md-3">
         <label for="municipio">Municipio</label>
-        <select class="form-select" [disabled]="true" name="municipio">
-          <option *ngFor="let municipio of municipios">{{ municipio }}</option>
-        </select>
+          <select [(ngModel)]="operacion.distrito" class="form-select" id="municipio" name="municipio" required name="municipio">
+            <option [ngValue]="null" selected>Seleccione el municipio</option>
+            <option *ngFor="let dato of municipios" [ngValue]="dato">{{dato.nombre}}</option>
+          </select>
       </div>
       <div class="col-md-3">
-        <label for="distrito">Distrito</label>
-        <select class="form-select" [disabled]="true" name="distrito">
-          <option *ngFor="let distrito of distritos">{{ distrito }}</option>
-        </select>
+        <label for="distrito">Distritos</label>
+          <select [(ngModel)]="operacion.distrito" class="form-select" id="distrito" name="distrito" required name="distrito">
+            <option [ngValue]="null" selected>Seleccione el distrito</option>
+            <option *ngFor="let dato of distritos" [ngValue]="dato">{{dato.nombre}}</option>
+          </select>
       </div>
       <div class="col-md-3">
         <label for="fecha">Fecha de Creación</label>
@@ -66,9 +69,17 @@
         <input type="text" name="nombreVendedor" class="form-control" placeholder="Nombre del vendedor" readonly />
       </div>
       <div class="col-md-3">
-        <label for="operacion">Tipo de Operación</label>
-        <select class="form-select" name="tipoOperacion"> 
-          <option *ngFor="let tipo of tiposOperacion">{{ tipo }}</option>
+        <label for="tipoOperacion">Tipo de Operación</label>
+        <select [(ngModel)]="operacion.tipoOperacion" class="form-select" id="tipoOperacion" name="tipoOperacion" required name="tipoOperacion">
+          <option [ngValue]="null" selected>Seleccione el tipo de operación</option>
+          <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato">{{dato.nombre}}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="sucursal">Sucursal</label>
+        <select [(ngModel)]="operacion.sucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
+          <option [ngValue]="null" selected>Seleccione una sucursal</option>
+          <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
         </select>
       </div>
     </div>
@@ -91,37 +102,25 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>000</td>
-          <td>Tomates</td>
-          <td>2</td>
-          <td>0%</td>
-          <td>1.00</td>
-          <td>0</td>
-          <td>0.13</td>
-          <td>1.00</td>
+        <tbody>
+          <tr *ngFor="let data of operacionDetalle">
+            <td>{{data.producto?.id}}</td>
+            <td>{{data.producto?.nombre}}</td>
+            <td>{{data.cantidad}}</td>
+            <td>{{data.descuento}}</td>
+            <td>{{data.precioUnitario}}</td>
+            <td>{{0}}</td>
+            <td>{{0}}</td>
+            <td>{{ (data.precioUnitario || 0) * (data.cantidad || 0) }}</td>
           <td>
-            <button class="btn btn-danger btn-sm rounded-circle">
+            <button class="btn btn-danger btn-sm rounded-circle me-2" (click)="eliminarDetalle(data)">
               <i class="fas fa-trash"></i>
             </button>
           </td>
-        </tr>
       </tbody>
     </table>
 
-    <!-- Paginador -->
-    <nav aria-label="Page navigation" class="mt-3">
-      <ul class="pagination justify-content-end">
-        <li class="page-item"><span class="page-link">Items por página</span></li>
-        <li class="page-item"><span class="page-link">Página 1 de 10</span></li>
-        <li class="page-item">
-          <a class="page-link"><i class="fas fa-step-backward"></i></a>
-        </li>
-        <li class="page-item">
-          <a class="page-link"><i class="fas fa-step-forward"></i></a>
-        </li>
-      </ul>
-    </nav>
+ 
   </div>
 
   <!-- Pie de la Factura (Totales y Botones) -->
@@ -139,19 +138,19 @@
       <div class="totales col-md-6 d-flex flex-column align-items-end">
         <div class="d-flex align-items-center mb-2">
           <label for="subtotal" class="me-3"><strong>Subtotal:</strong></label>
-          <input type="text" class="form-control w-50" id="subtotal" name="subtotal" [value]="subtotal | currency" readonly>
+          <input type="text" class="form-control w-50" id="subtotal" name="subtotal" [(ngModel)]="operacion.subTotal"  readonly>
         </div>
         <div class="d-flex align-items-center mb-2">
           <label for="iva" class="me-3"><strong>IVA:</strong></label>
-          <input type="text" class="form-control w-50" name="iva" id="iva" [value]="iva | currency" readonly>
+          <input type="text" class="form-control w-50" name="iva" id="iva"  [(ngModel)]="operacion.iva"   readonly>
         </div>
         <div class="d-flex align-items-center mb-2">
           <label for="retencion" class="me-3"><strong>Retención:</strong></label>
-          <input type="text" class="form-control w-50" name="retencion" id="retencion" [value]="retencion | currency" readonly>
+          <input type="text" class="form-control w-50" name="retencion" id="retencion"  [(ngModel)]="operacion.retencion"  readonly>
         </div>
         <div class="d-flex align-items-center">
           <label for="totalVenta" class="me-3"><strong>Total Venta:</strong></label>
-          <input type="text" class="form-control w-50" id="totalVenta" name="totalVenta" [value]="totalVenta | currency" readonly>
+          <input type="text" class="form-control w-50" id="totalVenta" name="totalVenta"  [(ngModel)]="operacion.total" readonly>
         </div>
       </div>
     </div>

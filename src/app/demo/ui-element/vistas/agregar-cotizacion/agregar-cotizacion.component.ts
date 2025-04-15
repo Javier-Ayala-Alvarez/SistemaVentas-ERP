@@ -1,52 +1,38 @@
-import { CommonModule, AsyncPipe, DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
-import { OperacionClass } from '../../clases/operaciones-class';
-import { DepartamentosServicesService } from '../../services/departamentos-services.service';
+import { DatePipe } from '@angular/common';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MunicipioServicesService } from '../../services/municipio-services.service';
+import { OperacionClass } from '../../clases/operaciones-class';
+import { DepartamentosServicesService } from '../../services/departamentos-services.service';
 import { DistritosServicesService } from '../../services/distritos-services.service';
-import { TipoOperacionServicesService } from '../../services/tipo-operacion-services.service';
+import { MunicipioServicesService } from '../../services/municipio-services.service';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
-import { AgregarProveedorComponent } from '../agregar-proveedor/agregar-proveedor.component';
-import { BuscarProveedorComponent } from '../buscar-proveedor/buscar-proveedor.component';
+import { TipoOperacionServicesService } from '../../services/tipo-operacion-services.service';
+import { AgregarClienteComponent } from '../agregar-cliente/agregar-cliente.component';
+import { BuscarClienteComponent } from '../buscar-cliente/buscar-cliente.component';
 import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.component';
 import { FormaDePagoComponent } from '../forma-de-pago/forma-de-pago.component';
 import { OperacionDetalleClass } from '../../clases/operacionDetalle';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 
 @Component({
-  selector: 'app-agregar-compras',
-  templateUrl: './agregar-compras.component.html',
-  styleUrl: './agregar-compras.component.scss'
+  selector: 'app-agregar-cotizacion',
+  templateUrl: './agregar-cotizacion.component.html',
+  styleUrl: './agregar-cotizacion.component.scss'
 })
-export default class AgregarComprasComponent implements OnInit {
-    operacion: OperacionClass = new OperacionClass();
-    operacionDetalle: OperacionDetalleClass [] = [];
+export class AgregarCotizacionComponent {
+  operacion: OperacionClass = new OperacionClass();
+   operacionDetalle: OperacionDetalleClass [] = [];
+      sucursales: any[]= [];
+      tipoOperaciones: any[]= [];
+      departamentos: any[]= [];
+      municipios: any[]= [];
+      distritos: any[]= [];
+      subtotal = 0;
+      iva = 0;
+      retencion = 0;
+      totalVenta = 0;
 
-    sucursales: any[]= [];
-    tipoOperaciones: any[]= [];
-    departamentos: any[]= [];
-    municipios: any[]= [];
-    distritos: any[]= [];
-    clientes: any[]= [];
-    
-    subtotal = 0;
-    iva = 0;
-    retencion = 0;
-    totalCompra = 0;
 
   ngOnInit(): void {
     this.loadDepartamento();
@@ -62,12 +48,12 @@ export default class AgregarComprasComponent implements OnInit {
     ) { 
 
     }
- 
- eliminarDetalle(detalle: OperacionDetalleClass): void {
+    eliminarDetalle(detalle: OperacionDetalleClass): void {
       this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(()=>{
         this.operacionDetalle = this.operacionServices.operacionDetalle;
       });
   }
+
   loadDepartamento(){
     this.departamentoServices.buscar().subscribe(
       (dato: any) => {
@@ -117,7 +103,6 @@ loadSucursal() {
 
   }
 
-
   loadTipoOperacion(){
     this.tipoOperacionServices.buscarTipoOperacion().subscribe(
       (dato: any) => {
@@ -131,29 +116,46 @@ loadSucursal() {
 
   }
 
-
-
-  openModalProveedor() {
-const modalRef = this.modalService.open(BuscarProveedorComponent, {
+  openModalAgregar (){
+    const modalRef = this.modalService.open(AgregarClienteComponent, {
       size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
       centered: true
   });
-
   }
-   openModalProducto() {
-      const modalRef = this.modalService.open(BuscarProductoComponent, {
-        size: 'xl', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
-        centered: true // para centrar el modal
-      });
-      modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
 
+
+  clientes = [
+    { nombre: 'Cliente 1' },
+    { nombre: 'Cliente 2' },
+    { nombre: 'Cliente 3' },
+  ];
+
+
+
+
+
+  openModalCliente() {
+    
+    this.modalService.open(BuscarClienteComponent, {
+      size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      centered: true // para centrar el modal
       
-    }
-  
-    openModalFormaPago(){
-      const modalRef = this.modalService.open(FormaDePagoComponent, {
-        size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
-        centered: true
     });
-    }
+  }
+  openModalProducto() {
+    const modalRef = this.modalService.open(BuscarProductoComponent, {
+      size: 'xl', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      centered: true // para centrar el modal
+    });
+    modalRef.componentInstance.identificador = "cotizacion"; // ← acá mandás el parámetro
+
+    
+  }
+
+  openModalFormaPago(){
+    const modalRef = this.modalService.open(FormaDePagoComponent, {
+      size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
+      centered: true
+  });
+  }
 }
