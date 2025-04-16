@@ -79,9 +79,11 @@
                 <td><input type="number" class="form-control" min="1" value="1" placeholder="Cantidad" [(ngModel)]="cantidad"></td>
                 <td><input type="number" class="form-control" min="0" value="0" placeholder="%" [(ngModel)]="descuento"></td>
                 <td class="text-center">
-                  <button class="btn btn-success btn-sm rounded-circle" (click)="guardar(unidad)">
-                    <i class="fas fa-check"></i>
-                  </button>
+           <button name="agregar" class="btn btn-success btn-sm rounded-circle"
+                  (click)="guardar(unidad)"
+                  type="button">
+            <i class="fas fa-check"></i>
+          </button>
                 </td>
               </tr>
             </tbody>

@@ -31,7 +31,7 @@
         <div class="col-md-6">
             <label for="producto">Cantidad $</label>
             <div class="input-group">
-                <input type="text" class="form-control" [(ngModel)]="totalFormaPago" name="cantidad" placeholder="Ingrese la cantidad">
+                <input type="text" class="form-control" [value]="totalFormaPago | number:'1.2-2'" name="cantidad" placeholder="Ingrese la cantidad">
                 <button class="btn btn-outline-secondary" type="button" (click)="guardar()">Agregar</button>
             </div>
         </div>
@@ -42,15 +42,15 @@
         <div class="col-md-6">
             <label for="producto">Total Venta $</label>
             <div class="input-form">
-                <input type="text" class="form-control" [(ngModel)]="totalVenta" name="totalVenta" placeholder="Total Venta" readonly> 
+                <input type="text" class="form-control" [value]="totalVenta| number:'1.2-2'"   name="totalVenta" placeholder="Total Venta" readonly> 
             </div>
             <label for="producto">Efectivo $</label>
             <div class="input-form">
-                <input type="text" class="form-control" [(ngModel)]="efectivo" name="efectivo" placeholder="Efectivo" readonly> 
+                <input type="text" class="form-control"  [value]="efectivo | number:'1.2-2'"  name="efectivo" placeholder="Efectivo" readonly> 
             </div>
             <label for="producto">Cambio $</label>
             <div class="input-form">
-                <input type="text" name="cambio" [(ngModel)]="cambio" class="form-control" placeholder="Cambio" readonly> 
+                <input type="text" name="cambio" [value]="cambio | number:'1.2-2'"  class="form-control" placeholder="Cambio" readonly> 
             </div>
         </div>
         <div class="col-md-6">
