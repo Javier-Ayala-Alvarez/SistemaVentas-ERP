@@ -31,7 +31,7 @@
         <div class="col-md-6">
             <label for="producto">Cantidad $</label>
             <div class="input-group">
-                <input type="text" class="form-control" [value]="totalFormaPago | number:'1.2-2'" name="cantidad" placeholder="Ingrese la cantidad">
+                <input type="text" class="form-control" [value]="totalFormaPago | number:'1.2-2'" [(ngModel)]="totalFormaPago" name="cantidad" placeholder="Ingrese la cantidad">
                 <button class="btn btn-outline-secondary" type="button" (click)="guardar()">Agregar</button>
             </div>
         </div>

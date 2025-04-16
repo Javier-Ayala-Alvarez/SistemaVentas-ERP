@@ -1,20 +1,11 @@
 import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
 import { TipoOperacionServicesService } from '../../services/tipo-operacion-services.service';
 import { OperacionClass } from '../../clases/operaciones-class';
+import { OperacionServicesService } from '../../services/operacion-services.service';
 
 
 /**
@@ -28,6 +19,19 @@ import { OperacionClass } from '../../clases/operaciones-class';
 export default class FacturaAdministradorComponent {
   operacion: OperacionClass = new OperacionClass();
 
+  page: number = 0;
+  size: number = 8;
+  order: string = 'id';
+  asc: boolean = true;
+  isFirst: boolean = false;
+  isLast: boolean = false;
+  terminoBusqueda: string = '';
+  totalPages: any[] = [];
+  fechaInicio: Date = new Date();
+  fechaFin: Date = new Date();
+  operaciones: OperacionClass[] = [] ;
+
+
   sucursales: any[] = [];
   tipoOperaciones: any[] = [];
 
@@ -36,8 +40,10 @@ export default class FacturaAdministradorComponent {
   ngOnInit(): void {
     this.loadTipoOperacion();
     this.loadSucursal();
+
+    this.loadFacturas();
   }
-  constructor(private modalService: NgbModal, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
+  constructor(private modalService: NgbModal,  private operacionesServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
   ) {
 
   }
@@ -68,6 +74,35 @@ export default class FacturaAdministradorComponent {
 
     );
 
+  }
+
+   //mostrar datos en la tabla
+   loadFacturas() {
+    this.fechaInicio = this.fechaInicio || new Date(); // asigna la fecha actual si está vacío
+    this.fechaFin = this.fechaFin || new Date(); // asigna la fecha actual si está vacío
+    this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin).subscribe(
+      (dato: any) => {
+        this.tipoOperaciones = dato.content;
+        this.isFirst = dato.first;
+        this.isLast = dato.last;
+        this.totalPages = new Array(dato.totalPages);
+      }
+    );
+  }
+
+  //Ir a la siguiente pagina
+  paginaSiguiente(): void {
+    if (!this.isLast) {
+      this.page++;
+      this.ngOnInit();
+    }
+  }
+  //ir a la pagina anterior
+  paginaAnterior(): void {
+    if (!this.isFirst) {
+      this.page--;
+      this.ngOnInit();
+    }
   }
 
 

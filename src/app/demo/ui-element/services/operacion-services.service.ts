@@ -198,4 +198,16 @@ export class OperacionServicesService {
     });
   }
 
+   // Muestra la lista en combo
+   loadFac(terminoBusqueda: string, page: number, size: number, order: string, asc: boolean, fechaInicio: Date, fechaFin: Date): Observable<any> {
+    if (this.operacion.nFactura == null) {
+      this.operacion.nFactura = "";
+  }
+  
+
+    return this.httpClient.get(`${this.apiUrl}/List?busqueda=${terminoBusqueda}&idSucursal=${this.operacion.sucursal?.id}&idOperacion=${this.operacion.id}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&nFactura=${this.operacion.nFactura}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
+      catchError(this.mensajeSwal2.handleError) 
+    );
+  }
+
 }

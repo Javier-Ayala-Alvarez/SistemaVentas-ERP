@@ -20,7 +20,7 @@ export class OperacionClass {
     municipio?: MunicipioClass= new MunicipioClass();
     sucursal?: SucursalClass = new SucursalClass();
     distrito?: DistritoClass= new DistritoClass();
-    fechaElaboracion?: String | Date;
+    fechaElaboracion?: Date | Date ;
     fechaVencimiento?: String | Date;
 
     dui?: String;

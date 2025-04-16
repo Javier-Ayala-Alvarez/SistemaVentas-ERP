@@ -25,12 +25,14 @@ export class TipoOperacionServicesService {
     );
   }
 
-  // Muestra la lista de las cajas
+  // Muestra la lista en combo
 load(selectComboTipoOperacion: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
   return this.httpClient.get(`${this.apiUrl}/List?busqueda=${selectComboTipoOperacion}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );
 }
+
+ 
 
 
 
