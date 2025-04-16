@@ -3,7 +3,7 @@ import { EstadoClass } from "./estado-class";
 import { UsuarioClass } from "./usuario-class";
 
 export class ProveedorClass {
-    id? : number;
+    id? : number = 0;
     codigo?: number;
     nombre?: string;
     apellido?:string;

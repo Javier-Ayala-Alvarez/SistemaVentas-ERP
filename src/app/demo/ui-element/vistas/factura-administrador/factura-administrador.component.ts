@@ -58,7 +58,7 @@ export default class FacturaAdministradorComponent {
 
 
   loadTipoOperacion() {
-    this.tipoOperacionServices.buscarTipoOperacion().subscribe(
+    this.tipoOperacionServices.buscarTipoOperacion("E").subscribe(
       (dato: any) => {
         this.tipoOperaciones = dato;
         if (this.operacion.tipoOperacion) {

@@ -21,6 +21,8 @@ export class OperacionClass {
     sucursal?: SucursalClass = new SucursalClass();
     distrito?: DistritoClass= new DistritoClass();
     fechaElaboracion?: String | Date;
+    fechaVencimiento?: String | Date;
+
     dui?: String;
     nit?: String;
     caja?: CajaClass = new CajaClass(); 

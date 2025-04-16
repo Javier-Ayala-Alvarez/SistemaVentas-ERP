@@ -15,15 +15,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Efectivo</td>
-                            <td>
-                                <button class="btn btn-success btn-sm rounded-circle">
-                                    <i class="fas fa-check"></i>
-                                </button>
-
+                        <tr *ngFor="let forma of formaPago">
+                            <td>{{ forma.nombre }}</td>
+                            <td class="text-center">
+                              <button class="btn btn-success btn-sm rounded-circle" (click)="Agregar(forma)">
+                                <i class="fas fa-check"></i>
+                              </button>
                             </td>
-                        </tr>
+                          </tr>
                     </tbody>
                 </table>
             </div>
@@ -32,8 +31,8 @@
         <div class="col-md-6">
             <label for="producto">Cantidad $</label>
             <div class="input-group">
-                <input type="text" class="form-control" name="cantidad" placeholder="Ingrese la cantidad">
-                <button class="btn btn-outline-secondary" type="button">Agregar</button>
+                <input type="text" class="form-control" [(ngModel)]="totalFormaPago" name="cantidad" placeholder="Ingrese la cantidad">
+                <button class="btn btn-outline-secondary" type="button" (click)="guardar()">Agregar</button>
             </div>
         </div>
     </div>
@@ -43,15 +42,15 @@
         <div class="col-md-6">
             <label for="producto">Total Venta $</label>
             <div class="input-form">
-                <input type="text" class="form-control" name="totalVenta" placeholder="Total Venta" readonly> 
+                <input type="text" class="form-control" [(ngModel)]="totalVenta" name="totalVenta" placeholder="Total Venta" readonly> 
             </div>
             <label for="producto">Efectivo $</label>
             <div class="input-form">
-                <input type="text" class="form-control" name="efectivo" placeholder="Efectivo" readonly> 
+                <input type="text" class="form-control" [(ngModel)]="efectivo" name="efectivo" placeholder="Efectivo" readonly> 
             </div>
             <label for="producto">Cambio $</label>
             <div class="input-form">
-                <input type="text" name="cambio" class="form-control" placeholder="Cambio" readonly> 
+                <input type="text" name="cambio" [(ngModel)]="cambio" class="form-control" placeholder="Cambio" readonly> 
             </div>
         </div>
         <div class="col-md-6">
@@ -61,15 +60,20 @@
                         <tr>
                             <th>Forma Pago</th>
                             <th>Total</th>
+                            <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Efectivo</td>
-                            <td>
-                               2.2
-
-                            </td>
+                        
+                            <tr *ngFor="let forma of formaPagoOperacionList">
+                                <td>{{ forma.formasPago?.nombre }}</td>
+                                <td>{{ forma.total }}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger btn-sm rounded-circle me-2" (click)="eliminarFormaPago(forma)">
+                                        <i class="fas fa-trash"></i>
+                                      </button>
+                                </td>
+                              
                         </tr>
                     </tbody>
                 </table>
@@ -79,5 +83,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-primary" (click)="guardarOperacion()">Guardar</button>
 </div>

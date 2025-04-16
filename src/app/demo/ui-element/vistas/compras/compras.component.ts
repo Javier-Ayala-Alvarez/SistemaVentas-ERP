@@ -54,7 +54,7 @@ loadSucursal() {
 }
 
 loadTipoOperacion() {
-  this.tipoOperacionServices.buscarTipoOperacion().subscribe(
+  this.tipoOperacionServices.buscarTipoOperacion("S").subscribe(
     (dato: any) => {
       console.log("tipoOperacion recibidas:", dato); // Verifica los datos en la consola
       this.tipoOperaciones = dato;

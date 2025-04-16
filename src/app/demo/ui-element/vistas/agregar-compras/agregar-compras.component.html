@@ -8,20 +8,20 @@
         <div class="col-md-6">
           <label for="proveedor">Proveedor</label>
           <div class="input-group">
-            <input type="text" class="form-control" name="codigo" placeholder="Código" readonly>
-            <input type="text" class="form-control" name="nombreProveedor" placeholder="Nombre del proveedor" readonly>
+            <input type="text" class="form-control" [(ngModel)]="operacion.proveedor!.id" name="codigo" placeholder="Código" readonly>
+            <input type="text" class="form-control" [(ngModel)]="operacion.proveedor!.nombre " name="nombreProveedor" placeholder="Nombre del proveedor" readonly>
             <button class="btn btn-outline-secondary" type="button" (click)="openModalProveedor()">...</button>
           </div>
         </div>
   
         <div class="col-md-4">
           <label for="direccion">Dirección</label>
-          <input type="text" class="form-control" name="direccion" placeholder="Dirección del proveedor" readonly />
+          <input type="text" class="form-control" name="direccion" [(ngModel)]="operacion.proveedor!.direccion " placeholder="Dirección del proveedor" readonly />
         </div>
   
         <div class="col-md-2">
           <label for="factura">Compra N°</label>
-          <input type="text" class="form-control" name="nCompra" placeholder="Número de factura" readonly />
+          <input type="text" class="form-control" name="nCompra" [(ngModel)]="operacion.nFactura " placeholder="Número de factura" readonly />
         </div>
       </div>
   
@@ -50,7 +50,7 @@
         </div>
         <div class="col-md-3">
           <label for="fecha">Fecha de Compra</label>
-          <input type="date" name="fechaCompra" class="form-control" readonly />
+          <input type="date" name="fechaCompra" [(ngModel)]="operacion.fechaElaboracion " class="form-control" readonly />
         </div>
       </div>
   
@@ -58,11 +58,11 @@
       <div class="row mb-3">
         <div class="col-md-3">
           <label for="dui">DUI</label>
-          <input type="text" class="form-control" name="dui" placeholder="DUI del proveedor" readonly />
+          <input type="text" class="form-control" [(ngModel)]="operacion.proveedor!.dui " name="dui" placeholder="DUI del proveedor" readonly />
         </div>
         <div class="col-md-3">
           <label for="nit">NIT</label>
-          <input type="text" class="form-control" name="dui" placeholder="NIT del proveedor" readonly />
+          <input type="text" class="form-control" [(ngModel)]="operacion.proveedor!.nit " name="nit" placeholder="NIT del proveedor" readonly />
         </div>
         <div class="col-md-3">
           <label for="tipoOperacion">Tipo de Operación</label>

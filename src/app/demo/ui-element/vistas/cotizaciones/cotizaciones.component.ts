@@ -34,6 +34,7 @@ export default class cotizacionesComponent implements OnInit {
   sucursales: any[]= [];
   tipoOperaciones: any[]= [];
   selectComboTipoOperacion: any | null= null;
+ 
 
 
 
@@ -41,13 +42,14 @@ constructor(private router: Router, private sucursalServices: SucursalServicesSe
 
 ngOnInit(): void {
   this.loadSucursal();
-  this.loadTipoOperacion();
+
 }
 
 AgregarNuevo(){
   console.log("Prueba");
  this.router.navigate(['/component/Nuevacotizacion']);
 }
+  
 
 
  //mostrar datos de la sucursal
@@ -65,19 +67,7 @@ this.sucursalServices.buscar().subscribe(
 );
 }
 
-loadTipoOperacion() {
-this.tipoOperacionServices.buscarTipoOperacion().subscribe(
-  (dato: any) => {
-    console.log("tipoOperacion recibidas:", dato); // Verifica los datos en la consola
-    this.tipoOperaciones = dato;
-    console.log("tipoOperacion: ", dato[0].nombre);
-    // Si hay una sucursal y una empresa, la seleccionamos en el combo
-    //if (this.sucursalNuevo.empresa) {
-      //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
-    }
-  //}
-);
-}
+
 }
 
 

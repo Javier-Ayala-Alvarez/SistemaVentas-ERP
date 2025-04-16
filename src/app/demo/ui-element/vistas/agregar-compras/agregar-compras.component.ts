@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { OperacionClass } from '../../clases/operaciones-class';
 import { DepartamentosServicesService } from '../../services/departamentos-services.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MunicipioServicesService } from '../../services/municipio-services.service';
 import { DistritosServicesService } from '../../services/distritos-services.service';
@@ -26,6 +26,7 @@ import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.comp
 import { FormaDePagoComponent } from '../forma-de-pago/forma-de-pago.component';
 import { OperacionDetalleClass } from '../../clases/operacionDetalle';
 import { OperacionServicesService } from '../../services/operacion-services.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-agregar-compras',
@@ -33,20 +34,22 @@ import { OperacionServicesService } from '../../services/operacion-services.serv
   styleUrl: './agregar-compras.component.scss'
 })
 export default class AgregarComprasComponent implements OnInit {
-    operacion: OperacionClass = new OperacionClass();
-    operacionDetalle: OperacionDetalleClass [] = [];
+  operacion: OperacionClass = new OperacionClass();
+  operacionDetalle: OperacionDetalleClass[] = [];
 
-    sucursales: any[]= [];
-    tipoOperaciones: any[]= [];
-    departamentos: any[]= [];
-    municipios: any[]= [];
-    distritos: any[]= [];
-    clientes: any[]= [];
-    
-    subtotal = 0;
-    iva = 0;
-    retencion = 0;
-    totalCompra = 0;
+  sucursales: any[] = [];
+  tipoOperaciones: any[] = [];
+  departamentos: any[] = [];
+  municipios: any[] = [];
+  distritos: any[] = [];
+  clientes: any[] = [];
+
+  subtotal = 0;
+  iva = 0;
+  retencion = 0;
+  totalCompra = 0;
+  previousUrl: string = '';
+  currentUrl: string = '';
 
   ngOnInit(): void {
     this.loadDepartamento();
@@ -54,21 +57,35 @@ export default class AgregarComprasComponent implements OnInit {
     this.loadDistrito();
     this.loadTipoOperacion();
     this.loadSucursal();
+    this.limpiarArreglo();
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
 
   }
-   constructor(private modalService: NgbModal,private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService,private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService,  private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
-    ) { 
+  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
+  ) {
 
-    }
- 
- eliminarDetalle(detalle: OperacionDetalleClass): void {
-      this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(()=>{
-        this.operacionDetalle = this.operacionServices.operacionDetalle;
-      });
   }
-  loadDepartamento(){
+    limpiarArreglo() {
+        this.router.events
+          .pipe(filter(event => event instanceof NavigationEnd))
+          .subscribe((event: any) => {
+            this.previousUrl = this.currentUrl;
+            this.currentUrl = event.urlAfterRedirects;
+    
+            if (this.previousUrl && this.previousUrl !== this.currentUrl) {
+              this.operacionServices.limpiarArreglos()
+            }
+          });
+    
+      }
+
+  eliminarDetalle(detalle: OperacionDetalleClass): void {
+    this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(() => {
+      this.operacionDetalle = this.operacionServices.operacionDetalle;
+    });
+  }
+  loadDepartamento() {
     this.departamentoServices.buscar().subscribe(
       (dato: any) => {
         this.departamentos = dato;
@@ -80,19 +97,19 @@ export default class AgregarComprasComponent implements OnInit {
     );
   }
 
-//mostrar datos de la sucursal
-loadSucursal() {
-  this.sucursalServices.buscar().subscribe(
-    (dato: any) => {
-      console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
-      this.sucursales = dato;
-      if (this.operacion) {
-        this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);
+  //mostrar datos de la sucursal
+  loadSucursal() {
+    this.sucursalServices.buscar().subscribe(
+      (dato: any) => {
+        console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
+        this.sucursales = dato;
+        if (this.operacion) {
+          this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);
+        }
       }
-    }
-  );
-}
-  loadMunicipio(){
+    );
+  }
+  loadMunicipio() {
     this.municipioServices.buscar().subscribe(
       (dato: any) => {
         this.municipios = dato;
@@ -104,7 +121,7 @@ loadSucursal() {
     );
 
   }
-  loadDistrito(){
+  loadDistrito() {
     this.distritoServices.buscar().subscribe(
       (dato: any) => {
         this.distritos = dato;
@@ -118,8 +135,8 @@ loadSucursal() {
   }
 
 
-  loadTipoOperacion(){
-    this.tipoOperacionServices.buscarTipoOperacion().subscribe(
+  loadTipoOperacion() {
+    this.tipoOperacionServices.buscarTipoOperacion("S").subscribe(
       (dato: any) => {
         this.tipoOperaciones = dato;
         if (this.operacion.tipoOperacion) {
@@ -134,26 +151,31 @@ loadSucursal() {
 
 
   openModalProveedor() {
-const modalRef = this.modalService.open(BuscarProveedorComponent, {
+    const modalRef = this.modalService.open(BuscarProveedorComponent, {
       size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
       centered: true
-  });
+
+    });
+    modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
+
 
   }
-   openModalProducto() {
-      const modalRef = this.modalService.open(BuscarProductoComponent, {
-        size: 'xl', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
-        centered: true // para centrar el modal
-      });
-      modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
-
-      
-    }
-  
-    openModalFormaPago(){
-      const modalRef = this.modalService.open(FormaDePagoComponent, {
-        size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
-        centered: true
+  openModalProducto() {
+    const modalRef = this.modalService.open(BuscarProductoComponent, {
+      size: 'xl', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      centered: true // para centrar el modal
     });
-    }
+    modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
+
+
+  }
+
+  openModalFormaPago() {
+    const modalRef = this.modalService.open(FormaDePagoComponent, {
+      size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      centered: true
+    });
+    modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
+    modalRef.componentInstance.totalVenta = this.operacion.total; // ← acá mandás el parámetro
+  }
 }

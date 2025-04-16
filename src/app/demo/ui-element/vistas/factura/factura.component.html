@@ -8,20 +8,20 @@
       <div class="col-md-6">
         <label for="cliente">Cliente</label>
         <div class="input-group">
-          <input type="text" class="form-control" name="codigo" placeholder="Código" readonly>
-          <input type="text" class="form-control" name="nombre" placeholder="Nombre del cliente" readonly>
+          <input type="text" class="form-control" name="codigo" [(ngModel)]="operacion.cliente!.id " placeholder="Código" readonly>
+          <input type="text" class="form-control" name="nombre" [(ngModel)]="operacion.cliente!.nombre " placeholder="Nombre del cliente" readonly>
           <button class="btn btn-outline-secondary" type="button" (click)="openModalCliente()">...</button>
         </div>
       </div>
 
       <div class="col-md-4">
         <label for="direccion">Dirección</label>
-        <input type="text" class="form-control" name="direccion" placeholder="Dirección del cliente" readonly />
+        <input type="text" class="form-control" [(ngModel)]="operacion.cliente!.direccion " name="direccion" placeholder="Dirección del cliente" readonly />
       </div>
 
       <div class="col-md-2">
         <label for="factura">Factura N°</label>
-        <input type="text" class="form-control" name="numFactura" placeholder="Número de factura" readonly />
+        <input type="text" class="form-control" [(ngModel)]="operacion.nFactura " name="numFactura" placeholder="Número de factura" readonly />
       </div>
     </div>
 
@@ -36,7 +36,7 @@
       </div>
       <div class="col-md-3">
         <label for="municipio">Municipio</label>
-          <select [(ngModel)]="operacion.distrito" class="form-select" id="municipio" name="municipio" required name="municipio">
+          <select [(ngModel)]="operacion.municipio" class="form-select" id="municipio" name="municipio" required name="municipio">
             <option [ngValue]="null" selected>Seleccione el municipio</option>
             <option *ngFor="let dato of municipios" [ngValue]="dato">{{dato.nombre}}</option>
           </select>
@@ -50,7 +50,7 @@
       </div>
       <div class="col-md-3">
         <label for="fecha">Fecha de Creación</label>
-        <input type="date"  name="fechaCreacion" class="form-control" readonly />
+        <input type="date" [(ngModel)]="operacion.fechaElaboracion " name="fechaCreacion" class="form-control" readonly />
       </div>
     </div>
 
@@ -58,11 +58,11 @@
     <div class="row mb-3">
       <div class="col-md-3">
         <label for="dui">DUI</label>
-        <input type="text" name="dui" class="form-control" placeholder="DUI del cliente" readonly />
+        <input type="text" name="dui" [(ngModel)]="operacion.cliente!.dui " class="form-control" placeholder="DUI del cliente" readonly />
       </div>
       <div class="col-md-3">
         <label for="nit">NIT</label>
-        <input type="text" name="nit" class="form-control" placeholder="NIT del cliente" readonly />
+        <input type="text" name="nit"  [(ngModel)]="operacion.cliente!.nit " class="form-control" placeholder="NIT del cliente" readonly />
       </div>
       <div class="col-md-3">
         <label for="vendedor">Vendedor</label>

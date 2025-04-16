@@ -13,6 +13,7 @@ export class ClienteClass {
     dui?:string;
     nit?: string;
     estado?: string;
+    select?: boolean = false;
 
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;

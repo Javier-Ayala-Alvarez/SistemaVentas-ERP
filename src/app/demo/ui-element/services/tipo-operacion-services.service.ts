@@ -19,8 +19,8 @@ export class TipoOperacionServicesService {
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
-  buscarTipoOperacion(): Observable<any[]> {
-    return this.httpClient.get<any>(`${this.apiUrl}/ListCombo`).pipe(
+  buscarTipoOperacion(movimiento: string): Observable<any[]> {
+    return this.httpClient.get<any>(`${this.apiUrl}/ListCombo?movimiento=${movimiento}`).pipe(
         catchError(this.mensajeSwal2.handleError) 
     );
   }

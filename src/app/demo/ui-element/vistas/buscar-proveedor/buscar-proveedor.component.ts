@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProveedorClass } from '../../clases/proveedor-class';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProveedoresServicesService } from '../../services/proveedores-services.service';
+import { OperacionServicesService } from '../../services/operacion-services.service';
+import { ClienteClass } from '../../clases/cliente-class';
 
 @Component({
   selector: 'app-buscar-proveedor',
@@ -18,8 +20,9 @@ export class BuscarProveedorComponent {
   isFirst: boolean = false;
   isLast: boolean = false;
   terminoBusqueda: string = '';
+  @Input() identificador: String = "";
   totalPages: any[] = [];
-    constructor(public activeModal: NgbActiveModal, private proveedorServices: ProveedoresServicesService, private router: Router,) {}
+    constructor(public activeModal: NgbActiveModal, private operacionServices: OperacionServicesService, private proveedorServices: ProveedoresServicesService, private router: Router,) {}
     ngOnInit(): void {
       this.loadProveedor();
     }
@@ -36,11 +39,14 @@ export class BuscarProveedorComponent {
     }
 
      guardar(proveedor: ProveedorClass) {
-       // this.unidadMedidaProducto = new UnidadMedidaProductoClass();
-        //this.unidadMedidaProducto.unidadMedida = unidadMedida;
-        //this.productoServices.agregarUnidadMedida(this.unidadMedidaProducto);
-        //this.router.navigate(['/component/AgregarProducto']);
-        //this.activeModal.close(); // Cierra el modal (opcional)
+        this.operacionServices.operacion.proveedor = proveedor;
+        if (this.identificador == "compra") {
+          this.router.navigate(['/component/Nuevacompras']);
+        } else if (this.identificador == "cotizacion") {
+          this.router.navigate(['/component/Nuevacotizacion']);
+        } else if (this.identificador == "factura") {
+          this.router.navigate(['/component/factura']);
+        } this.activeModal.close(); // Cierra el modal (opcional)
     
       }
       
