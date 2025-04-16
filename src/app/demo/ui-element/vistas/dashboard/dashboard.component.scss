@@ -1,0 +1,25 @@
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .card-row {
+    flex: 1 0 21%; /* Aproximadamente 4 cards por fila */
+    max-width: 22%;
+  }
+  
+  @media (max-width: 768px) {
+    .card-row {
+      flex: 1 0 45%; /* 2 por fila en pantallas medianas */
+      max-width: 48%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card-row {
+      flex: 1 0 100%; /* 1 por fila en móviles */
+      max-width: 100%;
+    }
+  }
+  
