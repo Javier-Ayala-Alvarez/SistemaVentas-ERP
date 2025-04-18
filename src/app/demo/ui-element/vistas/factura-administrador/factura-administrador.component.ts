@@ -29,6 +29,9 @@ export default class FacturaAdministradorComponent {
   totalPages: any[] = [];
   fechaInicio: Date = new Date();
   fechaFin: Date = new Date();
+  nFactura!: string ; 
+  tipoOperacion! : number; 
+  sucursal! : number;
   operaciones: OperacionClass[] = [] ;
 
 
@@ -80,7 +83,7 @@ export default class FacturaAdministradorComponent {
    loadFacturas() {
     this.fechaInicio = this.fechaInicio || new Date(); // asigna la fecha actual si está vacío
     this.fechaFin = this.fechaFin || new Date(); // asigna la fecha actual si está vacío
-    this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin).subscribe(
+    this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin,  this.nFactura, this.tipoOperacion, this.sucursal).subscribe(
       (dato: any) => {
         this.tipoOperaciones = dato.content;
         this.isFirst = dato.first;

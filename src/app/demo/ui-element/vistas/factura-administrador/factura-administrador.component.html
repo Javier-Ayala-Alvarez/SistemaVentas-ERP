@@ -24,7 +24,7 @@
 
         <div class="col-md-3">
           <label for="facturaNumero">Factura N°</label>
-          <input type="text" name="numFactura" class="form-control" placeholder="Número de factura">
+          <input type="text" name="numFactura" [(ngModel)]= "nFactura" class="form-control" placeholder="Número de factura">
         </div>
       </div>
 
@@ -32,7 +32,7 @@
       <div class="row mb-3">
         <div class="col-md-3">
           <label for="tipoOperacion">Tipo de Operación</label>
-          <select [(ngModel)]="operacion.tipoOperacion" class="form-select" id="tipoOperacion" name="tipoOperacion"
+          <select [(ngModel)]="tipoOperacion" class="form-select" id="tipoOperacion" name="tipoOperacion"
             required name="tipoOperacion">
             <option [ngValue]="null" selected>Seleccione el tipo de operación</option>
             <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato">{{dato.nombre}}</option>
@@ -41,7 +41,7 @@
 
         <div class="col-md-3">
           <label for="sucursal">Sucursal</label>
-          <select [(ngModel)]="operacion.sucursal" class="form-select" id="sucursal" name="sucursal" required
+          <select [(ngModel)]="sucursal" class="form-select" id="sucursal" name="sucursal" required
             name="sucursal">
             <option [ngValue]="null" selected>Seleccione una sucursal</option>
             <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>

@@ -15,7 +15,7 @@ export class OperacionClass {
     cliente?: ClienteClass = new ClienteClass();
     proveedor?: ProveedorClass = new ProveedorClass();
     descripcion?: String;
-    nFactura?: string | Date;
+    nFactura?: string;
     departamento?: DepartamentoClass= new DepartamentoClass();
     municipio?: MunicipioClass= new MunicipioClass();
     sucursal?: SucursalClass = new SucursalClass();
