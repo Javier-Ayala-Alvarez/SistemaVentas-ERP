@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 // Layouts
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
+import { SignInComponent } from './demo/authentication/sign-in/sign-in.component';
 
 const routes: Routes = [
   // Rutas para usuarios no autenticados (Guest)
@@ -11,11 +12,10 @@ const routes: Routes = [
     path: '',
     component: GuestComponent,
     children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./demo/authentication/sign-in/sign-in.component').then(m => m.SignInComponent)
-      },
+       
+            {
+              path: '',component: SignInComponent
+            },
       {
         path: 'sign-in',
         loadComponent: () =>

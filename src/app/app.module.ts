@@ -30,7 +30,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AgregarSucursalComponent } from './demo/ui-element/vistas/agregar-sucursal/agregar-sucursal.component';
@@ -70,9 +70,12 @@ import { EmpresaComponent } from './demo/ui-element/vistas/empresa/empresa.compo
 import { AgregarCategoriaComponent } from './demo/ui-element/vistas/agregar-categoria/agregar-categoria.component';
 import { AgregarCotizacionComponent } from './demo/ui-element/vistas/agregar-cotizacion/agregar-cotizacion.component';
 import { BuscarProveedorComponent } from './demo/ui-element/vistas/buscar-proveedor/buscar-proveedor.component';
+import { SignInComponent } from './demo/authentication/sign-in/sign-in.component';
+import { authInterceptorProviders } from './demo/ui-element/services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
+    SignInComponent,
     AppComponent,
     AdminComponent,
     GuestComponent,
@@ -124,9 +127,13 @@ import { BuscarProveedorComponent } from './demo/ui-element/vistas/buscar-provee
     VentasFechaComponent,
     AgregarCotizacionComponent,
     BuscarProveedorComponent,
-    BuscarProductoComponent
+    BuscarProductoComponent,
+    SignInComponent
      ],
   imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
     BrowserModule,
     AppRoutingModule,
     SharedModule,
@@ -147,6 +154,7 @@ import { BuscarProveedorComponent } from './demo/ui-element/vistas/buscar-provee
     HttpClientModule,
     MatCardModule ],
   providers: [
+    authInterceptorProviders, {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     provideAnimationsAsync(),
     DatePipe
   ],

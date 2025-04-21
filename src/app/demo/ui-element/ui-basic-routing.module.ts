@@ -24,6 +24,7 @@ import DashboardComponent from './vistas/dashboard/dashboard.component';
 import FacturaAdministradorComponent from './vistas/factura-administrador/factura-administrador.component';
 import { EmpresaComponent } from './vistas/empresa/empresa.component';
 import { AgregarCotizacionComponent } from './vistas/agregar-cotizacion/agregar-cotizacion.component';
+import { SignInComponent } from '../authentication/sign-in/sign-in.component';
 
 const routes: Routes = [
   {
@@ -110,6 +111,10 @@ const routes: Routes = [
       , 
       {
         path: 'kardex',component: KardexComponent
+      }
+      , 
+      {
+        path: 'login',component: SignInComponent
       }
     ]
   }  

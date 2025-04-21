@@ -21,7 +21,7 @@ export default class FacturaAdministradorComponent {
 
   page: number = 0;
   size: number = 8;
-  order: string = 'id';
+  order: string = 'fecha_elaboracion';
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
