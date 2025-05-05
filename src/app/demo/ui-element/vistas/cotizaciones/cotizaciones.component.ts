@@ -1,7 +1,14 @@
 import { Component, OnInit, ViewChild,ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
+import { DatePipe } from '@angular/common';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TipoOperacionServicesService } from '../../services/tipo-operacion-services.service';
+import { OperacionServicesService } from '../../services/operacion-services.service';
+import { OperacionClass } from '../../clases/operaciones-class';
+
+
 
 
 export interface Producto {
@@ -23,6 +30,9 @@ export interface Producto {
   
 })
 export default class cotizacionesComponent implements OnInit {
+
+  operacion: OperacionClass = new OperacionClass();
+
   page: number = 0;
   size: number = 8;
   order: string = 'id';
@@ -34,14 +44,26 @@ export default class cotizacionesComponent implements OnInit {
   sucursales: any[]= [];
   tipoOperaciones: any[]= [];
   selectComboTipoOperacion: any | null= null;
+
+  terminoBusqueda: string = '';
+  fechaInicio: Date = new Date();
+  fechaFin: Date = new Date();
+  nFactura!: string ; 
+  tipoOperacion! : number; 
+  sucursal! : number;
+  operaciones: OperacionClass[] = [] ;
+
  
 
 
 
-constructor(private router: Router, private sucursalServices: SucursalServicesService, private tipoOperacionServices : TipoOperacionServicesService) { }
+constructor(private modalService: NgbModal,  private operacionesServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
+) {}
 
 ngOnInit(): void {
   this.loadSucursal();
+  this.loadCotizaciones();
+  this.loadTipoOperacion();
 
 }
 
@@ -67,7 +89,47 @@ this.sucursalServices.buscar().subscribe(
 );
 }
 
+//mostrar datos en la tabla
+loadCotizaciones() {
+  this.fechaInicio = this.fechaInicio || new Date(); // asigna la fecha actual si está vacío
+  this.fechaFin = this.fechaFin || new Date(); // asigna la fecha actual si está vacío
+  this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin,  this.nFactura, this.tipoOperacion, this.sucursal).subscribe(
+    (dato: any) => {
+      this.tipoOperaciones = dato.content;
+      this.isFirst = dato.first;
+      this.isLast = dato.last;
+      this.totalPages = new Array(dato.totalPages);
+    }
+  );
+}
+
+loadTipoOperacion() {
+  this.tipoOperacionServices.buscarTipoOperacion("null").subscribe(
+    (dato: any) => {
+      this.tipoOperaciones = dato;
+      if (this.operacion.tipoOperacion) {
+        this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.id === this.operacion.tipoOperacion?.id);
+      }
+    }
+
+  );
 
 }
 
+ //Ir a la siguiente pagina
+ paginaSiguiente(): void {
+  if (!this.isLast) {
+    this.page++;
+    this.ngOnInit();
+  }
+}
+//ir a la pagina anterior
+paginaAnterior(): void {
+  if (!this.isFirst) {
+    this.page--;
+    this.ngOnInit();
+  }
+}
 
+
+}

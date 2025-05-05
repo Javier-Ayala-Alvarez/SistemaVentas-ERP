@@ -47,7 +47,7 @@
         </div>
 
         <div class="col-md-3 d-flex align-items-end">
-          <button class="btn btn-warning w-100">Buscar</button>
+          <button class="btn btn-warning w-100" (click)="loadCotizaciones()">Buscar</button>
         </div>
         <div class="col-md-3 d-flex align-items-end">
           <input type="button" value="Agregar" class="btn btn-primary w-100" (click)="AgregarNuevo()">
@@ -62,8 +62,6 @@
           <tr>
             <th>N°</th>
             <th>Nombre</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Fin</th>
             <th>Tipo Operación</th>
             <th>Forma de pago</th>
             <th>Sucursales</th>
@@ -72,14 +70,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>000</td>
-            <td>Edgar</td>
-            <td>22-23-2024</td>
-            <td>22-20-2025</td>
-            <td>Consumidor final</td>
-            <td>Efectivo</td>
-            <td>San Vicente</td>
+          <tr *ngFor="let dato of operaciones">
+            <td>{{dato.id}}</td>
+            <td>{{dato.cliente!.nombre}}</td>
+            <td>{{dato.tipoOperacion!.nombre}}</td>
+            <td>{{dato.sucursal!.nombre}}</td>
+            <td>{{dato.total}}</td>
             <td>0.13</td>
             <td>
               <button class="btn btn-danger btn-sm rounded-circle me-2">
@@ -98,12 +94,12 @@
     <nav aria-label="Page navigation" class="mt-3">
       <ul class="pagination justify-content-end">
         <li class="page-item"><span class="page-link">Items por página</span></li>
-        <li class="page-item"><span class="page-link">Página 1 de 10</span></li>
+        <li class="page-item"><span class="page-link">Página {{page+1}} de {{totalPages.length}}</span></li>
         <li class="page-item">
-          <a class="page-link"><i class="fas fa-step-backward"></i></a>
+          <a class="page-link"><i class="fas fa-step-backward"  (click)="paginaAnterior()"></i></a>
         </li>
         <li class="page-item">
-          <a class="page-link"><i class="fas fa-step-forward"></i></a>
+          <a class="page-link"><i class="fas fa-step-forward" (click)="paginaSiguiente()"></i></a>
         </li>
       </ul>
     </nav>
