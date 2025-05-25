@@ -91,14 +91,18 @@ this.sucursalServices.buscar().subscribe(
 
 //mostrar datos en la tabla
 loadCotizaciones() {
-  this.fechaInicio = this.fechaInicio || new Date(); // asigna la fecha actual si está vacío
-  this.fechaFin = this.fechaFin || new Date(); // asigna la fecha actual si está vacío
+  this.fechaInicio = this.fechaInicio || new Date(); 
+  this.fechaFin = this.fechaFin || new Date(); 
   this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin,  this.nFactura, this.tipoOperacion, this.sucursal).subscribe(
     (dato: any) => {
-      this.tipoOperaciones = dato.content;
+      this.operaciones = dato.content; // <-- esto es lo correcto
+
       this.isFirst = dato.first;
       this.isLast = dato.last;
       this.totalPages = new Array(dato.totalPages);
+
+      console.log("Datos recibidos:", dato);
+      console.log("Contenido de operaciones:", this.operaciones); // <-- ahora revisa esto
     }
   );
 }
