@@ -30,6 +30,7 @@ import { OperacionDetalleClass } from '../../clases/operacionDetalle';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 import { CajasServicesService } from '../../services/cajas-services.service';
 import { CajaClass } from '../../clases/caja-class';
+import { LoginServicesService } from '../../services/login-services.service';
 
 
 
@@ -69,8 +70,17 @@ export default class FacturaComponent implements OnInit {
     this.loadCaja();
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
+
+    const hoy = new Date();
+    this.operacion.fechaElaboracion = hoy.toISOString().split('T')[0];
+
+     // ✅ Obtener el usuario logueado desde el servicio
+    const usuario = this.loginServices.getUser();
+    if (usuario && usuario.username) {  // Ajusta según la estructura de tu objeto usuario
+      this.operacion.vendedor = usuario.username;
+    }
   }
-  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, private cajaServices: CajasServicesService // Usamos ActivatedRoute aquí
+  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private loginServices: LoginServicesService ,private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, private cajaServices: CajasServicesService // Usamos ActivatedRoute aquí
   ) {
 
   }
@@ -229,6 +239,7 @@ export default class FacturaComponent implements OnInit {
   //validar si la caja ha sido seleccionada antes de guardar factura 
 
 guardarFactura() {
+  // ✅ Validación de Caja
   if (!this.operacion.caja || !this.operacion.caja.id) {
     Swal.fire({
       icon: 'warning',
@@ -238,9 +249,30 @@ guardarFactura() {
     return;
   }
 
-  // ✅ Si hay caja, primero abre el modal de forma de pago
+  // ✅ Validación de Cliente
+  if (!this.operacion.cliente || !this.operacion.cliente.id) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Cliente no seleccionado',
+      text: 'Debe seleccionar un cliente antes de continuar.',
+    });
+    return;
+  }
+
+  // ✅ Validación de Productos agregados
+  if (!this.operacionDetalle || this.operacionDetalle.length === 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Sin productos',
+      text: 'Debe agregar al menos un producto antes de continuar.',
+    });
+    return;
+  }
+
+  // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
   this.openModalFormaPago();
 }
+
 
 agregarProducto() {
   if (!this.operacion.caja || !this.operacion.caja.id) {

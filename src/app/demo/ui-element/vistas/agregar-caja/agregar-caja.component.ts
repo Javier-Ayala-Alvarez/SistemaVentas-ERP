@@ -19,15 +19,22 @@ export class AgregarCajaComponent {
   cajaNuevo: CajaClass = new CajaClass(); // Inicialización por defecto
   caja?: CajaClass; // Recibe la sucursal desde el componente principal
 
+    modoEdicion: boolean = false;
+
+
   constructor(public activeModal: NgbActiveModal, private cajaService: CajasServicesService, private router: Router, private datePipe: DatePipe, private sucursalServices: SucursalServicesService) {}
 
   //Valores de inicio
   ngOnInit(): void {
 
+
+
     if (this.caja) {
       this.cajaNuevo = { ...this.caja }; // Copia los valores si están definidos
+      this.modoEdicion = true; // Establece el modo de edición si la caja está definida
       } else {
       this.cajaNuevo = new CajaClass(); // Asegura la inicialización
+      this.modoEdicion = false; // Modo de creación
     }
     this.loadSucursal();
 
