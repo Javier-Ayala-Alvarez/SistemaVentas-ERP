@@ -87,8 +87,7 @@
         <label for="sucursal">Caja</label>
         <select [(ngModel)]="operacion.caja" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
           <option [ngValue]="null" selected>Seleccione una caja</option>
-          <option *ngFor="let dato of cajas" [ngValue]="dato">{{dato.id || 
-            dato.sucursal?.nombre}}</option>
+          <option *ngFor="let dato of cajas" [ngValue]="dato">{{dato.id}} - {{dato.sucursal?.nombre}}</option>
         </select>
       </div>
     </div>
