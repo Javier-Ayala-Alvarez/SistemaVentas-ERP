@@ -123,6 +123,7 @@ export class ProductosServicesService {
   // Eliminar el producto
   eliminar(id: number, producto: ProductoClass): Observable<any> {
     const form = new FormData();
+    producto.estado = 'N'; // Marca el productp como eliminado
     form.append('producto', JSON.stringify(producto));
     form.append('unidades', JSON.stringify(this.unidadMedidaProducto));
     return new Observable(observer => {
@@ -137,7 +138,6 @@ export class ProductosServicesService {
         cancelButtonText: 'Cancelar'
       }).then((resultado) => {
         if (resultado.isConfirmed) {
-          producto.estado = 'N'; // Marca el productp como eliminado
           this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, form).pipe(
             tap(() => {
               this.mensajeSwal2.mensaje('Eliminada exitoso', 'El producto se ha modificado correctamente.');

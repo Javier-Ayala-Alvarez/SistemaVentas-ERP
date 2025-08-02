@@ -25,96 +25,143 @@ import FacturaAdministradorComponent from './vistas/factura-administrador/factur
 import { EmpresaComponent } from './vistas/empresa/empresa.component';
 import { AgregarCotizacionComponent } from './vistas/agregar-cotizacion/agregar-cotizacion.component';
 import { SignInComponent } from '../authentication/sign-in/sign-in.component';
+import { RoleGuard } from './services/guards.guard';
 
 const routes: Routes = [
   {
     path: '',
     children: [
       {
-        path: 'administrador-factura',component:FacturaAdministradorComponent
+        path: 'administrador-factura',component:FacturaAdministradorComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','FACTURA', 'GENERAL','SUPERADMIN'] }
       }, 
       {
-        path: 'dashboard',component:DashboardComponent
+        path: 'dashboard',component:DashboardComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'FACTURA','GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'factura',component:FacturaComponent
+        path: 'factura',component:FacturaComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'FACTURA','GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'cotizaciones',component:cotizacionesComponent
+        path: 'cotizaciones',component:cotizacionesComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'Nuevacotizacion',component:AgregarCotizacionComponent
+        path: 'Nuevacotizacion',component:AgregarCotizacionComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       },
       {
-        path: 'compras',component:ComprasComponent
+        path: 'compras',component:ComprasComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       },
       {
-        path: 'Nuevacompras',component:AgregarComprasComponent
+        path: 'Nuevacompras',component:AgregarComprasComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'gastos',component:GastosComponent
+        path: 'gastos',component:GastosComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'cajas',component:CajasComponent
+        path: 'cajas',component:CajasComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'remesas',component:RemesasComponent
+        path: 'remesas',component:RemesasComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'productos',component:ProductosComponent
+        path: 'productos',component:ProductosComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       },
       {
-        path: 'AgregarProducto',component:AgregarProductoComponent
+        path: 'AgregarProducto',component:AgregarProductoComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }, 
       {
-        path: 'categoria',component:CategoriaComponent
+        path: 'categoria',component:CategoriaComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'unidades',component:UnidadesComponent
+        path: 'unidades',component:UnidadesComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'clientes',component:ClientesComponent
+        path: 'clientes',component:ClientesComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'proveedores',component:ProveedoresComponent
+        path: 'proveedores',component:ProveedoresComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
       }
       , 
       {
-        path: 'empresa',component:EmpresaComponent
+        path: 'empresa',component:EmpresaComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','SUPERADMIN'] }
       }
       , 
       {
-        path: 'sucursal', component: SucursalComponent 
+        path: 'sucursal', component: SucursalComponent ,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','SUPERADMIN'] }
       }
       , 
       {
-        path: 'proveedores-reportes', component: ProveedoresReportesComponent
+        path: 'proveedores-reportes', component: ProveedoresReportesComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'SUPERADMIN'] }
       }
       , 
       {
-        path: 'clientes-reportes', component: ClientesReportesComponent
+        path: 'clientes-reportes', component: ClientesReportesComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','SUPERADMIN'] }
       }
       , 
       {
-        path: 'ventas-fecha', component: VentasFechaComponent
+        path: 'ventas-fecha', component: VentasFechaComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','SUPERADMIN'] }
       }
       , 
       {
-        path: 'kardex',component: KardexComponent
+        path: 'kardex',component: KardexComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'SUPERADMIN'] }
       }
       , 
       {
-        path: 'login',component: SignInComponent
+        path: 'login',component: SignInComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'FACTURA','GENERAL','SUPERADMIN'] }
       }
     ]
   }  

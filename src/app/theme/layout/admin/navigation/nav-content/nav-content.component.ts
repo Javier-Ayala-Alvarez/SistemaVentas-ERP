@@ -5,6 +5,7 @@ import { Location, LocationStrategy } from '@angular/common';
 // project import
 import { environment } from 'src/environments/environment';
 import { NavigationItem, NavigationItems } from '../navigation';
+import { LoginServicesService } from 'src/app/demo/ui-element/services/login-services.service';
 
 @Component({
   selector: 'app-nav-content',
@@ -16,19 +17,22 @@ export class NavContentComponent implements OnInit {
   title = 'Demo application for version numbering';
   currentApplicationVersion = environment.appVersion;
 
-  // public pops
-  navigations: NavigationItem[];
+  // public props
+  navigations: NavigationItem[] = [];
   wrapperWidth!: number;
   windowWidth: number;
 
   @Output() NavMobCollapse = new EventEmitter();
+
   // constructor
   constructor(
     private location: Location,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    private loginService: LoginServicesService
   ) {
     this.windowWidth = window.innerWidth;
-    this.navigations = NavigationItems;
+    const userRole = this.loginService.getUserRole(); // Obtener rol actual del usuario
+    this.navigations = this.filterNavigationItems(NavigationItems, userRole!);
   }
 
   // life cycle event
@@ -38,14 +42,17 @@ export class NavContentComponent implements OnInit {
     }
   }
 
-  // public method
-
+  // Método para colapsar el menú en dispositivos móviles
   navMob() {
-    if (this.windowWidth < 992 && document.querySelector('app-navigation.pcoded-navbar')?.classList.contains('mob-open')) {
+    if (
+      this.windowWidth < 992 &&
+      document.querySelector('app-navigation.pcoded-navbar')?.classList.contains('mob-open')
+    ) {
       this.NavMobCollapse.emit();
     }
   }
 
+  // Método para activar el ítem del menú actual
   fireOutClick() {
     let current_url = this.location.path();
     const baseHref = this.locationStrategy.getBaseHref();
@@ -70,4 +77,35 @@ export class NavContentComponent implements OnInit {
       }
     }
   }
+
+  // Método para filtrar los ítems del menú según el rol del usuario
+  private filterNavigationItems(items: NavigationItem[], role: string): NavigationItem[] {
+    return items
+      .map(item => {
+        // Asegurarse de que 'children' sea siempre un array vacío si no está definido
+        const children = item.children ? this.filterNavigationItems(item.children, role) : [];
+  
+        // Determinamos si el ítem debe ser visible en función del rol
+        const isVisible = !item.roles || item.roles.includes(role);
+  
+        // Si es visible o tiene hijos visibles, lo devolvemos con los hijos filtrados
+        if (isVisible || children.length > 0) {
+          return {
+            ...item,
+            // Siempre asignamos 'children' como un array (vacío si no tiene hijos)
+            children: children.length > 0 ? children : undefined
+          };
+        }
+  
+        // Si no es visible ni tiene hijos, devolvemos null
+        return null;
+      })
+      // Filtramos los valores nulos y aseguramos que el tipo sea NavigationItem
+      .filter((item): item is NavigationItem => item !== null);
+  }
+  
+  
+  
+  
+  
 }
