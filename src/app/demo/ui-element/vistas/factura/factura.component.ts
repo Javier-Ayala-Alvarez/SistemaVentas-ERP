@@ -27,6 +27,8 @@ import { SucursalServicesService } from '../../services/sucursal-services.servic
 import { TipoOperacionServicesService } from '../../services/tipo-operacion-services.service';
 import { OperacionDetalleClass } from '../../clases/operacionDetalle';
 import { OperacionServicesService } from '../../services/operacion-services.service';
+import { CajasServicesService } from '../../services/cajas-services.service';
+import { CajaClass } from '../../clases/caja-class';
 
 
 
@@ -43,6 +45,7 @@ export default class FacturaComponent implements OnInit {
   operacion: OperacionClass = new OperacionClass();
   operacionDetalle: OperacionDetalleClass[] = [];
   sucursales: any[] = [];
+  cajas: any[] = [];
   tipoOperaciones: any[] = [];
   departamentos: any[] = [];
   municipios: any[] = [];
@@ -62,10 +65,11 @@ export default class FacturaComponent implements OnInit {
     this.loadTipoOperacion();
     this.loadSucursal();
     this.limpiarArreglo();
+    this.loadCaja();
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
   }
-  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
+  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, private cajaServices: CajasServicesService // Usamos ActivatedRoute aquí
   ) {
 
   }
@@ -201,6 +205,23 @@ export default class FacturaComponent implements OnInit {
     modalRef.componentInstance.identificador = "factura"; // ← acá mandás el parámetro
     modalRef.componentInstance.totalVenta = this.operacion.total; // ← acá mandás el parámetro
 
+  }
+
+  //mostrar datos de la sucursal
+  loadCaja() {
+    this.cajaServices.buscar().subscribe(
+      (dato: any) => {
+        this.cajas = dato;
+        console.log("Datos de Cajas recibidas:", this.cajas); 
+        const seleccionado = this.cajas?.find(dep => dep.select === true);
+        if (seleccionado) {
+          this.operacion.caja = seleccionado;
+        }
+        if (this.operacion) {
+          this.operacion.caja = this.cajas?.find(emp => emp.id === this.operacion.caja?.id);
+        }
+      }
+    );
   }
 
 
