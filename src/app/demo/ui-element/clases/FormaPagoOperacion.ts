@@ -5,5 +5,5 @@ export class FormaPagoOperacion {
     id?: number = 0; 
     operaciones?: OperacionClass = new OperacionClass() ;
     formasPago?: FormaPagoClass = new FormaPagoClass() ;
-    total?: number = 0;
+    total?: number ;
     }

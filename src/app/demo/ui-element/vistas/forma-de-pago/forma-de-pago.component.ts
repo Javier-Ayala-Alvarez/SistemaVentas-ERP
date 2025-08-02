@@ -6,6 +6,8 @@ import { OperacionServicesService } from '../../services/operacion-services.serv
 import { FormaPagoServicesService } from '../../services/forma-pago.services.service';
 import { FormaPagoOperacion } from '../../clases/FormaPagoOperacion';
 import { filter } from 'rxjs';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-forma-de-pago',
@@ -14,7 +16,7 @@ import { filter } from 'rxjs';
 })
 export class FormaDePagoComponent {
   formaPago?: FormaPagoClass[];
-  formaPagoOperacion?: FormaPagoOperacion = new FormaPagoOperacion();
+  formaPagoOperacion: FormaPagoOperacion = new FormaPagoOperacion();
   formaPagoOperacionList?: FormaPagoOperacion[];
   totalFormaPago?: number;
   cambio?: number = 0;
@@ -45,10 +47,26 @@ export class FormaDePagoComponent {
 
   }
   guardar() {
-    this.formaPagoOperacion!.total = this.totalFormaPago;
-    this.operacion.agregarFormaPagoOperacion(this.formaPagoOperacion!);
-    this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
-    this.totalizacion();
+   // ✅ Validar que haya una forma de pago seleccionada
+  if (!this.formaPagoOperacion?.formasPago || !this.formaPagoOperacion?.formasPago?.id) {
+    Swal.fire('Selección requerida','Debe seleccionar una forma de pago antes de ingresar el monto.', 'warning');
+    return;
+  }
+
+ const monto = Number(this.formaPagoOperacion!.total);
+
+if (isNaN(monto) || monto <= 0) {
+  Swal.fire('Selección requerida', 'Debe ingresar un monto válido antes de agregar.', 'warning');
+  return;
+}
+
+  // ✅ Si pasa la validación, agrega el pago
+  this.operacion.agregarFormaPagoOperacion(this.formaPagoOperacion!);
+  this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
+  this.totalizacion();
+
+  // Reinicia el objeto para que no se repita el mismo pago accidentalmente
+  this.formaPagoOperacion = new FormaPagoOperacion();
   }
   eliminarFormaPago(forma: FormaPagoOperacion) {
     this.operacion.eliminarFormaPagoOperacion(forma).subscribe((dato: any) => {

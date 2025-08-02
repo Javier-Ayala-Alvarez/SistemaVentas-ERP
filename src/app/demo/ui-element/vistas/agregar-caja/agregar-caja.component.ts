@@ -6,6 +6,7 @@ import { CajaClass } from '../../clases/caja-class';
 import { CajasServicesService } from '../../services/cajas-services.service';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
 import { SucursalClass } from '../../clases/sucursal-class';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agregar-caja',
@@ -40,25 +41,47 @@ export class AgregarCajaComponent {
 
     }
 
+      // ✅ Validación dinámica
+  validarCampos(): boolean {
+    // validar sucursal en ambos casos
+    if (!this.cajaNuevo.sucursal || !this.cajaNuevo.sucursal.id) {
+      Swal.fire('Campos requeridos', 'Debe seleccionar una sucursal.', 'warning');
+      return false;
+    }
+
+    // validar campos comunes
+    if (!this.cajaNuevo.fechaInicio || !this.cajaNuevo.horaInicio || this.cajaNuevo.efectivoApertura == null) {
+      Swal.fire('Campos requeridos', 'Complete Fecha de Inicio, Hora de Inicio y Efectivo de Apertura.', 'warning');
+      return false;
+    }
+
+    // ✅ validación adicional en modo edición
+    if (this.modoEdicion) {
+      if (!this.cajaNuevo.fechaCierre || !this.cajaNuevo.horaCierre || this.cajaNuevo.efectivoCierre == null) {
+        Swal.fire('Campos requeridos', 'Complete Fecha de Cierre, Hora de Cierre y Efectivo de Cierre.', 'warning');
+        return false;
+      }
+    }
+
+    return true;
+  }
+
 
   //Guardar Caja
   guardar(){
-    if (!this.cajaNuevo.sucursal) {
-      this.cajaNuevo.sucursal = new SucursalClass();
-  }
-  
-    if (this.caja != null) {
-      this.cajaService.modificar(this.cajaNuevo.id ?? 0, this.cajaNuevo).subscribe(() =>{
+  if (!this.validarCampos()) return;
+
+    if (this.modoEdicion) {
+      this.cajaService.modificar(this.cajaNuevo.id ?? 0, this.cajaNuevo).subscribe(() => {
+        Swal.fire('Caja actualizada', 'La caja se modificó correctamente.', 'success');
         this.cerrarYRecargar();
       });
-
     } else {
       this.cajaService.agregar(this.cajaNuevo).subscribe(() => {
+        Swal.fire('Caja creada', 'La nueva caja se creó correctamente.', 'success');
         this.cerrarYRecargar();
       });
     }
-  
-
   }
   cerrarYRecargar() {
     this.activeModal.close(); // Cierra el modal primero

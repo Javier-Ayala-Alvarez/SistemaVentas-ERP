@@ -46,7 +46,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of cajas">
+                    <tr *ngFor="let data of cajas" [ngClass]="{'caja-abierta': !data.fechaCierre && !data.horaCierre && !data.efectivoCierre}">
                         <td>{{data.id}}</td>
                         <td>{{data.sucursal?.nombre}}</td>
                         <td>{{data.fechaInicio}}</td>
