@@ -5,8 +5,4 @@ export class UsuarioClass {
     nombre?: String;
     username?: String;
     descripcion?: String;
-    usuarioCreacion?: UsuarioClass;
-    usuarioModificacion?: UsuarioClass;
-    fechaCreacion?: Data;
-    fechaModificacion?: Data;
 }
