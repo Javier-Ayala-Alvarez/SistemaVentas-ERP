@@ -76,7 +76,6 @@ export class LoginServicesService {
   try {
     const payload = token.split('.')[1];
     const decodedPayload = JSON.parse(atob(payload));
-    console.log("sss",decodedPayload.role)
     return decodedPayload.role || null;
   } catch (e) {
     console.error("Error al decodificar el token", e);
