@@ -137,6 +137,7 @@ export class OperacionServicesService {
     form.append('detalle', JSON.stringify(this.operacionDetalle));
     form.append('formaPagoOperacion', JSON.stringify(this.formaPagoOperacion));
     this.operacion.estado = 'A';
+    console.log(this.operacion);
     return this.httpClient.post(`${this.apiUrl}/Guardar`, form).pipe(
       tap((respuesta: any) => {
         if (respuesta?.operacion) {

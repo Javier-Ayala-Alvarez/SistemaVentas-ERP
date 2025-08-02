@@ -16,8 +16,6 @@ canActivate(
   const allowedRoles: string[] = route.data['roles'];  // Usa 'roles' aquí
   const userRole = this.loginService.getUserRole();
 
-  console.log('Roles permitidos para la ruta:', allowedRoles);
-  console.log('Rol del usuario:', userRole);
 
   if (!allowedRoles || !userRole) {
     this.router.navigate(['/unauthorized']);
@@ -25,7 +23,6 @@ canActivate(
   }
 
   if (allowedRoles.includes(userRole)) {
-    console.log(`Acceso permitido para el rol: ${userRole}`);
     return true;
   }
 

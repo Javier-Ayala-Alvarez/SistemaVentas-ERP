@@ -19,8 +19,6 @@ export class AgregarCategoriaComponent {
 
   //Valores de inicio
   ngOnInit(): void {
-    console.log("Categoria"+this.categoria);
-
     if (this.categoria) {
       this.categoriaNuevo = { ...this.categoria }; // Copia los valores si está definido
     } else {

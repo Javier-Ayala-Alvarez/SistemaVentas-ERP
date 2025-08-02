@@ -24,9 +24,7 @@ export class EmpresaServicesService {
     // Enviar el JSON como un String en lugar de un Blob
     form.append('empresa', JSON.stringify(empresa));  // Cambié de Blob a String
     // Enviar el logo como está
-    form.append('logo', formData.get('logo') as Blob);
-    console.log('FormData antes de enviar:', form); // Depuración
-  
+    form.append('logo', formData.get('logo') as Blob);  
     return this.httpClient.post(`${this.apiUrl}/save`, form).pipe(
       tap(() => {
         this.mensajeSwal2.mensaje('Guardado exitoso', 'La sucursal se ha modificado correctamente.');

@@ -62,7 +62,6 @@ export default class CategoriaComponent {
       this.isFirst = dato.first;
       this.isLast = dato.last;
       this.totalPages = new Array(dato.totalPages);
-      console.log("categorias",this.categorias);
     }
   );
 }

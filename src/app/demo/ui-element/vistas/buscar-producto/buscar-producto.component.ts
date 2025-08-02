@@ -44,7 +44,6 @@ export class BuscarProductoComponent {
         loadProducto() {
           this.productoServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
             (dato: any) => {
-              console.log( dato.content)
               this.producto = dato.content;
               this.isFirst = dato.first;
               this.isLast = dato.last;
@@ -53,10 +52,8 @@ export class BuscarProductoComponent {
           );
         }
         loadUnidadProducto(id: any) {
-          console.log(id);
           this.productoServices.listaUnidadProductoList(id).subscribe(
             (dato: any) => {
-              console.log( "s" , dato)
               this.unidadesMedidaProducto = dato;
             }
           );
@@ -70,10 +67,8 @@ export class BuscarProductoComponent {
             this.operacionDetalle.producto = unidadMedidaProducto.producto;
             this.operacionDetalle.cantidad = this.cantidad;
             this.operacionDetalle.descuento = this.descuento;
-            console.log(unidadMedidaProducto.precio)
             this.operacionDetalle.precioUnitario = unidadMedidaProducto.precio;
             this.operacion.agregarOperacionDetalle(this.operacionDetalle);
-            console.log(this.operacionDetalle)
             if(this.identificador == "compra"){
               this.router.navigate(['/component/Nuevacompras']);
             }else if(this.identificador == "cotizacion"){

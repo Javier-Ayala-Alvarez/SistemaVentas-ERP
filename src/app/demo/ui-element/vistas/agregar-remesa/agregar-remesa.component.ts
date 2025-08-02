@@ -31,8 +31,6 @@ export  class AgregarRemesaComponent {
   if (this.remesa) {
     this.remesaNuevo = { ...this.remesa }; // Copia los valores si está definido
   } 
-  console.log("Remesa",this.remesaNuevo)
-
   this.loadCajas();
  
   this.loadSucursal();
@@ -41,7 +39,6 @@ export  class AgregarRemesaComponent {
 
 //Guardar Remesa
 guardar(){
-  console.log("Remesa: ",this.remesaNuevo)
   if (this.remesa != null) {
     this.RemesaService.modificar(this.remesaNuevo.id ?? 0, this.remesaNuevo).subscribe(()=>{
       this.cerrarYRecargar();
@@ -66,7 +63,6 @@ cerrarYRecargar() {
 loadSucursal() {
   this.sucursalServices.buscar().subscribe(
     (dato: any) => {
-      console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
       this.sucursales = dato;
       if (this.remesa) {
         this.remesaNuevo.sucursal = this.sucursales?.find(emp => emp.id === this.remesaNuevo.sucursal?.id);
@@ -79,7 +75,6 @@ loadSucursal() {
 loadCajas() {
   this.cajasServices.buscarCaja().subscribe(
     (dato: any) => {
-      console.log("cajas recibidas:", dato[0].id); // Verifica los datos en la consola
       this.cajas = dato;
      
       if (this.remesa) {

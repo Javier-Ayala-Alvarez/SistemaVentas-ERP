@@ -226,7 +226,6 @@ export default class FacturaComponent implements OnInit {
 
   loadCaja() {
   const sucursalId = this.operacion?.sucursal?.id;
-  console.log(this.operacion?.sucursal);
 
   if (!sucursalId) return;
 
@@ -256,6 +255,7 @@ export default class FacturaComponent implements OnInit {
   //validar si la caja ha sido seleccionada antes de guardar factura 
 
 guardarFactura() {
+  
   if (!this.operacion.caja || !this.operacion.caja.id) {
     Swal.fire({
       icon: 'warning',

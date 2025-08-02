@@ -34,7 +34,6 @@ export class FormaDePagoComponent {
   loadFormaPago(): void {
     this.formaServices.listaFormaPago().subscribe(
       (dato: any) => {
-        console.log("s", dato)
         this.formaPago = dato;
       }
     );

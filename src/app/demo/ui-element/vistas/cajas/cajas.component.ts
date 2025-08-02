@@ -75,7 +75,6 @@ export default class CajasComponent {
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
-        console.log("Datos<",this.cajas)
       }
     );
   }
@@ -100,14 +99,8 @@ export default class CajasComponent {
 loadSucursal() {
   this.sucursalServices.buscar().subscribe(
     (dato: any) => {
-      console.log("Sucursales recibidas:", dato); // Verifica los datos en la consola
       this.sucursales = dato;
-      console.log("sucursal: ", dato[0].nombre);
-      // Si hay una sucursal y una empresa, la seleccionamos en el combo
-      //if (this.sucursalNuevo.empresa) {
-        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
-      }
-    //}
+        }
   );
 }
 
