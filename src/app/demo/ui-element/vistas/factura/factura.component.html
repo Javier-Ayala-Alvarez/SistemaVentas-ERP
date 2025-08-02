@@ -88,6 +88,7 @@
         <select [(ngModel)]="operacion.caja" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
           <option [ngValue]="null" selected>Seleccione una caja</option>
           <option *ngFor="let dato of cajas" [ngValue]="dato">{{ dato.id }} - {{ dato.sucursal?.nombre }}</option>
+
         </select>
       </div>
     </div>
@@ -136,8 +137,8 @@
     <div class="d-flex align-items-center justify-content-between">
       <!-- Botones alineados al lado derecho -->
       <div class="botones d-flex align-items-center col-md-6">
-        <button class="btn btn-success me-2" (click)="openModalProducto()">Agregar Producto</button>
-        <button class="btn btn-primary me-2" (click)="openModalFormaPago()">Guardar Factura</button>
+        <button class="btn btn-success me-2" (click)="agregarProducto()">Agregar Producto</button>
+        <button class="btn btn-primary me-2" (click)="guardarFactura()">Guardar Factura</button>
         <button class="btn btn-warning me-2">Reimprimir Factura</button>
         <button class="btn btn-danger">Eliminar Factura</button>
       </div>
