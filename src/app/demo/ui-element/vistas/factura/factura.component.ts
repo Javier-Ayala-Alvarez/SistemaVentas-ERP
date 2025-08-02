@@ -15,6 +15,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.component';
 import { BuscarClienteComponent } from '../buscar-cliente/buscar-cliente.component';
 import { FormaDePagoComponent } from '../forma-de-pago/forma-de-pago.component';
@@ -223,6 +224,35 @@ export default class FacturaComponent implements OnInit {
       }
     );
   }
+
+
+  //validar si la caja ha sido seleccionada antes de guardar factura 
+
+guardarFactura() {
+  if (!this.operacion.caja || !this.operacion.caja.id) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Caja no seleccionada',
+      text: 'Debe seleccionar una caja antes de continuar.',
+    });
+    return;
+  }
+
+  // ✅ Si hay caja, primero abre el modal de forma de pago
+  this.openModalFormaPago();
+}
+
+agregarProducto() {
+  if (!this.operacion.caja || !this.operacion.caja.id) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Caja no seleccionada',
+      text: 'Debe seleccionar una caja antes de continuar.',
+    });
+    return;
+  }
+  this.openModalProducto();
+}
 
 
 
