@@ -13,6 +13,7 @@ import { CajaClass } from "./caja-class";
 export class OperacionClass {
     id?: number = 0; 
     cliente?: ClienteClass = new ClienteClass();
+    vendedor?: String;
     proveedor?: ProveedorClass = new ProveedorClass();
     descripcion?: String;
     nFactura?: string;
@@ -20,7 +21,7 @@ export class OperacionClass {
     municipio?: MunicipioClass= new MunicipioClass();
     sucursal?: SucursalClass = new SucursalClass();
     distrito?: DistritoClass= new DistritoClass();
-    fechaElaboracion?: Date | Date ;
+    fechaElaboracion?: String;
     fechaVencimiento?: String | Date;
 
     dui?: String;

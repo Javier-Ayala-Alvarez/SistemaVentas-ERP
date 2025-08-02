@@ -50,7 +50,7 @@
       </div>
       <div class="col-md-3">
         <label for="fecha">Fecha de Creación</label>
-        <input type="date" [(ngModel)]="operacion.fechaElaboracion " name="fechaCreacion" class="form-control" readonly />
+        <input type="date" [(ngModel)]="operacion.fechaElaboracion" name="fechaCreacion" class="form-control" readonly />
       </div>
     </div>
 
@@ -66,7 +66,7 @@
       </div>
       <div class="col-md-3">
         <label for="vendedor">Vendedor</label>
-        <input type="text" name="nombreVendedor" class="form-control" placeholder="Nombre del vendedor" readonly />
+        <input type="text" [(ngModel)]="operacion.vendedor" name="nombreVendedor" class="form-control" placeholder="Nombre del vendedor" readonly />
       </div>
       <div class="col-md-3">
         <label for="tipoOperacion">Tipo de Operación</label>

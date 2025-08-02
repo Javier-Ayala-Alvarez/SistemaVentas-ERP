@@ -20,7 +20,7 @@
         <!-- Fecha de Inicio -->
         <div class="col-md-6 form-group mb-3">
           <label for="fechaInicio">Fecha de Inicio</label>
-          <input type="date" [(ngModel)]="cajaNuevo.fechaInicio" class="form-control" id="fechaInicio" name="fechaInicio" required>
+          <input type="date" [(ngModel)]="cajaNuevo.fechaInicio" class="form-control" id="fechaInicio" name="fechaInicio" [readonly]="modoEdicion">
         </div>
       </div>
 
@@ -28,13 +28,13 @@
         <!-- Hora de Inicio -->
         <div class="col-md-6 form-group mb-3">
           <label for="horaInicio">Hora de Inicio</label>
-          <input type="text" [(ngModel)]="cajaNuevo.horaInicio" class="form-control" id="horaInicio" name="horaInicio" placeholder="Hora Inicio" required>
+          <input type="text" [(ngModel)]="cajaNuevo.horaInicio" class="form-control" id="horaInicio" name="horaInicio" placeholder="Hora Inicio" [readonly]="modoEdicion">
         </div>
 
         <!-- Fecha de Cierre -->
         <div class="col-md-6 form-group mb-3">
           <label for="fechaCierre">Fecha de Cierre</label>
-          <input type="date" [(ngModel)]="cajaNuevo.fechaCierre" class="form-control" id="fechaCierre" name="fechaCierre" required>
+          <input type="date" [(ngModel)]="cajaNuevo.fechaCierre" class="form-control" id="fechaCierre" name="fechaCierre" [readonly]="!modoEdicion">
         </div>
       </div>
 
@@ -42,13 +42,13 @@
         <!-- Hora de Cierre -->
         <div class="col-md-6 form-group mb-3">
           <label for="horaCierre">Hora de Cierre</label>
-          <input type="text" [(ngModel)]="cajaNuevo.horaCierre" class="form-control" id="horaCierre" name="horaCierre" placeholder="Hora Cierre" required>
+          <input type="text" [(ngModel)]="cajaNuevo.horaCierre" class="form-control" id="horaCierre" name="horaCierre" placeholder="Hora Cierre" [readonly]="!modoEdicion">
         </div>
 
         <!-- Efectivo de Apertura -->
         <div class="col-md-6 form-group mb-3">
           <label for="efectivoApertura">Efectivo de Apertura</label>
-          <input type="number" [(ngModel)]="cajaNuevo.efectivoApertura" class="form-control" id="efectivoApertura" name="efectivoApertura" placeholder="Efectivo de Apertura" required>
+          <input type="number" [(ngModel)]="cajaNuevo.efectivoApertura" class="form-control" id="efectivoApertura" name="efectivoApertura" placeholder="Efectivo de Apertura" [readonly]="modoEdicion">
         </div>
       </div>
 
@@ -56,7 +56,7 @@
         <!-- Efectivo de Cierre -->
         <div class="col-md-6 form-group mb-3">
           <label for="efectivoCierre">Efectivo de Cierre</label>
-          <input type="number" [(ngModel)]="cajaNuevo.efectivoCierre" class="form-control" id="afectivoCierre" name="afectivoCierre" placeholder="Efectivo de Cierre" required>
+          <input type="number" [(ngModel)]="cajaNuevo.efectivoCierre" class="form-control" id="afectivoCierre" name="afectivoCierre" placeholder="Efectivo de Cierre" [readonly]="!modoEdicion">
         </div>
       </div>
 
