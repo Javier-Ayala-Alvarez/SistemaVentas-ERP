@@ -74,15 +74,17 @@ export default class FacturaComponent implements OnInit {
     const hoy = new Date();
     this.operacion.fechaElaboracion = hoy.toISOString().split('T')[0];
 
-     // ✅ Obtener el usuario logueado desde el servicio
     const usuario = this.loginServices.getUser();
-    if (usuario && usuario.username) {  // Ajusta según la estructura de tu objeto usuario
-      this.operacion.vendedor = usuario.username;
+    if (usuario && usuario.username) {
+      this.operacion.vendedor!.id = usuario.id;
+      this.operacion.vendedor!.username = usuario.username;
+
     }
+
 
     this.loadCaja();
   }
-  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private loginServices: LoginServicesService ,private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, private cajaServices: CajasServicesService // Usamos ActivatedRoute aquí
+  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private loginServices: LoginServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, private cajaServices: CajasServicesService // Usamos ActivatedRoute aquí
   ) {
 
   }
@@ -124,34 +126,34 @@ export default class FacturaComponent implements OnInit {
   }
 
   //mostrar datos de la sucursal
- loadSucursal() {
-  this.sucursalServices.buscar().subscribe((dato: any) => {
-    this.sucursales = dato;
+  loadSucursal() {
+    this.sucursalServices.buscar().subscribe((dato: any) => {
+      this.sucursales = dato;
 
-    // 1. Si ya hay una sucursal seleccionada previamente (por ID), la usamos
-    if (this.operacion.sucursal?.id) {
-      this.operacion.sucursal = this.sucursales.find(emp => emp.id === this.operacion.sucursal?.id);
-    } 
-    // 2. Si hay una sucursal con select === true, la usamos
-    else {
-      const seleccionado = this.sucursales.find(dep => dep.select === true);
-      if (seleccionado) {
-        this.operacion.sucursal = seleccionado;
-      } 
-      // 3. Si no, usamos la primera
-      else if (this.sucursales.length > 0) {
-        this.operacion.sucursal = this.sucursales[0];
+      // 1. Si ya hay una sucursal seleccionada previamente (por ID), la usamos
+      if (this.operacion.sucursal?.id) {
+        this.operacion.sucursal = this.sucursales.find(emp => emp.id === this.operacion.sucursal?.id);
       }
-    }
+      // 2. Si hay una sucursal con select === true, la usamos
+      else {
+        const seleccionado = this.sucursales.find(dep => dep.select === true);
+        if (seleccionado) {
+          this.operacion.sucursal = seleccionado;
+        }
+        // 3. Si no, usamos la primera
+        else if (this.sucursales.length > 0) {
+          this.operacion.sucursal = this.sucursales[0];
+        }
+      }
 
+      this.loadCaja();
+    });
+  }
+
+  onSucursalChange(sucursalSeleccionada: any) {
+    this.operacion.sucursal = sucursalSeleccionada;
     this.loadCaja();
-  });
-}
-
- onSucursalChange(sucursalSeleccionada: any) {
-  this.operacion.sucursal = sucursalSeleccionada;
-  this.loadCaja();
-}
+  }
 
 
   loadMunicipio() {
@@ -236,81 +238,81 @@ export default class FacturaComponent implements OnInit {
   }
 
   loadCaja() {
-  const sucursalId = this.operacion?.sucursal?.id;
+    const sucursalId = this.operacion?.sucursal?.id;
 
-  if (!sucursalId) return;
+    if (!sucursalId) return;
 
-  this.cajaServices.buscar(sucursalId).subscribe((dato: any) => {
-    this.cajas = dato;
+    this.cajaServices.buscar(sucursalId).subscribe((dato: any) => {
+      this.cajas = dato;
 
-    // 1. Si ya hay una caja con ID, busca la correspondiente
-    if (this.operacion.caja?.id) {
-      this.operacion.caja = this.cajas.find(c => c.id === this.operacion.caja?.id);
-    } 
-    // 2. Si hay alguna marcada como seleccionada, usarla
-    else {
-      const seleccionado = this.cajas.find(c => c.select === true);
-      if (seleccionado) {
-        this.operacion.caja = seleccionado;
-      } 
-      // 3. Si no, usar la primera de la lista
-      else if (this.cajas.length > 0) {
-        this.operacion.caja = this.cajas[0];
+      // 1. Si ya hay una caja con ID, busca la correspondiente
+      if (this.operacion.caja?.id) {
+        this.operacion.caja = this.cajas.find(c => c.id === this.operacion.caja?.id);
       }
-    }
-  });
-}
+      // 2. Si hay alguna marcada como seleccionada, usarla
+      else {
+        const seleccionado = this.cajas.find(c => c.select === true);
+        if (seleccionado) {
+          this.operacion.caja = seleccionado;
+        }
+        // 3. Si no, usar la primera de la lista
+        else if (this.cajas.length > 0) {
+          this.operacion.caja = this.cajas[0];
+        }
+      }
+    });
+  }
 
 
 
   //validar si la caja ha sido seleccionada antes de guardar factura 
 
-guardarFactura() {
-  if (!this.operacion.caja || !this.operacion.caja.id) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Caja no seleccionada',
-      text: 'Debe seleccionar una caja antes de continuar.',
-    });
-    return;
+  guardarFactura() {
+    if (!this.operacion.caja || !this.operacion.caja.id) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Caja no seleccionada',
+        text: 'Debe seleccionar una caja antes de continuar.',
+      });
+      return;
+    }
+
+    // ✅ Validación de Cliente
+    if (!this.operacion.cliente || !this.operacion.cliente.id) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Cliente no seleccionado',
+        text: 'Debe seleccionar un cliente antes de continuar.',
+      });
+      return;
+    }
+
+    // ✅ Validación de Productos agregados
+    if (!this.operacionDetalle || this.operacionDetalle.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin productos',
+        text: 'Debe agregar al menos un producto antes de continuar.',
+      });
+      return;
+    }
+
+    // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
+    this.openModalFormaPago();
   }
 
-  // ✅ Validación de Cliente
-  if (!this.operacion.cliente || !this.operacion.cliente.id) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Cliente no seleccionado',
-      text: 'Debe seleccionar un cliente antes de continuar.',
-    });
-    return;
+
+  agregarProducto() {
+    if (!this.operacion.caja || !this.operacion.caja.id) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Caja no seleccionada',
+        text: 'Debe seleccionar una caja antes de continuar.',
+      });
+      return;
+    }
+    this.openModalProducto();
   }
-
-  // ✅ Validación de Productos agregados
-  if (!this.operacionDetalle || this.operacionDetalle.length === 0) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Sin productos',
-      text: 'Debe agregar al menos un producto antes de continuar.',
-    });
-    return;
-  }
-
-  // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
-  this.openModalFormaPago();
-}
-
-
-agregarProducto() {
-  if (!this.operacion.caja || !this.operacion.caja.id) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Caja no seleccionada',
-      text: 'Debe seleccionar una caja antes de continuar.',
-    });
-    return;
-  }
-  this.openModalProducto();
-}
 
 
 
