@@ -5,6 +5,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 // bootstrap
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { LoginServicesService } from 'src/app/demo/ui-element/services/login-services.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -27,12 +28,14 @@ export class NavRightComponent {
   visibleUserList: boolean;
   chatMessage: boolean;
   friendId!: number;
+  user: any;
 
   // constructor
-  constructor( private router: Router) {
+  constructor( private router: Router, private loginService: LoginServicesService) {
     this.visibleUserList = false;
     this.chatMessage = false;
-   
+       this.user = this.loginService.getUser();
+
   }
 
   // public method
@@ -41,7 +44,8 @@ export class NavRightComponent {
     this.chatMessage = !this.chatMessage;
   }
 
-  salir(){
-   this.router.navigate(['/sign-in']);
+   salir(){
+    this.loginService.logout();
+    this.router.navigate(['/sign-in']);
   }
 }

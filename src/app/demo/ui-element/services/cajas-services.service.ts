@@ -17,8 +17,8 @@ export class CajasServicesService {
 
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
-  buscar(): Observable<any[]> {
-    return this.httpClient.get<any>(`${this.apiUrl}/ListCombo`).pipe(
+  buscar(idSucursal: number): Observable<any[]> {
+    return this.httpClient.get<any>(`${this.apiUrl}/ListCombo/${idSucursal}`).pipe(
         catchError(this.mensajeSwal2.handleError) 
     );
   }

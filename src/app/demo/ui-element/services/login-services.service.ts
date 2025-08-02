@@ -14,11 +14,15 @@ export class LoginServicesService {
   constructor(private http:HttpClient) { }
 
   //generar token
-  public generateToken(loginData:any){
-    return this.http.post(`${baseUrl}/generate-token`,loginData);
+  public generateToken(loginData: any) {
+    console.log(loginData);
+    const respuesta = this.http.post(`${baseUrl}/generate-token`, loginData);
+    console.log(respuesta);
+    return respuesta;
   }
+  
 
-  public getCurrentUser(){
+   public getCurrentUser(){
     return this.http.get(`${baseUrl}/actual-usuario`);
   }
 
@@ -65,9 +69,21 @@ export class LoginServicesService {
     }
   }
 
-  public getUserRole(){
-    let user = this.getUser();
-    return user.authorities[0].authority;
+ public getUserRole(): string | null {
+  const token = this.getToken();
+  if (!token) return null;
+
+  try {
+    const payload = token.split('.')[1];
+    const decodedPayload = JSON.parse(atob(payload));
+    console.log("sss",decodedPayload.role)
+    return decodedPayload.role || null;
+  } catch (e) {
+    console.error("Error al decodificar el token", e);
+    return null;
   }
+}
+
+  
 
 }

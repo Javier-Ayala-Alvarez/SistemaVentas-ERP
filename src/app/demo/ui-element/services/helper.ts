@@ -1,4 +1,5 @@
-let baseUrl: string = 'http://localhost:8081'; // Valor por defecto
+//let baseUrl: string = 'http://192.168.0.100:8080/venta-0.0.1-SNAPSHOT'; // Valor por defecto
+let baseUrl: string = 'http://localhost:8181'; // Valor por defecto
 let imagenes: string = 'assets/images/imagenesAplicativo/'; // Valor por defecto
 
 export async function loadConfig(): Promise<void> {

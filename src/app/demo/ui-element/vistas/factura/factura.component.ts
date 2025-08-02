@@ -67,9 +67,10 @@ export default class FacturaComponent implements OnInit {
     this.loadTipoOperacion();
     this.loadSucursal();
     this.limpiarArreglo();
-    this.loadCaja();
+
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
+<<<<<<< HEAD
 
     const hoy = new Date();
     this.operacion.fechaElaboracion = hoy.toISOString().split('T')[0];
@@ -79,6 +80,9 @@ export default class FacturaComponent implements OnInit {
     if (usuario && usuario.username) {  // Ajusta según la estructura de tu objeto usuario
       this.operacion.vendedor = usuario.username;
     }
+=======
+    this.loadCaja();
+>>>>>>> a75412e0a247b4cb06112b54cd9ae5eddda3c823
   }
   constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private loginServices: LoginServicesService ,private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, private cajaServices: CajasServicesService // Usamos ActivatedRoute aquí
   ) {
@@ -111,8 +115,8 @@ export default class FacturaComponent implements OnInit {
         if (seleccionado) {
           this.operacion.departamento = seleccionado;
         }
-        
-        
+
+
         if (this.operacion.departamento) {
           this.operacion.departamento = this.departamentos?.find(emp => emp.id === this.operacion.departamento?.id);
         }
@@ -122,21 +126,36 @@ export default class FacturaComponent implements OnInit {
   }
 
   //mostrar datos de la sucursal
-  loadSucursal() {
-    this.sucursalServices.buscar().subscribe(
-      (dato: any) => {
-        console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
-        this.sucursales = dato;
-        const seleccionado = this.sucursales?.find(dep => dep.select === true);
-        if (seleccionado) {
-          this.operacion.sucursal = seleccionado;
-        }
-        if (this.operacion) {
-          this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);
-        }
+ loadSucursal() {
+  this.sucursalServices.buscar().subscribe((dato: any) => {
+    this.sucursales = dato;
+
+    // 1. Si ya hay una sucursal seleccionada previamente (por ID), la usamos
+    if (this.operacion.sucursal?.id) {
+      this.operacion.sucursal = this.sucursales.find(emp => emp.id === this.operacion.sucursal?.id);
+    } 
+    // 2. Si hay una sucursal con select === true, la usamos
+    else {
+      const seleccionado = this.sucursales.find(dep => dep.select === true);
+      if (seleccionado) {
+        this.operacion.sucursal = seleccionado;
+      } 
+      // 3. Si no, usamos la primera
+      else if (this.sucursales.length > 0) {
+        this.operacion.sucursal = this.sucursales[0];
       }
-    );
-  }
+    }
+
+    this.loadCaja();
+  });
+}
+
+ onSucursalChange(sucursalSeleccionada: any) {
+  this.operacion.sucursal = sucursalSeleccionada;
+  this.loadCaja();
+}
+
+
   loadMunicipio() {
     this.municipioServices.buscar().subscribe(
       (dato: any) => {
@@ -218,22 +237,33 @@ export default class FacturaComponent implements OnInit {
 
   }
 
-  //mostrar datos de la sucursal
   loadCaja() {
-    this.cajaServices.buscar().subscribe(
-      (dato: any) => {
-        this.cajas = dato;
-        console.log("Datos de Cajas recibidas:", this.cajas); 
-        const seleccionado = this.cajas?.find(dep => dep.select === true);
-        if (seleccionado) {
-          this.operacion.caja = seleccionado;
-        }
-        if (this.operacion) {
-          this.operacion.caja = this.cajas?.find(emp => emp.id === this.operacion.caja?.id);
-        }
+  const sucursalId = this.operacion?.sucursal?.id;
+  console.log(this.operacion?.sucursal);
+
+  if (!sucursalId) return;
+
+  this.cajaServices.buscar(sucursalId).subscribe((dato: any) => {
+    this.cajas = dato;
+
+    // 1. Si ya hay una caja con ID, busca la correspondiente
+    if (this.operacion.caja?.id) {
+      this.operacion.caja = this.cajas.find(c => c.id === this.operacion.caja?.id);
+    } 
+    // 2. Si hay alguna marcada como seleccionada, usarla
+    else {
+      const seleccionado = this.cajas.find(c => c.select === true);
+      if (seleccionado) {
+        this.operacion.caja = seleccionado;
+      } 
+      // 3. Si no, usar la primera de la lista
+      else if (this.cajas.length > 0) {
+        this.operacion.caja = this.cajas[0];
       }
-    );
-  }
+    }
+  });
+}
+
 
 
   //validar si la caja ha sido seleccionada antes de guardar factura 

@@ -85,7 +85,8 @@ export default class FacturaAdministradorComponent {
     this.fechaFin = this.fechaFin || new Date(); // asigna la fecha actual si está vacío
     this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin,  this.nFactura, this.tipoOperacion, this.sucursal).subscribe(
       (dato: any) => {
-        this.tipoOperaciones = dato.content;
+        console.log(dato);
+        this.operaciones = dato.content;
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);

@@ -12,14 +12,13 @@ const routes: Routes = [
     path: '',
     component: GuestComponent,
     children: [
-       
-            {
-              path: '',component: SignInComponent
-            },
+
       {
-        path: 'sign-in',
-        loadComponent: () =>
-          import('./demo/authentication/sign-in/sign-in.component').then(m => m.SignInComponent)
+        path: '', component: SignInComponent
+      },
+      {
+        path: 'sign-in', component: SignInComponent
+
       }
     ]
   },
@@ -40,7 +39,7 @@ const routes: Routes = [
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
