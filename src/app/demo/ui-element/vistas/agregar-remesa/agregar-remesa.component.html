@@ -9,7 +9,7 @@
         <!--select sucurdsal-->
         <div class="form-group mb-3">
             <label for="sucursal">Sucursal</label>
-            <select [(ngModel)]="remesaNuevo.sucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
+            <select [(ngModel)]="remesaNuevo.sucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal" (ngModelChange)="onSucursalChange($event)">
               <option [ngValue]="null" selected>Seleccione una sucursal</option>
               <option *ngFor="let dato of sucursales"  [ngValue]="dato">{{dato.nombre}}</option>
             </select>
@@ -20,7 +20,7 @@
           <label for="caja">N° Caja</label>
           <select [(ngModel)]="remesaNuevo.caja" class="form-select" id="caja" name="caja" required>
             <option [ngValue]="null" selected>Seleccione una caja</option>
-            <option *ngFor="let dato of cajas" [ngValue]="dato">{{dato.id}}</option>
+            <option *ngFor="let dato of cajas" [ngValue]="dato">{{ dato.id }} - {{ dato.sucursal?.nombre }}</option>
           </select>
         </div>
         <!-- cantidad -->

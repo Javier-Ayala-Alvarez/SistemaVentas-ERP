@@ -39,11 +39,6 @@ export class CajasServicesService {
     );
   }
 
-  buscarCaja(): Observable<any[]> {
-    return this.httpClient.get<any>(`${this.apiUrl}/ListCombo`).pipe(
-        catchError(this.mensajeSwal2.handleError) 
-    );
-  }
 
   // Modifica Caja
   modificar(id: number, caja: CajaClass): Observable<any> {
