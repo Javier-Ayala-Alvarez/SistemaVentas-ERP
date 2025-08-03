@@ -33,7 +33,7 @@ export default class RemesasComponent {
   ngOnInit(): void {
     this.loadremesas();
     this.loadSucursal();
-    this.loadCaja();
+    
   }
 
   agregar(): void {
@@ -95,18 +95,7 @@ export default class RemesasComponent {
     );
   }
 
-   //mostrar datos de la caja
-   loadCaja() {
-    this.cajaServices.buscarCaja().subscribe(
-      (dato: any) => {
-        this.cajas = dato;
-        // Si hay una sucursal y una empresa, la seleccionamos en el combo
-        //if (this.sucursalNuevo.empresa) {
-          //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
-        }
-      //}
-    );
-  }
+  
 
 
   //Ir a la siguiente pagina
