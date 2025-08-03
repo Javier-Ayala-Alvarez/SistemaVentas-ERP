@@ -18,7 +18,7 @@
                         <tr *ngFor="let forma of formaPago">
                             <td>{{ forma.nombre }}</td>
                             <td class="text-center">
-                              <button class="btn btn-success btn-sm rounded-circle" (click)="Agregar(forma)">
+                              <button class="btn btn-sm rounded-circle" [ngClass]="{'btn-transparente': formaSeleccionada?.id !== forma.id, 'btn-seleccionado': formaSeleccionada?.id === forma.id}" (click)="Agregar(forma)">
                                 <i class="fas fa-check"></i>
                               </button>
                             </td>

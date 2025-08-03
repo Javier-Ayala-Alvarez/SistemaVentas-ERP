@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class FormaDePagoComponent {
   formaPago?: FormaPagoClass[];
+  formaSeleccionada?: FormaPagoClass;
   formaPagoOperacion: FormaPagoOperacion = new FormaPagoOperacion();
   formaPagoOperacionList?: FormaPagoOperacion[];
   totalFormaPago?: number;
@@ -41,6 +42,7 @@ export class FormaDePagoComponent {
     );
   }
   Agregar(forma: FormaPagoClass) {
+      this.formaSeleccionada = forma; // ✅ Marca la forma seleccionada
     this.formaPagoOperacion!.formasPago = forma;
     this.totalizacion();
 
@@ -66,6 +68,8 @@ if (isNaN(monto) || monto <= 0) {
 
   // Reinicia el objeto para que no se repita el mismo pago accidentalmente
   this.formaPagoOperacion = new FormaPagoOperacion();
+  this.formaSeleccionada = undefined; // ✅ Reinicia la selección de botón
+
   }
   eliminarFormaPago(forma: FormaPagoOperacion) {
     this.operacion.eliminarFormaPagoOperacion(forma).subscribe((dato: any) => {

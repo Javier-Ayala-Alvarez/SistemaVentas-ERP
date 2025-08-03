@@ -1,0 +1,30 @@
+/* ✅ Estado normal: botón transparente */
+.btn-transparente {
+  background: transparent !important;
+  color: rgba(0, 0, 0, 0.3);         /* Check apagado */
+  border: 2px dashed #ccc;           /* Borde gris suave */
+  box-shadow: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-transparente:hover {
+  border-color: #999;                /* Borde más oscuro al pasar mouse */
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* ✅ Estilo cuando el botón está seleccionado */
+
+
+.btn-seleccionado {
+  background-color: #ffcc00 !important;   /* Color amarillo fuerte */
+  color: #000 !important;                 /* Texto oscuro */
+  border: 2px solid #ff9900 !important;   /* Borde naranja */
+  box-shadow: 0 0 10px rgba(255, 200, 0, 0.8); /* Efecto glow */
+  transform: scale(1.1);                  /* Leve aumento de tamaño */
+  transition: all 0.2s ease-in-out;       /* Animación suave */
+}
+
+.btn-seleccionado:hover {
+  background-color: #ffaa00 !important;   /* Un poco más naranja al pasar el mouse */
+  box-shadow: 0 0 15px rgba(255, 180, 0, 1);
+}
