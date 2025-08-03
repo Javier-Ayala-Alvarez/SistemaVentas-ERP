@@ -101,7 +101,6 @@ export default class AgregarComprasComponent implements OnInit {
   loadSucursal() {
     this.sucursalServices.buscar().subscribe(
       (dato: any) => {
-        console.log("Sucursales recibidas:", dato[0].nombre); // Verifica los datos en la consola
         this.sucursales = dato;
         if (this.operacion) {
           this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);

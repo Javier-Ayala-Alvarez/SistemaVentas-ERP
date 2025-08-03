@@ -32,7 +32,6 @@ export class RemesasServicesService {
 
 // Modifica remesa
 modificar(id: number, remesa: RemesaClass): Observable<any> {
-  console.log("entre");
   remesa.estado = 'A';
   return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, remesa).pipe(
     tap(() => {
@@ -77,7 +76,6 @@ modificar(id: number, remesa: RemesaClass): Observable<any> {
 
 // Muestra la lista de remesas
 load(idSucursal: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
-console.log("Id "+idSucursal);
 if(idSucursal == undefined){
   idSucursal = 0;
 }

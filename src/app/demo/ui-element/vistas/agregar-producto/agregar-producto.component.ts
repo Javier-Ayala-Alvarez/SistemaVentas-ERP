@@ -35,7 +35,6 @@ export default class AgregarProductoComponent {
     this.productoNuevo = new ProductoClass(); // Asegura la inicialización
      this.id = this.route.snapshot.queryParams['id'];
     this.unidadMedidaProducto = this.productoService.unidadMedidaProducto;
-    console.log(this.id);
     this.loadCategoria();
     if(this.id > 0){
       this.loadProducto(this.id);

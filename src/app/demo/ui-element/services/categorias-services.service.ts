@@ -77,7 +77,6 @@ export class CategoriasServicesService {
 
 // Muestra la lista de categorias
 load(terminoBusqueda: string, page: number, size: number, order: string, asc: boolean): Observable<any> {
-  console.log("entre");
   return this.httpClient.get(`${this.apiUrl}/List?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
     

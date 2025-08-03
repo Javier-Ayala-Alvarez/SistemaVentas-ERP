@@ -13,7 +13,7 @@ import { CajaClass } from "./caja-class";
 export class OperacionClass {
     id?: number = 0; 
     cliente?: ClienteClass = new ClienteClass();
-    vendedor?: String;
+    vendedor?: UsuarioClass  = new UsuarioClass();
     proveedor?: ProveedorClass = new ProveedorClass();
     descripcion?: String;
     nFactura?: string;

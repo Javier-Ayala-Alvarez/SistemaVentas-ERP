@@ -25,7 +25,6 @@ export class AgregarProveedorComponent {
       } else {
         this.proveedorNuevo = new ProveedorClass(); // Asegura la inicialización
       }
-      console.log("proveedor: " + JSON.stringify(this.proveedorNuevo));
       
     }
 

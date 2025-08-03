@@ -67,9 +67,7 @@ export default class ProductosComponent {
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
-        
-        console.log("esta es la ruta de la imagen ",this.productos);
-      }
+              }
     );
   }
 

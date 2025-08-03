@@ -95,7 +95,6 @@ export class ProductosServicesService {
 
      // Muestra la lista de sucursales
      listaUnidadProductoList(idProducto: number): Observable<any> {
-      console.log(idProducto)
       return this.httpClient.get<any>(`${this.apiUrl}/ListUnidadProducto/${idProducto}`).pipe(
         catchError(this.mensajeSwal2.handleError) 
       );

@@ -28,9 +28,6 @@ export class CajasServicesService {
 
   // Agrega una nueva caja 
   agregar(caja: CajaClass): Observable<any> {
-    console.log("entre");
-
-
     caja.estado = 'A';
     return this.httpClient.post(`${this.apiUrl}/Guardar`, caja).pipe(
       tap(() => {
@@ -50,7 +47,6 @@ export class CajasServicesService {
 
   // Modifica Caja
   modificar(id: number, caja: CajaClass): Observable<any> {
-    console.log("Caja antes de enviar:", JSON.stringify(caja, null, 2));
     caja.estado = 'A';
     return this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, caja).pipe(
       tap(() => {
@@ -61,11 +57,8 @@ export class CajasServicesService {
   }
 
    // Eliminar caja
-   eliminar(id: number, caja: CajaClass): Observable<any> {
-    console.log("📌 ID recibido para eliminar:", id);
-  
+   eliminar(id: number, caja: CajaClass): Observable<any> {  
     return new Observable(observer => {
-      console.log("entre");
       Swal.fire({
         title: 'Eliminar Caja',
         text: '¿Estás seguro de que deseas eliminar esta caja?',
@@ -76,28 +69,21 @@ export class CajasServicesService {
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar'
       }).then((resultado) => {  // Asegura que "result" tiene datos
-        console.log("📌 Resultado del Swal.fire:", resultado);
-  
         if (resultado.isConfirmed) {
-          console.log("✅ Usuario confirmó la eliminación");
-  
           caja.estado = 'N'; // Marca la caja como eliminada
   
           this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, caja).pipe(
             tap(() => {
-              console.log("✅ Caja eliminada exitosamente");
               this.mensajeSwal2.mensaje('Eliminada exitosamente', 'La caja se ha modificado correctamente.');
               observer.next(true);
             }),
             catchError((error) => {
-              console.error("❌ Error al eliminar la caja:", error);
               this.mensajeSwal2.handleError(error);
               observer.error(error);
               return throwError(error);
             })
           ).subscribe();
         } else {
-          console.log("❌ Eliminación cancelada por el usuario");
           observer.next(false);
         }
       }).catch((error: any) => console.error("❌ Error en Swal.fire:", error)); // Maneja errores

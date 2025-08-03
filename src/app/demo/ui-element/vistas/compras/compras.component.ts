@@ -33,7 +33,6 @@ export default class ComprasComponent {
   }
 
   AgregarNuevo(){
-    console.log("Prueba");
    this.router.navigate(['/component/Nuevacompras']);
   }
 
@@ -42,23 +41,15 @@ export default class ComprasComponent {
 loadSucursal() {
   this.sucursalServices.buscar().subscribe(
     (dato: any) => {
-      console.log("Sucursales recibidas:", dato); // Verifica los datos en la consola
       this.sucursales = dato;
-      console.log("sucursal: ", dato[0].nombre);
-      // Si hay una sucursal y una empresa, la seleccionamos en el combo
-      //if (this.sucursalNuevo.empresa) {
-        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
       }
-    //}
   );
 }
 
 loadTipoOperacion() {
   this.tipoOperacionServices.buscarTipoOperacion("S").subscribe(
     (dato: any) => {
-      console.log("tipoOperacion recibidas:", dato); // Verifica los datos en la consola
       this.tipoOperaciones = dato;
-      console.log("tipoOperacion: ", dato[0].nombre);
       // Si hay una sucursal y una empresa, la seleccionamos en el combo
       //if (this.sucursalNuevo.empresa) {
         //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);

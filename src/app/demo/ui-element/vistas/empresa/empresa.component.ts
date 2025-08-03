@@ -42,7 +42,6 @@ export class EmpresaComponent {
       if (this.empresa.direccionLogo) {
         // Log para ver la URL generada
         this.imagenPreview = this.imagenRuta+this.empresa.direccionLogo; // Asignar la vista previa desde la base de datos
-        console.log("Datos: " + this.imagenPreview)
 
       }
     }, (error) => {
@@ -64,11 +63,9 @@ export class EmpresaComponent {
         if (this.empresa.direccionLogo) {
           // Log para ver la URL generada
           this.imagenPreview = this.imagenRuta+this.empresa.direccionLogo; // Asignar la vista previa desde la base de datos
-          console.log("Datos: " + this.imagenPreview)
   
         }      },
       (error) => {
-        console.error("Error al guardar los cambios:", error);
       }
     );
   }

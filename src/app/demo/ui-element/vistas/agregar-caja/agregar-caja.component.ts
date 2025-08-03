@@ -98,7 +98,6 @@ loadSucursal() {
     (dato: any) => {
       this.sucursales = dato;
       if (this.caja) {
-        console.log("Entre")
         this.cajaNuevo.sucursal = this.sucursales?.find(emp => emp.id === this.cajaNuevo.sucursal?.id);
       }
       }

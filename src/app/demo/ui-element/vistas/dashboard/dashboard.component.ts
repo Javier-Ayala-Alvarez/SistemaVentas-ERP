@@ -36,7 +36,6 @@ export default class DashboardComponent {
    loadProducto() {
      this.productoServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
        (dato: any) => {
-         console.log(dato.content);
          this.producto = dato.content;
          this.isFirst = dato.first;
          this.isLast = dato.last;
@@ -46,10 +45,8 @@ export default class DashboardComponent {
    }
 
    loadUnidadProducto(id: any) {
-     console.log(id);
      this.productoServices.listaUnidadProductoList(id).subscribe(
        (dato: any) => {
-         console.log("Precios del producto:", dato);
          this.unidadesMedidaProducto[id] = dato || [];
          this.togglePreciosVisibility(id);  // Alternar la visibilidad de precios al hacer clic
        }

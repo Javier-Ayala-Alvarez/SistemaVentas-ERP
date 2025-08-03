@@ -66,7 +66,7 @@
       </div>
       <div class="col-md-3">
         <label for="vendedor">Vendedor</label>
-        <input type="text" [(ngModel)]="operacion.vendedor" name="nombreVendedor" class="form-control" placeholder="Nombre del vendedor" readonly />
+        <input type="text" [(ngModel)]="this.operacion.vendedor!.username" name="nombreVendedor" class="form-control" placeholder="Nombre del vendedor" readonly />
       </div>
       <div class="col-md-3">
         <label for="tipoOperacion">Tipo de Operación</label>

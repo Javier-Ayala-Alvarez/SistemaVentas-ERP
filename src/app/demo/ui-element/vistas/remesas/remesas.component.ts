@@ -67,12 +67,10 @@ export default class RemesasComponent {
 
   //mostrar datos en la tabla
   loadremesas() {
-    console.log(this.sucursalSelect)
     if(this.sucursalSelect == undefined){
       this.sucursalSelect =new  RemesaClass();
       this.sucursalSelect.id =0;
     }
-    console.log(this.sucursalSelect.id)
 
     this.remesasServices.load(this.sucursalSelect.id, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
@@ -88,7 +86,6 @@ export default class RemesasComponent {
   loadSucursal() {
     this.sucursalServices.buscar().subscribe(
       (dato: any) => {
-        console.log("Sucursales recibidas:", dato.nombre); // Verifica los datos en la consola
         this.sucursales = dato;
         // Si hay una sucursal y una empresa, la seleccionamos en el combo
         //if (this.sucursalNuevo.empresa) {

@@ -36,25 +36,16 @@ export class SignInComponent implements OnInit{
     }
     this.loginService.generateToken(this.loginData).subscribe(
       (data: any) => {
-        console.log("HHHHH",data);
-        // Almacenar el token en localStorage
         localStorage.setItem('accessToken', data.token);
 
         this.loginService.loginUser(data.token);
         this.loginService.getCurrentUser().subscribe((user: any) => {
           this.loginService.setUser(user);
-          // al momento de guardar datos del usuario
-
-          console.log("sss",user);
-          //if (this.loginService.getUserRole() == 'ADMIN') {
-            //dashboard admin
-            //window.location.href = '/admin';
             this.router.navigate(['/component/dashboard']);
 
           //}
         })
       }, (error) => {
-        console.log(error);
         this.snack.open('Detalles inválidos, vuelva a intentar ', 'Aceptar', {
           duration: 3000
         })
