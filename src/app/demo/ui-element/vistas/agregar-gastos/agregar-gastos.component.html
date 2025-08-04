@@ -1,37 +1,63 @@
 <div class="modal-header">
-    <h5 class="modal-title">Agregar Gasto</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div class="container mt-3">
-      <!-- Formulario -->
-      <form>
-        
-          
+  <h5 class="modal-title">Agregar Gasto</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+
+<div class="modal-body">
+  <div class="container mt-3">
+    <form>
+      <div class="row">
         <!-- Nombre -->
-        <div class="form-group mb-3">
+        <div class="form-group mb-3 col-md-6">
           <label for="nombre">Nombre</label>
-          <input type="text" [(ngModel)]="gastoNuevo.nombre"  class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
+          <input type="text" [(ngModel)]="gastoNuevo.nombre" name="nombre" id="nombre" class="form-control" placeholder="Nombre" required>
         </div>
 
-        <!-- Dexcripcion -->
-        <div class="form-group mb-3">
-            <label for="descripcion">Descripción</label>
-            <input type="text"  [(ngModel)]="gastoNuevo.descripcion" class="form-control" id="descripcion" name="descripcion" placeholder="Descripción" required>
-          </div>
+        <!-- Descripción -->
+        <div class="form-group mb-3 col-md-6">
+          <label for="descripcion">Descripción</label>
+          <input type="text" [(ngModel)]="gastoNuevo.descripcion" name="descripcion" id="descripcion" class="form-control" placeholder="Descripción" required>
+        </div>
 
-        <!-- cantidad -->
-        <div class="form-group mb-3">
+        <!-- Cantidad -->
+        <div class="form-group mb-3 col-md-6">
           <label for="cantidad">Cantidad</label>
-          <input type="number"  [(ngModel)]="gastoNuevo.cantidad"  class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad" required>
+          <input type="number" [(ngModel)]="gastoNuevo.cantidad" name="cantidad" id="cantidad" class="form-control" placeholder="Cantidad" required>
         </div>
-  
 
-      </form>
-    </div>
+        <!-- Total -->
+        <div class="form-group mb-3 col-md-6">
+          <label for="total">Total</label>
+          <input type="number" [(ngModel)]="gastoNuevo.total" name="total" id="total" class="form-control" placeholder="Total" required>
+        </div>
+
+        <!-- Sucursal -->
+        <div class="form-group mb-3 col-md-6">
+          <label for="sucursal">Sucursal</label>
+          <select [(ngModel)]="gastoNuevo.sucursal" name="sucursal" id="sucursal" class="form-select" required (ngModelChange)="onSucursalChange($event)">
+            <option [ngValue]="null">Seleccione una sucursal</option>
+            <option *ngFor="let dato of sucursales" [ngValue]="dato">
+              {{ dato.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Caja -->
+        <div class="form-group mb-3 col-md-6">
+          <label for="caja">Caja</label>
+          <select [(ngModel)]="gastoNuevo.caja" name="caja" id="caja" class="form-select" required>
+            <option [ngValue]="null">Seleccione una caja</option>
+            <option *ngFor="let dato of cajas" [ngValue]="dato">
+              {{ dato.id }} - {{ dato.sucursal?.nombre }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </form>
   </div>
-  
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary" (click)="guardar()">Guardar gastos</button>
-  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar gastos</button>
+</div>

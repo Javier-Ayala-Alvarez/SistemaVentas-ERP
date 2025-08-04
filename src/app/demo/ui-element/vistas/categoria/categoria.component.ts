@@ -12,6 +12,9 @@ import { CategoriaClass } from '../../clases/categoria-class';
   styleUrl: './categoria.component.scss'
 })
 export default class CategoriaComponent {
+   filtroCodigo: string = '';
+  filtroNombre: string = '';
+  filtroDescripcion: string = '';
   categorias: CategoriaClass[] | undefined;
   page: number = 0;
   size: number = 8;
@@ -56,7 +59,7 @@ export default class CategoriaComponent {
 
  //mostrar datos en la tabla
  loadCategorias() {
-  this.categoriasServices.load(this.terminoBusqueda || '', this.page, this.size, this.order, this.asc).subscribe(
+  this.categoriasServices.load(this.busqueda || '', this.page, this.size, this.order, this.asc).subscribe(
     (dato: any) => {
       this.categorias = dato.content;
       this.isFirst = dato.first;
@@ -81,7 +84,22 @@ paginaAnterior(): void {
     this.ngOnInit();
   }
 }
-
+ get busqueda(): string {
+    const partes = [];
+    if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
+    if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
+    if (this.filtroDescripcion) partes.push(`descripcion:${this.filtroDescripcion}`);
+    return partes.join(',');
+  }
+ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadCategorias();
+  }
 
 
 }

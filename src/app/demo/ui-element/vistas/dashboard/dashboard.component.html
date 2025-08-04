@@ -1,33 +1,47 @@
 <!-- Buscador Mejorado -->
+<!-- Filtros y buscador -->
+<!-- Filtros y buscador -->
 <div class="container-fluid mt-3">
-  <div class="row justify-content-center mb-3">
-    <div class="col-md-6">
-      <div class="input-group shadow-sm">
-        <input type="text"
-               class="form-control"
-               placeholder="Buscar por nombre de producto"
-               [(ngModel)]="terminoBusqueda"
-               (keyup.enter)="loadProducto()">
-        <button class="btn btn-primary" type="button" (click)="loadProducto()">
-          <i class="fas fa-search me-1"></i> Buscar
-        </button>
+  <div class="card border shadow-sm">
+    <div class="card-body">
+      <div class="row justify-content-center mb-2 g-2">
+        <!-- Buscador -->
+        <div class="col-md-4">
+          <div class="input-group shadow-sm">
+            <input class="form-control form-control-sm" [(ngModel)]="filtroNombre" (input)="loadProducto()"
+              placeholder="Nombre del producto" />
+          </div>
+        </div>
+        <!-- Filtro Descripción -->
+        <div class="col-md-3">
+          <input class="form-control form-control-sm" [(ngModel)]="filtroDescripcion" (input)="loadProducto()"
+            placeholder="Descripción del producto" />
+        </div>
+        <!-- Filtro Categoría -->
+        <div class="col-md-3">
+          <select class="form-select" [(ngModel)]="filtroCategoria" id="filtroCategoria" name="filtroCategoria" required
+            (click)="loadProducto()">
+            <option [ngValue]="null" selected>Seleccione la categoria</option>
+            <option *ngFor="let dato of categorias" [ngValue]="dato.id">{{dato.nombre}}</option>
+          </select>
+        </div>
+
+
+
+
       </div>
     </div>
   </div>
 </div>
 
 
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-3 mb-4" *ngFor="let card of producto; let i = index">
       <mat-card class="shadow-sm border border-primary" appearance="outlined">
-        <img
-        mat-card-image
-        [src]="imagenRuta + card.nombreImagen"
-        alt="Imagen no disponible"
-        class="img-fluid mx-auto d-block"
-        style="height: 200px; object-fit: cover;"
-      />
+        <img mat-card-image [src]="imagenRuta + card.nombreImagen" alt="Imagen no disponible"
+          class="img-fluid mx-auto d-block" style="height: 200px; object-fit: cover;" />
 
         <mat-card-header>
           <div mat-card-avatar class="example-header-image"></div>
@@ -53,7 +67,7 @@
         <div *ngIf="preciosVisible[card.id!]" class="px-3 pb-3">
           <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center"
-                *ngFor="let precio of unidadesMedidaProducto[card.id!]">
+              *ngFor="let precio of unidadesMedidaProducto[card.id!]">
               {{ precio.unidadMedida?.descripcion }}
               <span class="badge bg-primary rounded-pill">
                 {{ precio.precio | currency }}

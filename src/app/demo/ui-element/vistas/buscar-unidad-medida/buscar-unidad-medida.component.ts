@@ -12,25 +12,31 @@ import { Router } from '@angular/router';
   styleUrl: './buscar-unidad-medida.component.scss'
 })
 export class BuscarUnidadMedidaComponent {
-    unidadMedida: UnidadMedidaClass[] | undefined;
-    unidadMedidaProducto: UnidadMedidaProductoClass = new UnidadMedidaProductoClass();
-    page: number = 0;
-    size: number = 8; 
-    order: string = 'id';
-    asc: boolean = true;
-    isFirst: boolean = false;
-    isLast: boolean = false;
-    terminoBusqueda: string = '';
-    totalPages: any[] = [];
-  
-  constructor(public activeModal: NgbActiveModal, private unidadServices: UnidadesServicesService, private productoServices: ProductosServicesService,private router: Router,) {}
+  // Filtros individuales
+  filtroCodigo: string = '';
+  filtroNombre: string = '';
+  filtroFactor: string = '';
+  filtroAbreviatura: string = '';
+
+  unidadMedida: UnidadMedidaClass[] | undefined;
+  unidadMedidaProducto: UnidadMedidaProductoClass = new UnidadMedidaProductoClass();
+  page: number = 0;
+  size: number = 8;
+  order: string = 'id';
+  asc: boolean = true;
+  isFirst: boolean = false;
+  isLast: boolean = false;
+  terminoBusqueda: string = '';
+  totalPages: any[] = [];
+
+  constructor(public activeModal: NgbActiveModal, private unidadServices: UnidadesServicesService, private productoServices: ProductosServicesService, private router: Router,) { }
 
   ngOnInit(): void {
     this.loadUnidadMedida();
   }
   //mostrar datos en la tabla
   loadUnidadMedida() {
-    this.unidadServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+    this.unidadServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.unidadMedida = dato.content;
         this.isFirst = dato.first;
@@ -47,7 +53,7 @@ export class BuscarUnidadMedidaComponent {
     this.activeModal.close(); // Cierra el modal (opcional)
 
   }
-  
+
 
   //Ir a la siguiente pagina
   paginaSiguiente(): void {
@@ -62,5 +68,22 @@ export class BuscarUnidadMedidaComponent {
       this.page--;
       this.ngOnInit();
     }
+  }
+  get busqueda(): string {
+    const partes = [];
+    if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
+    if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
+    if (this.filtroFactor) partes.push(`factor:${this.filtroFactor}`);
+    if (this.filtroAbreviatura) partes.push(`abreviatura:${this.filtroAbreviatura}`);
+    return partes.join(',');
+  }
+  ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadUnidadMedida();
   }
 }

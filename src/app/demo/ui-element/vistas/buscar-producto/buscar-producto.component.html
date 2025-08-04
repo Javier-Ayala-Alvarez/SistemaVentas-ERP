@@ -4,14 +4,6 @@
 </div>
 
 <div class="modal-body">
-  <!-- Buscador -->
-  <div class="mb-3">
-    <label for="cliente" class="form-label">Buscar Producto</label>
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Nombre del producto" [(ngModel)]="terminoBusqueda">
-      <button class="btn btn-outline-primary" type="button" (click)="loadProducto()">Buscar</button>
-    </div>
-  </div>
 
   <div class="row">
     <!-- Tabla de Productos -->
@@ -20,13 +12,28 @@
         <h6 class="mb-3">Lista de Productos</h6>
         <div class="table-responsive">
           <table class="table table-bordered table-hover align-middle cursor-pointer table-row-hover">
-            <thead class="table-dark text-center">
-              <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Imagen</th>
-              </tr>
-            </thead>
+              <thead class="table-dark">
+                    <tr>
+                        <th (click)="ordenarPor('nombre')" style="cursor:pointer" class="text-white">
+                            Nombre
+                            <i class="fas"
+                                [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                        <th (click)="ordenarPor('descripcion')" style="cursor:pointer" class="text-white">
+                            Descripción
+                            <i class="fas"
+                                [ngClass]="order === 'descripcion' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                          <th>Imagen</th>
+                    </tr>
+                    <tr>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroNombre"
+                                (input)="loadProducto()" placeholder="Nombre" /></th>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroDescripcion" (input)="loadProducto()"
+                                placeholder="Descripción" /></th>
+                                <th></th>
+                    </tr>
+                </thead>
             <tbody>
               <tr *ngFor="let data of producto"  (click)="loadUnidadProducto(data.id)">
                 <td>{{ data.nombre }}</td>
@@ -34,7 +41,6 @@
                 <td>
                   <img *ngIf="data.nombreImagen" [src]="imagenRuta + data.nombreImagen" class="img-thumbnail" style="max-height: 50px;">
                 </td>
-              
               </tr>
             </tbody>
           </table>

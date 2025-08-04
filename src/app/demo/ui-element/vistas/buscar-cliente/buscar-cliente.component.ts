@@ -13,6 +13,10 @@ import { OperacionServicesService } from '../../services/operacion-services.serv
   styleUrl: './buscar-cliente.component.scss'
 })
 export class BuscarClienteComponent {
+    filtroCodigo: string = '';
+  filtroNombre: string = '';
+  filtroDui: string = '';
+  filtroNit: string = '';
   cliente?: ClienteClass[] = undefined;
   page: number = 0;
   size: number = 8;
@@ -30,7 +34,7 @@ export class BuscarClienteComponent {
   }
   //mostrar datos en la tabla
   loadCliente() {
-    this.clienteServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+    this.clienteServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.cliente = dato.content;
         this.isFirst = dato.first;
@@ -66,5 +70,22 @@ export class BuscarClienteComponent {
       this.page--;
       this.ngOnInit();
     }
+  }
+   get busqueda(): string {
+    const partes = [];
+    if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
+    if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
+    if (this.filtroDui) partes.push(`dui:${this.filtroDui}`);
+    if (this.filtroNit) partes.push(`nit:${this.filtroNit}`);
+    return partes.join(',');
+  }
+ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadCliente();
   }
 }

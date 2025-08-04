@@ -10,6 +10,10 @@ import { SucursalServicesService } from '../../services/sucursal-services.servic
   styleUrl: './sucursal.component.scss'
 })
 export default class SucursalComponent {
+    // Filtros individuales
+  filtroCodigo: string = '';
+  filtroNombre: string = '';
+  filtroDireccion: string = '';
 
   sucursales: SucursalClass[] | undefined;
   page: number = 0;
@@ -18,7 +22,6 @@ export default class SucursalComponent {
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
-  terminoBusqueda: string = '';
   totalPages: any[] = []; 
 
   constructor(private modalService: NgbModal, private sucursalServices: SucursalServicesService) {
@@ -57,7 +60,7 @@ export default class SucursalComponent {
 
 //mostrar datos en la tabla
   loadSucursales() {
-    this.sucursalServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+    this.sucursalServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.sucursales = dato.content;
         this.isFirst = dato.first;
@@ -81,5 +84,20 @@ export default class SucursalComponent {
       this.ngOnInit();
     }
   }
-
+   get busqueda(): string {
+    const partes = [];
+    if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
+    if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
+    if (this.filtroDireccion) partes.push(`dirrecion:${this.filtroDireccion}`);
+    return partes.join(',');
+  }
+ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadSucursales();
+  }
 }

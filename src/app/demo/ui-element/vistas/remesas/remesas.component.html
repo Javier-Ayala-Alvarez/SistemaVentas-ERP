@@ -1,46 +1,66 @@
 <div class="container mt-4">
-    <!-- Cabecera de la Factura -->
     <div class="card shadow-sm p-4 mb-4 rounded">
         <h3 class="mb-4 text-center">Remesas</h3>
 
-        <!-- Sección de Cliente y Datos de Factura -->
-<div class="container mt-4">
-    <!-- Primera Fila -->
-    <div class="row mb-3 align-items-center">
-        <!-- Select de Sucursal -->
-        <div class="form-group col-md-4">
-            <label for="sucursal" class="form-label mb-0">Sucursal</label>
-            <select [(ngModel)]="sucursalSelect" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
-                <option [ngValue]="null"  selected>Seleccione una sucursal</option>
-                <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
-              </select>
+        <div class="container mt-4">
+            <div class="row mb-3 align-items-center">
+
+                <div class="col-md-4 d-flex">
+                    <button class="btn btn-primary w-100 " style="margin-top: 5px;"
+                        (click)="openModal()">Agregar</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Botón de Búsqueda -->
-        <div class="col-md-4 d-flex">
-            <button class="btn btn-warning w-100 " style="margin-top: 5px;" (click)="loadremesas()">Buscar</button>
-        </div>
 
-        <!-- Botón de Agregar -->
-        <div class="col-md-4 d-flex">
-            <button class="btn btn-primary w-100 " style="margin-top: 5px;" (click)="openModal()">Agregar</button>
-        </div>
-    </div>
-</div>
-
-
-        <!-- Cuerpo de la Factura (Tabla de Productos) -->
         <div class="card shadow-sm mb-4 p-3 rounded table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>Código</th>
-                        <th>Sucursal</th>
-                        <th>N° Caja</th>
-                        <th>Cantidad</th>
-                        <th>Acciones</th>
+                        <th (click)="ordenarPor('id')" style="cursor:pointer" class="text-white">
+                            Código
+                            <i class="fas"
+                                [ngClass]="order === 'id' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                        <th>
+                            Sucursal
+                        </th>
+                        <th>
+                            N° Caja
+                        </th>
+                        <th (click)="ordenarPor('cantidad')" style="cursor:pointer" class="text-white">
+                            Cantidad
+                            <i class="fas"
+                                [ngClass]="order === 'cantidad' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+
+                        <th class="text-white">Acciones</th>
+                    </tr>
+                    <tr>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroCodigo"
+                                (input)="loadRemesas()" placeholder="Código" /></th>
+                        <th>
+                            <select [(ngModel)]="filtroIdSucursal" class="form-select" id="sucursal" name="sucursal"
+                                required name="sucursal" (click)="loadRemesas()">
+                                <option [ngValue]="null" selected>Seleccione una sucursal</option>
+                                <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
+                            </select>
+                        </th>
+                        <th>
+                            <select [(ngModel)]="filtroIdCaja" class="form-select" id="caja" name="caja" required
+                                (click)="loadRemesas()">
+                                <option [ngValue]="null" selected>Seleccione una caja</option>
+                                <option *ngFor="let dato of cajas" [ngValue]="dato.id">{{ dato.id }} - {{
+                                    dato.sucursal?.nombre }}</option>
+                            </select>
+                        </th>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroCantidad"
+                                (input)="loadRemesas()" placeholder="Cantidad" /></th>
+                        <th class="text-white"></th>
+
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr *ngFor="let data of remesas">
                         <td>{{data.id}}</td>

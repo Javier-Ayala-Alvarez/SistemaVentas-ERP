@@ -4,26 +4,37 @@
   </div>
   <div>
     <div class="modal-body">
-        <div class="col-md-6">
-            <label for="cliente">Nombre</label>
-            <div class="input-group">
-              <input type="text" class="form-control" name="nombre" placeholder="Nombre" [(ngModel)]="terminoBusqueda" placeholder="Nombre de la unidad de medida">
-              <button class="btn btn-outline-secondary" type="button" (click)="loadUnidadMedida()">Buscar</button>
-            </div>
-          </div>
-      </div>
     
       <div class="card shadow-sm mb-4 p-3 rounded table-responsive">
         <table class="table table-striped table-hover">
-          <thead class="table-dark">
-            <tr>
-                <th>N°</th>
-                <th>Nombre</th>
-                <th>Abreviatura</th>
-                <th>Factor de Conversión</th>
-              <th>Agregar</th>
-            </tr>
-          </thead>
+        <thead class="table-dark">
+          <tr>
+            <th (click)="ordenarPor('id')" style="cursor:pointer" class="text-white">
+              Código
+              <i class="fas" [ngClass]="order === 'id' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+            </th>
+            <th (click)="ordenarPor('nombre')" style="cursor:pointer" class="text-white">
+              Nombre
+              <i class="fas" [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+            </th>
+             <th (click)="ordenarPor('abreviatura')" style="cursor:pointer" class="text-white">
+              Abreviatura
+              <i class="fas" [ngClass]="order === 'abreviatura' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+            </th>
+            <th (click)="ordenarPor('factor')" style="cursor:pointer" class="text-white">
+              Factor
+              <i class="fas" [ngClass]="order === 'factor' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+            </th>
+            <th class="text-white">Acciones</th>
+          </tr>
+          <tr>
+            <th><input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="loadUnidadMedida()" placeholder="Código" /></th>
+            <th><input class="form-control form-control-sm" [(ngModel)]="filtroNombre" (input)="loadUnidadMedida()" placeholder="Nombre" /></th>
+            <th><input class="form-control form-control-sm" [(ngModel)]="filtroAbreviatura" (input)="loadUnidadMedida()" placeholder="Abreviatura" /></th>
+            <th><input class="form-control form-control-sm" [(ngModel)]="filtroFactor" (input)="loadUnidadMedida()" placeholder="Factor" /></th>
+            <th></th>
+          </tr>
+        </thead>
           <tbody>
             
               <tr *ngFor="let data of unidadMedida">

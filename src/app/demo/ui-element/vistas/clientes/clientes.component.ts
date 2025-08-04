@@ -10,7 +10,11 @@ import { ClientesServicesService } from '../../services/clientes-services.servic
   styleUrl: './clientes.component.scss'
 })
 export default class ClientesComponent {
-
+  filtroCodigo: string = '';
+  filtroNombre: string = '';
+  filtroDui: string = '';
+  filtroNit: string = '';
+  filtroTelefono: string = '';
   clientes: ClienteClass[] | undefined;
   page: number = 0;
   size: number = 8;
@@ -58,7 +62,7 @@ export default class ClientesComponent {
 
   //mostrar datos en la tabla
   loadclientes() {
-    this.clienteServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+    this.clienteServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.clientes = dato.content;
         this.isFirst = dato.first;
@@ -83,7 +87,24 @@ export default class ClientesComponent {
       this.ngOnInit();
     }
   }
-
+ get busqueda(): string {
+    const partes = [];
+    if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
+    if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
+    if (this.filtroDui) partes.push(`dui:${this.filtroDui}`);
+    if (this.filtroNit) partes.push(`nit:${this.filtroNit}`);
+    if (this.filtroTelefono) partes.push(`telefono:${this.filtroTelefono}`);
+    return partes.join(',');
+  }
+ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadclientes();
+  }
 
 
 }

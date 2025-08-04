@@ -1,23 +1,9 @@
 <div class="container mt-4">
-    <!-- Cabecera de la Factura -->
     <div class="card shadow-sm p-4 mb-4 rounded">
         <h3 class="mb-4 text-center">Cliente</h3>
 
-        <!-- Sección de Cliente y Datos de Factura -->
         <div class="container mt-4">
-            <!-- Primera Fila -->
             <div class="row mb-3">
-                <!-- Campo de Nombre -->
-                <div class="col-md-3">
-                    <label for="producto">Nombre</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Nombre" name="nombre" [(ngModel)]="terminoBusqueda">
-                    </div>
-                </div>
-                <!-- Botón de Búsqueda -->
-                <div class="col-md-3 d-flex align-items-end">
-                    <button class="btn btn-warning w-100" (click)="loadclientes()">Buscar</button>
-                </div>
                 <div class="col-md-3 d-flex align-items-end">
                     <button class="btn btn-primary w-100" (click)="openModal()">Agregar</button>
                 </div>
@@ -25,16 +11,49 @@
         </div>
 
 
-        <!-- Cuerpo de la Factura (Tabla de Productos) -->
         <div class="card shadow-sm mb-4 p-3 rounded table-responsive">
             <table class="table table-striped table-hover">
-                <thead class="table-dark">
+                  <thead class="table-dark">
                     <tr>
-                        <th>Codigo</th>
-                        <th>Nombre</th>
-                        <th>Dui</th>
-                        <th>Nit</th>
-                        <th>Acciones</th>
+                        <th (click)="ordenarPor('id')" style="cursor:pointer" class="text-white">
+                            Código
+                            <i class="fas"
+                                [ngClass]="order === 'id' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                        <th (click)="ordenarPor('nombre')" style="cursor:pointer" class="text-white">
+                            Nombre
+                            <i class="fas"
+                                [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                        <th (click)="ordenarPor('dui')" style="cursor:pointer" class="text-white">
+                            Dui
+                            <i class="fas"
+                                [ngClass]="order === 'dui' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                        <th (click)="ordenarPor('nit')" style="cursor:pointer" class="text-white">
+                            Nit
+                            <i class="fas"
+                                [ngClass]="order === 'nit' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                        <th (click)="ordenarPor('telefono')" style="cursor:pointer" class="text-white">
+                            Telefono
+                            <i class="fas"
+                                [ngClass]="order === 'telefono' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
+                        </th>
+                        <th class="text-white">Acciones</th>
+                    </tr>
+                    <tr>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroCodigo"
+                                (input)="loadclientes()" placeholder="Código" /></th>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroNombre"
+                                (input)="loadclientes()" placeholder="Nombre" /></th>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroDui"
+                                (input)="loadclientes()" placeholder="Dui" /></th>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroNit"
+                                (input)="loadclientes()" placeholder="Nit" /></th>
+                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroTelefono"
+                                (input)="loadclientes()" placeholder="Telefono" /></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +62,7 @@
                         <td>{{data.nombre}}</td>
                         <td>{{data.dui}}</td>
                         <td>{{data.nit}}</td>
+                        <td>{{data.telefono}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">

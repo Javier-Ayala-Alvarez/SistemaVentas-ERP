@@ -75,11 +75,9 @@ modificar(id: number, remesa: RemesaClass): Observable<any> {
       }
 
 // Muestra la lista de remesas
-load(idSucursal: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
-if(idSucursal == undefined){
-  idSucursal = 0;
-}
-  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${idSucursal}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
+load(filtros: String, page: number, size: number, order: string, asc: boolean): Observable<any> {
+
+  return this.httpClient.get(`${this.apiUrl}/List?busqueda=${filtros}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );
 }

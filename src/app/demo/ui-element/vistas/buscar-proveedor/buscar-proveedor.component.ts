@@ -12,6 +12,8 @@ import { ClienteClass } from '../../clases/cliente-class';
   styleUrl: './buscar-proveedor.component.scss'
 })
 export class BuscarProveedorComponent {
+  filtroCodigo: string = '';
+  filtroNombre: string = '';
   proveedor?: ProveedorClass[] = undefined;
   page: number = 0;
   size: number = 8;
@@ -28,7 +30,7 @@ export class BuscarProveedorComponent {
     }
     //mostrar datos en la tabla
     loadProveedor() {
-      this.proveedorServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+      this.proveedorServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
         (dato: any) => {
           this.proveedor = dato.content;
           this.isFirst = dato.first;
@@ -65,4 +67,19 @@ export class BuscarProveedorComponent {
           this.ngOnInit();
         }
       }
+  get busqueda(): string {
+    const partes = [];
+    if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
+    if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
+    return partes.join(',');
+  }
+ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadProveedor();
+  }
 }

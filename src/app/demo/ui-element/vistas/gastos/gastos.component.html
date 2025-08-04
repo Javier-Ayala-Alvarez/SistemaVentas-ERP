@@ -32,7 +32,10 @@
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
+                        <th>Sucursal</th>
+                        <th>Caja</th>
                         <th>Cantidad</th>
+                        <th>Total</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -40,7 +43,10 @@
                     <tr *ngFor="let data of gastos">
                         <td>{{data.id}}</td>
                         <td>{{data.nombre}}</td>
+                        <td>{{data.sucursal?.nombre}}</td>
+                        <td>{{data.caja?.id}}</td>
                         <td>{{data.cantidad}}</td>
+                         <td>{{data.total}}</td>
                         <td class="d-flex justify-content-center">
                             <!-- Botón de Modificar -->
                             <button class="btn btn-warning btn-sm rounded-circle me-2">

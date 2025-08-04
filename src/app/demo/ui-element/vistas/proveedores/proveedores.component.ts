@@ -11,15 +11,20 @@ import { ProveedoresServicesService } from '../../services/proveedores-services.
   styleUrl: './proveedores.component.scss'
 })
 export default class ProveedoresComponent {
+  filtroCodigo: string = '';
+  filtroNombre: string = '';
+  filtroDui: string = '';
+  filtroNit: string = '';
+  filtroTelefono: string = '';
   proveedores: ProveedorClass[] | undefined;
-    page: number = 0;
-    size: number = 8;
-    order: string = 'id';
-    asc: boolean = true;
-    isFirst: boolean = false;
-    isLast: boolean = false;
-    terminoBusqueda: string = '';
-    totalPages: any[] = [];
+  page: number = 0;
+  size: number = 8;
+  order: string = 'id';
+  asc: boolean = true;
+  isFirst: boolean = false;
+  isLast: boolean = false;
+  terminoBusqueda: string = '';
+  totalPages: any[] = [];
   constructor(private modalService: NgbModal, private proveedoresServices: ProveedoresServicesService) { }
 
   ngOnInit(): void {
@@ -27,32 +32,32 @@ export default class ProveedoresComponent {
   }
 
   openModal(proveedor?: ProveedorClass): void {
-      const modalRef = this.modalService.open(AgregarProveedorComponent, {
-        size: 'lg',
-        centered: true
-      });
-      modalRef.componentInstance.proveedor = proveedor; // Pasar datos al modal (opcional)
-    }
+    const modalRef = this.modalService.open(AgregarProveedorComponent, {
+      size: 'lg',
+      centered: true
+    });
+    modalRef.componentInstance.proveedor = proveedor; // Pasar datos al modal (opcional)
+  }
 
-    agregar(): void {
-      this.openModal();
-    }
+  agregar(): void {
+    this.openModal();
+  }
 
-    editar(proveedor: ProveedorClass): void {
-        this.openModal(proveedor);
-      }
-      eliminar(proveedor: ProveedorClass): void {
-        this.proveedoresServices.eliminar(proveedor.id ?? 0, proveedor).subscribe(
-          () => {
-            this.loadProveedores();
-          },
-        );
-       
-      }
+  editar(proveedor: ProveedorClass): void {
+    this.openModal(proveedor);
+  }
+  eliminar(proveedor: ProveedorClass): void {
+    this.proveedoresServices.eliminar(proveedor.id ?? 0, proveedor).subscribe(
+      () => {
+        this.loadProveedores();
+      },
+    );
 
-      //mostrar datos en la tabla
+  }
+
+  //mostrar datos en la tabla
   loadProveedores() {
-    this.proveedoresServices.load(this.terminoBusqueda, this.page, this.size, this.order, this.asc).subscribe(
+    this.proveedoresServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.proveedores = dato.content;
         this.isFirst = dato.first;
@@ -76,8 +81,25 @@ export default class ProveedoresComponent {
       this.ngOnInit();
     }
   }
-  
-    
+
+  get busqueda(): string {
+    const partes = [];
+    if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
+    if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
+    if (this.filtroDui) partes.push(`dui:${this.filtroDui}`);
+    if (this.filtroNit) partes.push(`nit:${this.filtroNit}`);
+    if (this.filtroTelefono) partes.push(`telefono:${this.filtroTelefono}`);
+    return partes.join(',');
+  }
+ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadProveedores();
+  }
 
 
 }
