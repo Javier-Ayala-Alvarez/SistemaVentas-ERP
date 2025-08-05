@@ -22,6 +22,12 @@ export class CajasServicesService {
         catchError(this.mensajeSwal2.handleError) 
     );
   }
+   buscar01(): Observable<any[]> {
+    
+    return this.httpClient.get<any>(`${this.apiUrl}/ListCombo01`).pipe(
+        catchError(this.mensajeSwal2.handleError) 
+    );
+  }
 
 
   
@@ -87,7 +93,7 @@ export class CajasServicesService {
   
 
 // Muestra la lista de las cajas
-load(selectComboSucursal: number, page: number, size: number, order: string, asc: boolean): Observable<any> {
+load(selectComboSucursal: String, page: number, size: number, order: string, asc: boolean): Observable<any> {
   return this.httpClient.get(`${this.apiUrl}/List?busqueda=${selectComboSucursal}&page=${page}&size=${size}&order=${order}&asc=${asc}`).pipe(
     catchError(this.mensajeSwal2.handleError) 
   );

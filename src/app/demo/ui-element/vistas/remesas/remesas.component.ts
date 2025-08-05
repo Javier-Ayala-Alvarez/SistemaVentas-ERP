@@ -37,6 +37,7 @@ export default class RemesasComponent {
   ngOnInit(): void {
     this.loadRemesas();
     this.loadSucursal();
+    this.loadCajas();
 
   }
 
@@ -96,7 +97,7 @@ export default class RemesasComponent {
   }
   loadCajas() {
     if (this.filtroIdSucursal) {
-      this.cajasServices.buscar(Number(this.filtroIdSucursal)).subscribe(
+      this.cajasServices.buscar01().subscribe(
         (dato: any) => {
           this.cajas = dato;
         }
@@ -134,7 +135,7 @@ export default class RemesasComponent {
   ordenarPor(campo: string): void {
     if (this.order === campo) {
       this.asc = !this.asc;
-    } else {
+    } else { 
       this.order = campo;
       this.asc = true;
     }

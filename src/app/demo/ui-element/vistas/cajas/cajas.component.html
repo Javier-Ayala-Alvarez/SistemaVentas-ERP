@@ -1,88 +1,155 @@
 <div class="container mt-4">
-    <!-- Cabecera de la Factura -->
     <div class="card shadow-sm p-4 mb-4 rounded">
         <h3 class="mb-4 text-center">Cajas</h3>
 
-        <!-- Sección de Cliente y Datos de Factura -->
-<div class="container mt-4">
-    <!-- Primera Fila -->
-    <div class="row mb-3 align-items-center">
-        <!-- Select de Sucursal -->
-        <div class="form-group col-md-4">
-            <label for="sucursal" class="form-label mb-0">Sucursal</label>
-            <select [(ngModel)]="selectComboSucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal">
-                <option [ngValue]="null" selected>Seleccione una sucursal</option>
-                <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
-              </select>
+        <!-- Botón Agregar -->
+        <div class="row mb-3">
+            <div class="col-md-4 mx-auto">
+                <button class="btn btn-primary w-100" (click)="openModal()">Agregar</button>
+            </div>
         </div>
 
-        <!-- Botón de Búsqueda -->
-        <div class="col-md-4 d-flex">
-            <button class="btn btn-warning w-100 " style="margin-top: 5px;" (click)="loadcajas()" >Buscar</button>
+        <!-- Filtros -->
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h6 class="mb-0 text-secondary">
+                    <i class="fas fa-filter me-2"></i>Filtros
+                </h6>
+            </div>
+            <div class="card-body pt-3 pb-0">
+                <div class="row g-2">
+                    <div class="col-md-2">
+                        <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="loadcajas()"
+                            placeholder="Código" />
+                    </div>
+                    <div class="col-md-2">
+                        <select [(ngModel)]="filtroIdSucursal" class="form-select form-select-sm"
+                            (change)="loadcajas()">
+                            <option [ngValue]="null">Todas</option>
+                            <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
+                            (input)="loadcajas()" placeholder="Fecha Inicio" />
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control form-control-sm" [(ngModel)]="filtroHoraInicio" (input)="loadcajas()"
+                            placeholder="Hora Inicio" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"
+                            (input)="loadcajas()" placeholder="Fecha Fin" />
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control form-control-sm" [(ngModel)]="filtroHoraFin" (input)="loadcajas()"
+                            placeholder="Hora Fin" />
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control form-control-sm" [(ngModel)]="filtroEfectivoInicio"
+                            (input)="loadcajas()" placeholder="Efectivo Inicio" />
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control form-control-sm" [(ngModel)]="filtroEfectivoCierre"
+                            (input)="loadcajas()" placeholder="Efectivo Cierre" />
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Botón de Agregar -->
-        <div class="col-md-4 d-flex">
-            <button class="btn btn-primary w-100 " style="margin-top: 5px;" (click)="openModal()">Agregar</button>
-        </div>
-    </div>
-</div>
-
-
-        <!-- Cuerpo de la Factura (Tabla de Productos) -->
-        <div class="card shadow-sm mb-4 p-3 rounded table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Código</th>
-                        <th>Sucursal</th>
-                        <th>Fecha Inicio</th>
-                        <th>Hora Inicio</th>
-                        <th>Fecha Cierre</th>
-                        <th>Hora Cierre</th>
-                        <th>Efectivo Apertura</th>
-                        <th>Efectivo Cierre</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of cajas" [ngClass]="{'caja-abierta': !data.fechaCierre && !data.horaCierre && !data.efectivoCierre}">
-                        <td>{{data.id}}</td>
-                        <td>{{data.sucursal?.nombre}}</td>
-                        <td>{{data.fechaInicio}}</td>
-                        <td>{{data.horaInicio}}</td>
-                        <td>{{data.fechaCierre}}</td>
-                        <td>{{data.horaCierre}}</td>
-                        <td>{{data.efectivoApertura}}</td>
-                        <td>{{data.efectivoCierre}}</td>
-                        <td class="d-flex justify-content-center">
-                            <!-- Botón de Modificar -->
-                            <button class="btn btn-warning btn-sm rounded-circle mr-2" data-toggle="modal" data-target="#modifyModal">
-                                <i class="fas fa-edit" (click)="editar(data)" ></i>
-                            </button>
-                        
-                            <!-- Botón de Eliminar -->
-                            <button class="btn btn-danger btn-sm rounded-circle" data-toggle="modal" data-target="#deleteModal">
-                                <i class="fas fa-trash" (click)="eliminar(data)" ></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Tabla mejorada -->
+        <div class="card shadow-sm mb-4 p-3 rounded">
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                    <thead class="table-dark text-center sticky-top" style="z-index: 1;">
+                        <tr>
+                            <th (click)="ordenarPor('id')" style="cursor:pointer">
+                                Código
+                                <i class="fas"
+                                    [ngClass]="order === 'id' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                            </th>
+                            <th>Sucursal</th>
+                            <th (click)="ordenarPor('fechaInicio')" style="cursor:pointer">
+                                Fecha Inicio
+                                <i class="fas"
+                                    [ngClass]="order === 'fechaInicio' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                            </th>
+                            <th (click)="ordenarPor('horaInicio')" style="cursor:pointer">
+                                Hora Inicio
+                                <i class="fas"
+                                    [ngClass]="order === 'horaInicio' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                            </th>
+                            <th (click)="ordenarPor('fechaFin')" style="cursor:pointer">
+                                Fecha Fin
+                                <i class="fas"
+                                    [ngClass]="order === 'fechaFin' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                            </th>
+                            <th (click)="ordenarPor('horaFin')" style="cursor:pointer">
+                                Hora Fin
+                                <i class="fas"
+                                    [ngClass]="order === 'horaFin' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                            </th>
+                            <th (click)="ordenarPor('efectivoApertura')" style="cursor:pointer">
+                                Efectivo Apertura
+                                <i class="fas"
+                                    [ngClass]="order === 'efectivoApertura' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                            </th>
+                            <th (click)="ordenarPor('efectivoCierre')" style="cursor:pointer">
+                                Efectivo Cierre
+                                <i class="fas"
+                                    [ngClass]="order === 'efectivoCierre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                            </th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr *ngFor="let data of cajas"
+                            [ngClass]="{'table-warning': !data.fechaCierre && !data.horaCierre && !data.efectivoCierre}">
+                            <td>{{data.id}}</td>
+                            <td>{{data.sucursal?.nombre}}</td>
+                            <td>{{data.fechaInicio}}</td>
+                            <td>{{data.horaInicio}}</td>
+                            <td>{{data.fechaCierre}}</td>
+                            <td>{{data.horaCierre}}</td>
+                            <td class="text-end">{{data.efectivoApertura}}</td>
+                            <td class="text-end">{{data.efectivoCierre}}</td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" title="Editar"
+                                        (click)="editar(data)">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm" title="Eliminar"
+                                        (click)="eliminar(data)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Paginador -->
-            <nav aria-label="Page navigation" class="mt-3">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item"><span class="page-link">Items por página</span></li>
-                    <li class="page-item"><span class="page-link">Página {{page+1}} de {{totalPages.length}}</span></li>
-                    <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-backward" (click)="paginaAnterior()" ></i></a>
+            <nav class="mt-3">
+                <ul class="pagination justify-content-end mb-0">
+                    <li class="page-item disabled"><span class="page-link">Items por página</span></li>
+                    <li class="page-item disabled"><span class="page-link">Página {{page+1}} de
+                            {{totalPages.length}}</span></li>
+                    <li class="page-item" [class.disabled]="page === 0">
+                        <a class="page-link" style="cursor: pointer;" (click)="paginaAnterior()" aria-label="Anterior">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link"><i class="fas fa-step-forward" (click)="paginaSiguiente()" ></i></a>
+                    <li class="page-item" [class.disabled]="page + 1 >= totalPages.length">
+                        <a class="page-link" style="cursor: pointer;" (click)="paginaSiguiente()"
+                            aria-label="Siguiente">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
                     </li>
                 </ul>
             </nav>
         </div>
+
     </div>
 </div>

@@ -5,75 +5,91 @@
 
 <div class="modal-body">
 
-  <div class="row">
+  <div class="row g-3">
     <!-- Tabla de Productos -->
-    <div class="col-md-5 mb-3">
-      <div class="card shadow-sm p-3 rounded">
+    <div class="col-md-5">
+      <div class="card shadow-sm p-3 rounded h-100 d-flex flex-column">
         <h6 class="mb-3">Lista de Productos</h6>
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover align-middle cursor-pointer table-row-hover">
-              <thead class="table-dark">
-                    <tr>
-                        <th (click)="ordenarPor('nombre')" style="cursor:pointer" class="text-white">
-                            Nombre
-                            <i class="fas"
-                                [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
-                        </th>
-                        <th (click)="ordenarPor('descripcion')" style="cursor:pointer" class="text-white">
-                            Descripción
-                            <i class="fas"
-                                [ngClass]="order === 'descripcion' ? (asc ? 'fa-sort-up text-white' : 'fa-sort-down text-white') : 'fa-sort text-white'"></i>
-                        </th>
-                          <th>Imagen</th>
-                    </tr>
-                    <tr>
-                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroNombre"
-                                (input)="loadProducto()" placeholder="Nombre" /></th>
-                        <th><input class="form-control form-control-sm" [(ngModel)]="filtroDescripcion" (input)="loadProducto()"
-                                placeholder="Descripción" /></th>
-                                <th></th>
-                    </tr>
-                </thead>
+        <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+          <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th (click)="ordenarPor('nombre')" style="cursor:pointer" class="text-white">
+                  Nombre
+                  <i class="fas"
+                    [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </th>
+                <th (click)="ordenarPor('descripcion')" style="cursor:pointer" class="text-white">
+                  Descripción
+                  <i class="fas"
+                    [ngClass]="order === 'descripcion' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                </th>
+                <th>Imagen</th>
+              </tr>
+              <tr>
+                <th>
+                  <input class="form-control form-control-sm" [(ngModel)]="filtroNombre"
+                    (input)="loadProducto()" placeholder="Nombre" style="min-width: 110px;" />
+                </th>
+                <th>
+                  <input class="form-control form-control-sm" [(ngModel)]="filtroDescripcion"
+                    (input)="loadProducto()" placeholder="Descripción" />
+                </th>
+                <th></th>
+              </tr>
+            </thead>
             <tbody>
-              <tr *ngFor="let data of producto"  (click)="loadUnidadProducto(data.id)">
+              <tr *ngFor="let data of producto" (click)="loadUnidadProducto(data.id)" class="cursor-pointer"
+                style="transition: background-color 0.2s ease;">
                 <td>{{ data.nombre }}</td>
                 <td>{{ data.descripcion }}</td>
                 <td>
-                  <img *ngIf="data.nombreImagen" [src]="imagenRuta + data.nombreImagen" class="img-thumbnail" style="max-height: 50px;">
+                  <img *ngIf="data.nombreImagen" [src]="imagenRuta + data.nombreImagen" class="img-thumbnail"
+                    style="max-height: 50px; max-width: 50px;" alt="Imagen producto" />
                 </td>
               </tr>
             </tbody>
           </table>
-          <!-- Paginador -->
-          <nav aria-label="Page navigation" class="mt-3">
-            <ul class="pagination justify-content-end">
-                <li class="page-item"><span class="page-link">Items por página</span></li>
-                <li class="page-item"><span class="page-link">Página {{page+1}} de {{totalPages.length}}</span></li>
-                <li class="page-item">
-                    <a class="page-link"><i class="fas fa-step-backward" (click)="paginaAnterior()"></i></a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link"><i class="fas fa-step-forward" (click)="paginaSiguiente()"></i></a>
-                </li>
-            </ul>
-        </nav>
         </div>
+
+        <!-- Paginador -->
+        <nav aria-label="Page navigation" class="mt-3">
+          <ul class="pagination justify-content-end mb-0">
+            <li class="page-item disabled">
+              <span class="page-link">Items por página</span>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">Página {{page+1}} de {{totalPages.length}}</span>
+            </li>
+            <li class="page-item" [class.disabled]="page === 0">
+              <button class="page-link" (click)="paginaAnterior()" [disabled]="page === 0" aria-label="Anterior">
+                <i class="fas fa-step-backward"></i>
+              </button>
+            </li>
+            <li class="page-item" [class.disabled]="page >= totalPages.length - 1">
+              <button class="page-link" (click)="paginaSiguiente()" [disabled]="page >= totalPages.length - 1"
+                aria-label="Siguiente">
+                <i class="fas fa-step-forward"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
 
     <!-- Tabla de Unidades de Medida -->
-    <div class="col-md-7 mb-3" >
-      <div class="card shadow-sm p-3 rounded">
+    <div class="col-md-7">
+      <div class="card shadow-sm p-3 rounded h-100 d-flex flex-column">
         <h6 class="mb-3">Unidades de Medida</h6>
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover align-middle">
-            <thead class="table-dark text-center">
+        <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+          <table class="table table-bordered table-hover align-middle mb-0 text-center">
+            <thead class="table-dark">
               <tr>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>precio</th>
-                <th>Cantidad</th>
-                <th>Descuento (%)</th>
+                <th>Precio</th>
+                <th style="width: 100px;">Cantidad</th>
+                <th style="width: 110px;">Descuento (%)</th>
                 <th>Agregar</th>
               </tr>
             </thead>
@@ -81,15 +97,20 @@
               <tr *ngFor="let unidad of unidadesMedidaProducto">
                 <td>{{ unidad.unidadMedida?.abreviatura }}</td>
                 <td>{{ unidad.unidadMedida?.descripcion }}</td>
-                <td>{{ unidad.precio }}</td>
-                <td><input type="number" class="form-control" min="1" value="1" placeholder="Cantidad" [(ngModel)]="cantidad"></td>
-                <td><input type="number" class="form-control" min="0" value="0" placeholder="%" [(ngModel)]="descuento"></td>
+                <td>{{ unidad.precio | number:'1.2-2' }}</td>
+                <td>
+                  <input type="number" class="form-control form-control-sm" min="1" placeholder="Cantidad"
+                    [(ngModel)]="cantidad" />
+                </td>
+                <td>
+                  <input type="number" class="form-control form-control-sm" min="0" max="100" placeholder="%"
+                    [(ngModel)]="descuento" />
+                </td>
                 <td class="text-center">
-           <button name="agregar" class="btn btn-success btn-sm rounded-circle"
-                  (click)="guardar(unidad)"
-                  type="button">
-            <i class="fas fa-check"></i>
-          </button>
+                  <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="guardar(unidad)"
+                    title="Agregar producto">
+                    <i class="fas fa-check"></i>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -103,3 +124,28 @@
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
 </div>
+
+<style>
+  /* Hover efecto en filas clickeables tabla productos */
+  tr.cursor-pointer:hover {
+    background-color: #e9f5ff;
+    cursor: pointer;
+  }
+
+  /* Inputs focus */
+  input.form-control:focus {
+    outline: 2px solid #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
+  }
+
+  /* Botón agregar hover */
+  button.btn-success:hover {
+    background-color: #198754cc;
+  }
+
+  /* Paginación botón deshabilitado */
+  .page-item.disabled .page-link {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+</style>

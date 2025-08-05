@@ -104,4 +104,11 @@ export default class DashboardComponent {
 
     );
   }
+  limpiarFiltros(): void {
+  this.filtroNombre = '';
+  this.filtroDescripcion = '';
+  this.filtroCategoria = '';
+  this.loadProducto();
+}
+
 }

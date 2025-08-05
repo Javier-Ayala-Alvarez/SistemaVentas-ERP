@@ -1,42 +1,58 @@
 <!-- Buscador Mejorado -->
-<!-- Filtros y buscador -->
-<!-- Filtros y buscador -->
 <div class="container-fluid mt-3">
   <div class="card border shadow-sm">
-    <div class="card-body">
-      <div class="row justify-content-center mb-2 g-2">
-        <!-- Buscador -->
-        <div class="col-md-4">
-          <div class="input-group shadow-sm">
-            <input class="form-control form-control-sm" [(ngModel)]="filtroNombre" (input)="loadProducto()"
-              placeholder="Nombre del producto" />
+    <div class="card-body py-2">
+      <form class="row align-items-center g-2">
+        <!-- Nombre del Producto -->
+        <div class="col-md-3">
+          <div class="input-group input-group-sm shadow-sm">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input class="form-control" [(ngModel)]="filtroNombre" name="filtroNombre"
+              (input)="loadProducto()" placeholder="Nombre del producto" />
           </div>
         </div>
-        <!-- Filtro Descripción -->
+
+        <!-- Descripción del Producto -->
         <div class="col-md-3">
-          <input class="form-control form-control-sm" [(ngModel)]="filtroDescripcion" (input)="loadProducto()"
-            placeholder="Descripción del producto" />
-        </div>
-        <!-- Filtro Categoría -->
-        <div class="col-md-3">
-          <select class="form-select" [(ngModel)]="filtroCategoria" id="filtroCategoria" name="filtroCategoria" required
-            (click)="loadProducto()">
-            <option [ngValue]="null" selected>Seleccione la categoria</option>
-            <option *ngFor="let dato of categorias" [ngValue]="dato.id">{{dato.nombre}}</option>
-          </select>
+          <div class="input-group input-group-sm shadow-sm">
+            <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+            <input class="form-control" [(ngModel)]="filtroDescripcion" name="filtroDescripcion"
+              (input)="loadProducto()" placeholder="Descripción" />
+          </div>
         </div>
 
+        <!-- Categoría -->
+        <div class="col-md-3">
+          <div class="input-group input-group-sm shadow-sm">
+            <label class="input-group-text" for="filtroCategoria"><i class="fas fa-tags"></i></label>
+            <select class="form-select" [(ngModel)]="filtroCategoria" id="filtroCategoria"
+              name="filtroCategoria" (change)="loadProducto()">
+              <option [ngValue]="null">Todas las categorías</option>
+              <option *ngFor="let dato of categorias" [ngValue]="dato.id">{{ dato.nombre }}</option>
+            </select>
+          </div>
+        </div>
 
+        <!-- Botón Limpiar -->
+        <div class="col-md-1 d-grid">
+          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="limpiarFiltros()">
+            Limpiar
+          </button>
+        </div>
 
-
-      </div>
+        <!-- Botón Filtrar -->
+        <div class="col-md-2 d-grid">
+          <button class="btn btn-primary btn-sm" type="button" (click)="loadProducto()">
+            <i class="fas fa-filter me-1"></i> Filtrar
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
-
-
-<div class="container-fluid">
+<!-- Tarjetas de Productos -->
+<div class="container-fluid mt-3">
   <div class="row">
     <div class="col-md-3 mb-4" *ngFor="let card of producto; let i = index">
       <mat-card class="shadow-sm border border-primary" appearance="outlined">
@@ -44,26 +60,23 @@
           class="img-fluid mx-auto d-block" style="height: 200px; object-fit: cover;" />
 
         <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
           <mat-card-title class="fw-bold">{{ card.codigo }}</mat-card-title>
         </mat-card-header>
 
         <mat-card-subtitle class="px-3">{{ card.nombre }}</mat-card-subtitle>
 
         <mat-card-content class="mt-2 px-3">
-          <p class="text-muted">
-            {{ card.descripcion }}
-          </p>
+          <p class="text-muted">{{ card.descripcion }}</p>
         </mat-card-content>
 
-        <!-- Botón para ver/ocultar precios -->
         <mat-card-actions>
-          <button mat-button color="primary" (click)="loadUnidadProducto(card.id)">
+          <button mat-button color="primary" 
+                  [attr.aria-pressed]="preciosVisible[card.id!] ? 'true' : 'false'"
+                  (click)="loadUnidadProducto(card.id)">
             {{ preciosVisible[card.id!] ? 'Ocultar precios' : 'Ver precios' }}
           </button>
         </mat-card-actions>
 
-        <!-- Lista desplegable de precios, solo visible si preciosVisible es verdadero -->
         <div *ngIf="preciosVisible[card.id!]" class="px-3 pb-3">
           <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center"
@@ -86,12 +99,12 @@
         <span class="page-link">Página {{ page + 1 }} de {{ totalPages.length }}</span>
       </li>
       <li class="page-item" [class.disabled]="isFirst">
-        <a class="page-link" (click)="paginaAnterior()">
+        <a class="page-link" role="button" [attr.aria-disabled]="isFirst" (click)="paginaAnterior()">
           <i class="fas fa-step-backward"></i>
         </a>
       </li>
       <li class="page-item" [class.disabled]="isLast">
-        <a class="page-link" (click)="paginaSiguiente()">
+        <a class="page-link" role="button" [attr.aria-disabled]="isLast" (click)="paginaSiguiente()">
           <i class="fas fa-step-forward"></i>
         </a>
       </li>
