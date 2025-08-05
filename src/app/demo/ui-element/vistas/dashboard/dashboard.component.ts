@@ -16,6 +16,7 @@ export default class DashboardComponent {
   filtroNombre: string = '';
   filtroDescripcion: string = '';
   filtroCategoria: string = '';
+imagenError: { [key: number]: boolean } = {};
 
   producto?: ProductoClass[] = [];
   unidadesMedidaProducto: { [key: number]: UnidadMedidaProductoClass[] } = {};

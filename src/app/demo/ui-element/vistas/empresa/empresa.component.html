@@ -1,79 +1,76 @@
 <div class="container mt-4">
-  <!-- Logo de la Empresa -->
+  <!-- Logo -->
   <div class="text-center mb-4">
-    <!-- Imagen actual desde la base de datos -->
     <img *ngIf="!imagenPreview && empresa?.direccionLogo"
-         [src]="empresa.direccionLogo" 
-         alt="Logo de la Empresa" 
-         class="img-fluid" 
-         style="max-width: 100px;" 
-         id="logoEmpresaPreview">
-
-    <!-- Vista previa de la imagen seleccionada -->
-    <img *ngIf="imagenPreview" 
-         [src]="imagenPreview" 
-         alt="Vista previa" 
-         class="img-fluid" 
-         style="max-width: 100px;" 
-         id="vistaPreviaLogo">
+         [src]="empresa.direccionLogo"
+         alt="Logo de la Empresa"
+         class="img-thumbnail shadow-sm"
+         style="max-width: 120px; border-radius: 0.5rem;">
+    <img *ngIf="imagenPreview"
+         [src]="imagenPreview"
+         alt="Vista previa"
+         class="img-thumbnail shadow-sm"
+         style="max-width: 120px; border-radius: 0.5rem;">
+    <div *ngIf="!imagenPreview && !empresa?.direccionLogo"
+         class="d-flex align-items-center justify-content-center bg-light border rounded"
+         style="width: 120px; height: 120px; margin: 0 auto;">
+      <i class="fas fa-image fa-2x text-muted"></i>
+    </div>
   </div>
 
-  <!-- Formulario de Empresa -->
-  <div class="card shadow-sm p-4 rounded">
+  <!-- Formulario -->
+  <div class="card shadow-sm p-4 rounded border">
     <h3 class="mb-4 text-center">Formulario de Empresa</h3>
     <form (ngSubmit)="guardar()">
-      <!-- Nombre de la Empresa -->
-      <div class="form-group mb-3">
-        <label for="nombreEmpresa">Nombre de la Empresa</label>
-        <input type="text" class="form-control" id="nombreEmpresa" [(ngModel)]="empresa.nombre" name="empresaNombre"
-          placeholder="Nombre de la empresa" required>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="nombreEmpresa">Nombre</label>
+          <input type="text" class="form-control" id="nombreEmpresa" name="empresaNombre"
+                 [(ngModel)]="empresa.nombre" required placeholder="Nombre de la empresa">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="nitEmpresa">NIT</label>
+          <input type="text" class="form-control" id="nitEmpresa" name="nitEmpresa"
+                 [(ngModel)]="empresa.nit" required placeholder="Número de NIT">
+        </div>
       </div>
-
-      <!-- Dirección de la Empresa -->
-      <div class="form-group mb-3">
-        <label for="direccionEmpresa">Dirección</label>
-        <input type="text" class="form-control" id="direccionEmpresa" name="direccionEmpresa" placeholder="Dirección de la empresa"
-          [(ngModel)]="empresa.direccion" required>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="direccionEmpresa">Dirección</label>
+          <input type="text" class="form-control" id="direccionEmpresa" name="direccionEmpresa"
+                 [(ngModel)]="empresa.direccion" required placeholder="Dirección">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="telefonoEmpresa">Teléfono</label>
+          <input type="tel" class="form-control" id="telefonoEmpresa" name="telefonoEmpresa"
+                 [(ngModel)]="empresa.telefono" required placeholder="Número de teléfono">
+        </div>
       </div>
-
-      <!-- Teléfono de la Empresa -->
-      <div class="form-group mb-3">
-        <label for="telefonoEmpresa">Teléfono</label>
-        <input type="tel" class="form-control" id="telefonoEmpresa" name="telefonoEmpresa" placeholder="Número de teléfono"
-          [(ngModel)]="empresa.telefono" required>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="emailEmpresa">Correo Electrónico</label>
+          <input type="email" class="form-control" id="emailEmpresa" name="emailEmpresa"
+                 [(ngModel)]="empresa.correo" required placeholder="Correo electrónico">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="fechaRegistro">Fecha de Registro</label>
+          <input type="date" class="form-control" id="fechaRegistro" name="fechaRegistro"
+                 [(ngModel)]="empresa.fecha" required>
+        </div>
       </div>
-
-      <!-- Correo Electrónico de la Empresa -->
-      <div class="form-group mb-3">
-        <label for="emailEmpresa">Correo Electrónico</label>
-        <input type="email" class="form-control" id="emailEmpresa" name="emailEmpresa" placeholder="Correo electrónico de la empresa"
-          [(ngModel)]="empresa.correo" required>
-      </div>
-
-      <!-- NIT de la Empresa -->
-      <div class="form-group mb-3">
-        <label for="nitEmpresa">NIT</label>
-        <input type="text" class="form-control" id="nitEmpresa" name="nitEmpresa" placeholder="Número de NIT de la empresa"
-          [(ngModel)]="empresa.nit" required>
-      </div>
-
-      <!-- Campo para Seleccionar el Logo -->
-      <div class="form-group mb-3">
-        <label for="logoEmpresa">Logo de la Empresa</label>
-        <input type="file" class="form-control" id="logoEmpresa" name="logoEmpresa" accept="image/*" (change)="onLogoSelect($event)">
+      <div class="mb-3">
+        <label for="logoEmpresa">Logo</label>
+        <input type="file" class="form-control" id="logoEmpresa" name="logoEmpresa"
+               accept="image/*" (change)="onLogoSelect($event)">
         <small class="form-text text-muted">Selecciona un archivo de imagen para el logo</small>
       </div>
-
-      <!-- Fecha de Registro -->
-      <div class="form-group mb-3">
-        <label for="fechaRegistro">Fecha de Registro</label>
-        <input type="date" class="form-control" id="fechaRegistro" name="fechaRegistro" [(ngModel)]="empresa.fecha" required>
-      </div>
-
-      <!-- Botones de Acción -->
-      <div class="form-group d-flex justify-content-end">
-        <button type="reset" class="btn btn-secondary mr-2">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Guardar Empresa</button>
+      <div class="d-flex justify-content-end gap-2">
+        <button type="reset" class="btn btn-outline-secondary">
+          <i class="fas fa-times me-1"></i> Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save me-1"></i> Guardar Empresa
+        </button>
       </div>
     </form>
   </div>

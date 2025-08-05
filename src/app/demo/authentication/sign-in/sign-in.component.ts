@@ -14,6 +14,7 @@ import { LoginServicesService } from '../../ui-element/services/login-services.s
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit{
+hidePassword: boolean = true;
 
   loginData = {
     "username": '',
