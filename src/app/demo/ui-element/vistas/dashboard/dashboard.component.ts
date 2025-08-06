@@ -16,6 +16,8 @@ export default class DashboardComponent {
   filtroNombre: string = '';
   filtroDescripcion: string = '';
   filtroCategoria: string = '';
+
+  noHayProductos: boolean = false;
 imagenError: { [key: number]: boolean } = {};
 
   producto?: ProductoClass[] = [];
@@ -49,7 +51,14 @@ imagenError: { [key: number]: boolean } = {};
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
-      }
+
+        // ✅ Si no hay productos, mostramos el mensaje
+      this.noHayProductos = (this.producto?.length === 0);
+      },
+    (error) => {
+      console.error("Error cargando productos", error);
+      this.noHayProductos = true;
+    }
     );
   }
 
