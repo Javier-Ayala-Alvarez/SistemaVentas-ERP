@@ -32,7 +32,7 @@ export class BuscarProductoComponent {
   terminoBusqueda: string = '';
   totalPages: any[] = [];
   imagenRuta: string = "";
-  cantidad: number = 0;
+  cantidad: number = 1;
   descuento: number = 0;
   @Input() identificador: String = "";
 
