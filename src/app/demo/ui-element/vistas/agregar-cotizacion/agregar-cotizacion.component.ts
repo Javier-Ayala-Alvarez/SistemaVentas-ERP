@@ -15,6 +15,7 @@ import { FormaDePagoComponent } from '../forma-de-pago/forma-de-pago.component';
 import { OperacionDetalleClass } from '../../clases/operacionDetalle';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 import { filter } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agregar-cotizacion',
@@ -47,6 +48,8 @@ export class AgregarCotizacionComponent {
 
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
+
+
 
   }
    constructor(private modalService: NgbModal,private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService,private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService,  private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
@@ -163,5 +166,89 @@ loadSucursal() {
   modalRef.componentInstance.totalVenta = this.operacion.total; // ← acá mandás el parámetro
 
   }
- 
-}
+
+  guardarCotizacion(){
+  // ✅ Validación de Cliente
+      if (!this.operacion.cliente || !this.operacion.cliente.id) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cliente no seleccionado',
+          text: 'Debe seleccionar un cliente antes de continuar.',
+        });
+        return;
+      }
+  
+      // ✅ Validación de Productos agregados
+      if (!this.operacionDetalle || this.operacionDetalle.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Sin productos',
+          text: 'Debe agregar al menos un producto antes de continuar.',
+        });
+        return;
+      }
+
+        // ✅ Validar Fecha de Vencimiento
+  if (!this.operacion.fechaVencimiento) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Fecha de vencimiento requerida',
+      text: 'Debe seleccionar una fecha de vencimiento.',
+    });
+    return;
+  }
+
+  // ✅ Validar Descripción
+  if (!this.operacion.descripcion || this.operacion.descripcion.trim() === '') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Descripción requerida',
+      text: 'Debe ingresar una descripción.',
+    });
+    return;
+  }
+
+  // ✅ Validar Departamento
+  if (!this.operacion.departamento) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Departamento no seleccionado',
+      text: 'Debe seleccionar un departamento.',
+    });
+    return;
+  }
+
+  // ✅ Validar Municipio
+  if (!this.operacion.municipio) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Municipio no seleccionado',
+      text: 'Debe seleccionar un municipio.',
+    });
+    return;
+  }
+
+  // ✅ Validar Distrito
+  if (!this.operacion.distrito) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Distrito no seleccionado',
+      text: 'Debe seleccionar un distrito.',
+    });
+    return;
+  }
+
+  // ✅ Validar Sucursal
+  if (!this.operacion.sucursal) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Sucursal no seleccionada',
+      text: 'Debe seleccionar una sucursal.',
+    });
+    return;
+  }
+  
+      // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
+      this.openModalFormaPago();
+    }
+  }

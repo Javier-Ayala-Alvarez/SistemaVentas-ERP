@@ -101,6 +101,7 @@ loadCotizaciones() {
   );
 }
 
+
 loadTipoOperacion() {
   this.tipoOperacionServices.buscarTipoOperacion("null").subscribe(
     (dato: any) => {

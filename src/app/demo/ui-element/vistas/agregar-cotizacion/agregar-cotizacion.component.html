@@ -10,7 +10,15 @@
           <div class="input-group">
             <input type="text" class="form-control"  [(ngModel)]="operacion.cliente!.id " name="codigo" placeholder="Código" readonly>
             <input type="text" class="form-control" name="nombre"  [(ngModel)]="operacion.cliente!.nombre " placeholder="Nombre del cliente" readonly>
-            <button class="btn btn-outline-secondary" type="button" (click)="openModalCliente()">...</button>
+           <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="openModalCliente()"
+            aria-label="Buscar cliente"
+            title="Buscar cliente"
+          >
+            <i class="fas fa-search"></i>
+          </button>
           </div>
         </div>
   
@@ -128,7 +136,7 @@
         <!-- Botones alineados al lado derecho -->
         <div class="botones d-flex align-items-center col-md-6">
           <button class="btn btn-success me-2" (click)="openModalProducto()">Agregar Producto</button>
-          <button class="btn btn-primary me-2" (click)="openModalFormaPago()">Guardar Cotización</button>
+          <button class="btn btn-primary me-2" (click)="guardarCotizacion()">Guardar Cotización</button>
           <button class="btn btn-warning me-2">Emitir Cotización</button>
           <button class="btn btn-danger me-2">Eliminar Factura</button>
         </div>
