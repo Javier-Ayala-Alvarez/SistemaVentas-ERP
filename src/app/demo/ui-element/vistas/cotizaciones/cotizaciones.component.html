@@ -9,38 +9,42 @@
           <i class="fas fa-filter me-2"></i>Filtros
         </h6>
       </div>
+ 
       <div class="card-body pt-3 pb-0">
-        <!-- Primera Fila -->
-        <div class="row g-3 mb-3">
+        <!-- Primera fila de filtros -->
+        <div class="row g-3 mb-2">
           <div class="col-md-3">
-            <input type="text" class="form-control form-control-sm" name="nombre" placeholder="Nombre">
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroTerminoBusqueda"
+               (input)="loadCotizaciones()" placeholder="Nombre" />
           </div>
           <div class="col-md-3">
-            <input type="date" class="form-control form-control-sm" name="fechaInicio" placeholder="Fecha Inicio">
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
+               (input)="loadCotizaciones()" placeholder="Fecha Inicio" />
           </div>
           <div class="col-md-3">
-            <input type="date" class="form-control form-control-sm" name="fechaFin" placeholder="Fecha Fin">
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"  (input)="loadCotizaciones()" placeholder="Fecha Fin" />
           </div>
           <div class="col-md-3">
-            <input type="text" class="form-control form-control-sm" name="numFactura" placeholder="Cotización N°">
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroNFactura"
+              placeholder="Número de factura"  (input)="loadCotizaciones()"/>
           </div>
         </div>
 
-        <!-- Segunda Fila -->
-        <div class="row g-3 mb-2">
+        <!-- Segunda fila de filtros -->
+        <div class="row g-3">
           <div class="col-md-3">
-            <select [(ngModel)]="selectComboTipoOperacion" class="form-select form-select-sm" id="tipoOperacion" name="tipoOperacion" required>
-              <option [ngValue]="null" selected>Seleccione un tipo de operación</option>
-              <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato">{{dato.nombre}}</option>
+            <select class="form-select form-select-sm" [(ngModel)]="filtroTipoOperacion" required>
+              <option [ngValue]="null" (change)="loadCotizaciones()">Tipo de Operación</option>
+              <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato.id">{{dato.nombre}}</option>
             </select>
           </div>
           <div class="col-md-3">
-            <select [(ngModel)]="selectComboSucursal" class="form-select form-select-sm" id="sucursal" name="sucursal" required>
-              <option [ngValue]="null" selected>Seleccione una sucursal</option>
-              <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
+            <select class="form-select form-select-sm" [(ngModel)]="filtroSucursal" required>
+              <option [ngValue]="null" (change)="loadCotizaciones()">Sucursal</option>
+              <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
             </select>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3 d-flex">
             <button class="btn btn-warning w-100" (click)="loadCotizaciones()">
               <i class="fas fa-search me-1"></i> Buscar
             </button>

@@ -16,34 +16,34 @@
         <!-- Primera fila de filtros -->
         <div class="row g-3 mb-2">
           <div class="col-md-3">
-            <input type="text" class="form-control form-control-sm" [(ngModel)]="terminoBusqueda"
-              placeholder="Nombre" />
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroTerminoBusqueda"
+               (input)="loadFacturas()" placeholder="Nombre" />
           </div>
           <div class="col-md-3">
-            <input type="date" class="form-control form-control-sm" [(ngModel)]="fechaInicio"
-              placeholder="Fecha Inicio" />
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
+               (input)="loadFacturas()" placeholder="Fecha Inicio" />
           </div>
           <div class="col-md-3">
-            <input type="date" class="form-control form-control-sm" [(ngModel)]="fechaFin" placeholder="Fecha Fin" />
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"  (input)="loadFacturas()" placeholder="Fecha Fin" />
           </div>
           <div class="col-md-3">
-            <input type="text" class="form-control form-control-sm" [(ngModel)]="nFactura"
-              placeholder="Número de factura" />
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroNFactura"
+              placeholder="Número de factura"  (input)="loadFacturas()"/>
           </div>
         </div>
 
         <!-- Segunda fila de filtros -->
         <div class="row g-3">
           <div class="col-md-3">
-            <select class="form-select form-select-sm" [(ngModel)]="tipoOperacion" required>
-              <option [ngValue]="null">Tipo de Operación</option>
-              <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato">{{dato.nombre}}</option>
+            <select class="form-select form-select-sm" [(ngModel)]="filtroTipoOperacion" required>
+              <option [ngValue]="null" (change)="loadFacturas()">Tipo de Operación</option>
+              <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato.id">{{dato.nombre}}</option>
             </select>
           </div>
           <div class="col-md-3">
-            <select class="form-select form-select-sm" [(ngModel)]="sucursal" required>
-              <option [ngValue]="null">Sucursal</option>
-              <option *ngFor="let dato of sucursales" [ngValue]="dato">{{dato.nombre}}</option>
+            <select class="form-select form-select-sm" [(ngModel)]="filtroSucursal" required>
+              <option [ngValue]="null" (change)="loadFacturas()">Sucursal</option>
+              <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
             </select>
           </div>
           <div class="col-md-3 d-flex">
@@ -63,6 +63,7 @@
             <tr>
               <th>#</th>
               <th>Nombre</th>
+              <th>Fecha</th>
               <th>Tipo Operación</th>
               <th>Total</th>
               <th>Sucursal</th>
@@ -73,6 +74,7 @@
             <tr *ngFor="let dato of operaciones">
               <td>{{dato.id}}</td>
               <td>{{dato.cliente?.nombre}}</td>
+              <td>{{dato.fechaElaboracion}}</td>
               <td>{{dato.tipoOperacion?.nombre}}</td>
               <td>{{dato.total}}</td>
               <td>{{dato.sucursal?.nombre}}</td>

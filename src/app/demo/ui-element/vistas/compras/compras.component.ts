@@ -17,12 +17,16 @@ export default class ComprasComponent {
     asc: boolean = true;
     isFirst: boolean = false;
     isLast: boolean = false;
-    selectComboSucursal: any | null= null;
+    filtroTerminoBusqueda: any | null= null;
     totalPages: any[] = [];
     sucursales: any[]= [];
     tipoOperaciones: any[]= [];
     selectComboTipoOperacion: any | null= null;
-
+ filtroFechaInicio: Date = new Date();
+  filtroFechaFin: Date = new Date();
+  filtroNFactura!: string ; 
+  filtroTipoOperacion! : number; 
+  filtroSucursal! : number;
 
 
   constructor(private router: Router, private sucursalServices: SucursalServicesService, private tipoOperacionServices : TipoOperacionServicesService) { }
@@ -57,4 +61,18 @@ loadTipoOperacion() {
     //}
   );
 }
+get busqueda(): string {
+    const partes = [];
+    if (this.filtroFechaFin) partes.push(`fechaFin:${this.filtroFechaFin}`);
+    if (this.filtroFechaInicio) partes.push(`fechaInicio:${this.filtroFechaInicio}`);
+    if (this.filtroNFactura) partes.push(`nFactura:${this.filtroNFactura}`);
+    if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
+    if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
+    if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
+
+    return partes.join(',');
+  }
+  loadCompras(){
+    
+  }
 }

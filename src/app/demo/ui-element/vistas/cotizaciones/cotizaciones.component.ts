@@ -39,18 +39,17 @@ export default class cotizacionesComponent implements OnInit {
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
-  selectComboSucursal: any | null= null;
+  filtroSucursal: any | null= null;
   totalPages: any[] = [];
   sucursales: any[]= [];
   tipoOperaciones: any[]= [];
   selectComboTipoOperacion: any | null= null;
 
-  terminoBusqueda: string = '';
-  fechaInicio: Date = new Date();
-  fechaFin: Date = new Date();
-  nFactura!: string ; 
-  tipoOperacion! : number; 
-  sucursal! : number;
+  filtroTerminoBusqueda: string = '';
+  filtroFechaInicio: Date = new Date();
+  filtroFechaFin: Date = new Date();
+  filtroNFactura!: string ; 
+  filtroTipoOperacion! : number;
   operaciones: OperacionClass[] = [] ;
 
  
@@ -85,12 +84,21 @@ this.sucursalServices.buscar().subscribe(
   //}
 );
 }
+get busqueda(): string {
+    const partes = [];
+    if (this.filtroFechaFin) partes.push(`fechaFin:${this.filtroFechaFin}`);
+    if (this.filtroFechaInicio) partes.push(`fechaInicio:${this.filtroFechaInicio}`);
+    if (this.filtroNFactura) partes.push(`nFactura:${this.filtroNFactura}`);
+    if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
+    if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
+    if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
 
+    return partes.join(',');
+  }
 //mostrar datos en la tabla
 loadCotizaciones() {
-  this.fechaInicio = this.fechaInicio || new Date(); 
-  this.fechaFin = this.fechaFin || new Date(); 
-  this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin,  this.nFactura, this.tipoOperacion, this.sucursal).subscribe(
+
+  this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
     (dato: any) => {
       this.operaciones = dato.content; // <-- esto es lo correcto
 

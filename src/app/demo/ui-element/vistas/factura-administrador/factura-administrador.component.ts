@@ -25,13 +25,13 @@ export default class FacturaAdministradorComponent {
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
-  terminoBusqueda: string = '';
+  filtroTerminoBusqueda: string = '';
   totalPages: any[] = [];
-  fechaInicio: Date = new Date();
-  fechaFin: Date = new Date();
-  nFactura!: string ; 
-  tipoOperacion! : number; 
-  sucursal! : number;
+  filtroFechaInicio: Date = new Date();
+  filtroFechaFin: Date = new Date();
+  filtroNFactura!: string ; 
+  filtroTipoOperacion! : number; 
+  filtroSucursal! : number;
   operaciones: OperacionClass[] = [] ;
 
 
@@ -80,9 +80,7 @@ export default class FacturaAdministradorComponent {
 
    //mostrar datos en la tabla
    loadFacturas() {
-    this.fechaInicio = this.fechaInicio || new Date(); // asigna la fecha actual si está vacío
-    this.fechaFin = this.fechaFin || new Date(); // asigna la fecha actual si está vacío
-    this.operacionesServices.loadFac(this.terminoBusqueda, this.page, this.size, this.order, this.asc,this.fechaInicio, this.fechaFin,  this.nFactura, this.tipoOperacion, this.sucursal).subscribe(
+       this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.operaciones = dato.content;
         this.isFirst = dato.first;
@@ -106,7 +104,17 @@ export default class FacturaAdministradorComponent {
       this.ngOnInit();
     }
   }
+get busqueda(): string {
+    const partes = [];
+    if (this.filtroFechaFin) partes.push(`fechaFin:${this.filtroFechaFin}`);
+    if (this.filtroFechaInicio) partes.push(`fechaInicio:${this.filtroFechaInicio}`);
+    if (this.filtroNFactura) partes.push(`nFactura:${this.filtroNFactura}`);
+    if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
+    if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
+    if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
 
+    return partes.join(',');
+  }
 
 }
 

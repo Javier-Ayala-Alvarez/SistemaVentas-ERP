@@ -204,25 +204,13 @@ export class OperacionServicesService {
     page: number, 
     size: number, 
     order: string, 
-    asc: boolean, 
-    fechaInicio: Date, 
-    fechaFin: Date, 
-    nFactura: string, 
-    tipoOperacion: number, 
-    sucursal: number
+    asc: boolean
   ): Observable<any> {
   
-    // Validar los parámetros antes de enviarlos
-    const validSucursal = sucursal ? sucursal : 0;  // Si sucursal es null o undefined, usar 0
-    const validTipoOperacion = tipoOperacion ? tipoOperacion : 0;  // Si tipoOperacion es null o undefined, usar 0
-    const validNFactura = nFactura ? nFactura : '';  // Si nFactura es null o undefined, usar ''
-    
-    // Convertir fechas a formato adecuado si son válidas
-    const validFechaInicio = fechaInicio ? fechaInicio.toISOString() : '';
-    const validFechaFin = fechaFin ? fechaFin.toISOString() : '';
+
   
     // Construir la URL con los parámetros validados
-    const url = `${this.apiUrl}/List?busqueda=${terminoBusqueda}&idSucursal=${validSucursal}&idOperacion=${validTipoOperacion}&fechaInicio=${validFechaInicio}&fechaFin=${validFechaFin}&nFactura=${validNFactura}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
+    const url = `${this.apiUrl}/List?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
   
     return this.httpClient.get(url).pipe(
       catchError(this.mensajeSwal2.handleError) 
