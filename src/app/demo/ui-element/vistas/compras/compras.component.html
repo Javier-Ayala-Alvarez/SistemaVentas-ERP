@@ -102,15 +102,15 @@
             <span class="page-link">Items por página</span>
           </li>
           <li class="page-item disabled">
-            <span class="page-link">Página 1 de 10</span>
+            <span class="page-link">Página {{page + 1}} de {{totalPages.length}}</span>
           </li>
-          <li class="page-item">
-            <a class="page-link" style="cursor: pointer;">
+          <li class="page-item" [class.disabled]="page === 0">
+            <a class="page-link" style="cursor: pointer;" (click)="paginaAnterior()" aria-label="Anterior">
               <i class="fas fa-angle-left"></i>
             </a>
           </li>
-          <li class="page-item">
-            <a class="page-link" style="cursor: pointer;">
+          <li class="page-item" [class.disabled]="page + 1 >= totalPages.length">
+            <a class="page-link" style="cursor: pointer;" (click)="paginaSiguiente()" aria-label="Siguiente">
               <i class="fas fa-angle-right"></i>
             </a>
           </li>

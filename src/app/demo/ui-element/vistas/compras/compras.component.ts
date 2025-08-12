@@ -7,12 +7,15 @@ import { Router } from '@angular/router';
 import { OperacionClass } from '../../clases/operaciones-class';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 
+const MOVIENTO_OPERACION = "S"
+
 @Component({
   selector: 'app-compras',
   templateUrl: './compras.component.html',
   styleUrl: './compras.component.scss'
 })
 export default class ComprasComponent {
+
   page: number = 0;
   size: number = 8;
   order: string = 'id';
@@ -30,6 +33,7 @@ export default class ComprasComponent {
   filtroTipoOperacion!: number;
   filtroSucursal!: number;
   operaciones: OperacionClass[] = [];
+
 
 
   constructor(private router: Router, private operacionesServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService) { }
@@ -55,7 +59,7 @@ export default class ComprasComponent {
   }
 
   loadTipoOperacion() {
-    this.tipoOperacionServices.buscarTipoOperacion("S").subscribe(
+    this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe(
       (dato: any) => {
         this.tipoOperaciones = dato;
         // Si hay una sucursal y una empresa, la seleccionamos en el combo
@@ -73,6 +77,8 @@ export default class ComprasComponent {
     if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
     if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
     if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
+    partes.push(`movimiento:${MOVIENTO_OPERACION}`)
+
 
     return partes.join(',');
   }
@@ -86,5 +92,19 @@ export default class ComprasComponent {
       }
     );
 
+  }
+    //Ir a la siguiente pagina
+  paginaSiguiente(): void {
+    if (!this.isLast) {
+      this.page++;
+      this.ngOnInit();
+    }
+  }
+  //ir a la pagina anterior
+  paginaAnterior(): void {
+    if (!this.isFirst) {
+      this.page--;
+      this.ngOnInit();
+    }
   }
 }

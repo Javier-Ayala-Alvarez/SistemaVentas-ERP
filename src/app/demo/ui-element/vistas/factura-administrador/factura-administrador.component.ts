@@ -7,7 +7,7 @@ import { TipoOperacionServicesService } from '../../services/tipo-operacion-serv
 import { OperacionClass } from '../../clases/operaciones-class';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 
-
+const MOVIENTO_OPERACION = "E"
 /**
  * @title Basic select with initial value and no form
  */
@@ -66,7 +66,7 @@ export default class FacturaAdministradorComponent {
 
 
   loadTipoOperacion() {
-    this.tipoOperacionServices.buscarTipoOperacion("E").subscribe(
+    this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe(
       (dato: any) => {
         this.tipoOperaciones = dato;
         if (this.operacion.tipoOperacion) {
@@ -112,7 +112,7 @@ get busqueda(): string {
     if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
     if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
     if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
-
+partes.push(`movimiento:${MOVIENTO_OPERACION}`)
     return partes.join(',');
   }
 

@@ -32,7 +32,7 @@ import { CajasServicesService } from '../../services/cajas-services.service';
 import { CajaClass } from '../../clases/caja-class';
 import { LoginServicesService } from '../../services/login-services.service';
 
-
+const MOVIENTO_OPERACION = "E"
 
 @Component({
   selector: 'app-factura',
@@ -190,7 +190,7 @@ export default class FacturaComponent implements OnInit {
   }
 
   loadTipoOperacion() {
-    this.tipoOperacionServices.buscarTipoOperacion("E").subscribe(
+    this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe(
       (dato: any) => {
         this.tipoOperaciones = dato;
         const seleccionado = this.tipoOperaciones?.find(dep => dep.select === true);
