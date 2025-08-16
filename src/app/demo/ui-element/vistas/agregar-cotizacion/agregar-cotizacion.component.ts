@@ -45,7 +45,6 @@ export class AgregarCotizacionComponent {
     this.loadDistrito();
     this.loadSucursal();
     this.limpiarArreglo();
-
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
 
@@ -249,6 +248,23 @@ loadSucursal() {
   }
   
       // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
-      this.openModalFormaPago();
+      //this.openModalFormaPago();
+
+      this.registrarCotizacion();
+
+
     }
-  }
+
+
+    registrarCotizacion() {
+        this.operacion.fechaVencimiento = this.operacion.fechaVencimiento;
+
+
+      this.operacionServices.guardarOperacion().subscribe((dato: any) => {
+      //this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['/component/Nuevacotizacion']);
+        });
+      });
+    }
+}

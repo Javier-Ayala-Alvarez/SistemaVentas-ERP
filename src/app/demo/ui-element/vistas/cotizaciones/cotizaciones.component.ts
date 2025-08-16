@@ -102,6 +102,7 @@ export default class cotizacionesComponent implements OnInit {
     this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.operaciones = dato.content; // <-- esto es lo correcto
+        console.log("estas son las cotizaciones: ", this.operaciones);
 
         this.isFirst = dato.first;
         this.isLast = dato.last;

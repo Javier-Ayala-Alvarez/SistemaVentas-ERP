@@ -22,7 +22,7 @@ export class OperacionClass {
     sucursal?: SucursalClass = new SucursalClass();
     distrito?: DistritoClass= new DistritoClass();
     fechaElaboracion?: String;
-    fechaVencimiento?: String | Date;
+    fechaVencimiento?: string | Date | undefined;
 
     dui?: String;
     nit?: String;
