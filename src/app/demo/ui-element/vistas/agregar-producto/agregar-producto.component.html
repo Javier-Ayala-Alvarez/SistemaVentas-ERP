@@ -73,7 +73,8 @@
             <th>Nombre</th>
             <th>Abreviatura</th>
             <th>Factor de Conversión</th>
-            <th>Precio</th>
+            <th>Precio de Compra</th>
+            <th>Precio de Venta</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -84,8 +85,10 @@
               <td>{{data.unidadMedida?.factor}}</td>
            
             <td> 
-              <input type="text" class="form-control" placeholder="Ingrese el precio del producto" [(ngModel)]="data.precio">
+              <input type="text" class="form-control" placeholder="Ingrese el precio de compra" [(ngModel)]="data.precioCompra">
             </td>
+            <td> 
+              <input type="text" class="form-control" placeholder="Ingrese el precio de venta" [(ngModel)]="data.precio">
             <td>
               <button class="btn btn-danger btn-sm rounded-circle me-2" (click)="eliminarUnidadmedida(data)">
                 <i class="fas fa-trash"></i>

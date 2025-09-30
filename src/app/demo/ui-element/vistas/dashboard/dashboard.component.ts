@@ -13,6 +13,9 @@ import { CategoriasServicesService } from '../../services/categorias-services.se
   styleUrls: ['./dashboard.component.scss']
 })
 export default class DashboardComponent {
+
+  mostrarPreciosCompra: boolean = false;
+
   filtroNombre: string = '';
   filtroDescripcion: string = '';
   filtroCategoria: string = '';
@@ -119,6 +122,31 @@ imagenError: { [key: number]: boolean } = {};
   this.filtroDescripcion = '';
   this.filtroCategoria = '';
   this.loadProducto();
+}
+
+//muestra precios compra
+toggleModoPrecios(): void {
+  this.mostrarPreciosCompra = !this.mostrarPreciosCompra;
+
+  if (this.mostrarPreciosCompra && this.producto) {
+    // Cargar precios de compra de todos los productos
+    this.producto.forEach(prod => {
+      if (prod.id != null) {  // ✅ verificar que id existe
+        this.productoServices.listaUnidadProductoList(prod.id).subscribe(
+          (dato: any) => {
+            this.unidadesMedidaProducto[prod.id!] = dato || [];
+            this.preciosVisible[prod.id!] = true; // marcar como visibles
+          },
+          (error) => {
+            console.error(`Error cargando precios del producto ${prod.id}`, error);
+          }
+        );
+      }
+    });
+  } else {
+    // Ocultar todos los precios si volvemos a modo venta
+    Object.keys(this.preciosVisible).forEach(id => this.preciosVisible[+id] = false);
+  }
 }
 
 }

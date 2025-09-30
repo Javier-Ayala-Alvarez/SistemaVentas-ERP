@@ -10,6 +10,7 @@ export class UnidadMedidaClass {
     factor?: string;
     estado?: String;
     precio?: number;
+    precioCompra?: number;//agrego precio compra
     codigo?: number; 
 
     usuarioCreacion?: UsuarioClass;

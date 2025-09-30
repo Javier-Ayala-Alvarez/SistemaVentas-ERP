@@ -8,6 +8,7 @@ export class UnidadMedidaProductoClass {
     producto?: ProductoClass = new ProductoClass();
     unidadMedida?:UnidadMedidaClass = new UnidadMedidaClass();
     precio?: number;
+    precioCompra?: number;//agrego precio compra
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;
     fechaCreacion?: Data;

@@ -51,20 +51,32 @@
   </div>
 </div>
 
+<!-- Título para Precios de Compra -->
+<div *ngIf="mostrarPreciosCompra" class="container mt-4">
+  <h3 class="mb-4 text-center">Precios de compra</h3>
+</div>
+
+
+
+
+
+
+
 <!-- Tarjetas de Productos -->
-<div class="container-fluid mt-3">
+<div *ngIf="!mostrarPreciosCompra" class="container-fluid mt-3">
   <div class="row">
     <div class="col-md-3 mb-4" *ngFor="let card of producto; let i = index">
-      <mat-card class="shadow-sm border border-primary" appearance="outlined">
+      <mat-card class="shadow-sm border border-primary" appearance="outlined"
+        [ngClass]="mostrarPreciosCompra ? 'border-danger' : 'border-primary'">
         <div class="imagen-container" style="position: relative; width: 100%; height: 200px;">
 
-            <img mat-card-image [src]="imagenRuta + card.nombreImagen" (error)="imagenError[card.id!] = true"
-              alt="Imagen del producto" [style.display]="imagenError[card.id!] ? 'none' : 'block'"
-              style="object-fit: cover; width: 100%; height: 100%; border-radius: 4px;" />
-            <div *ngIf="imagenError[card.id!]" class="d-flex justify-content-center align-items-center"
-              style="width: 100%; height: 100%; background-color: #f0f0f0; border-radius: 4px;">
-              <mat-icon color="warn" style="font-size: 48px;">image_not_supported</mat-icon>
-            </div>
+          <img mat-card-image [src]="imagenRuta + card.nombreImagen" (error)="imagenError[card.id!] = true"
+            alt="Imagen del producto" [style.display]="imagenError[card.id!] ? 'none' : 'block'"
+            style="object-fit: cover; width: 100%; height: 100%; border-radius: 4px;" />
+          <div *ngIf="imagenError[card.id!]" class="d-flex justify-content-center align-items-center"
+            style="width: 100%; height: 100%; background-color: #f0f0f0; border-radius: 4px;">
+            <mat-icon color="warn" style="font-size: 48px;">image_not_supported</mat-icon>
+          </div>
 
         </div>
 
@@ -93,7 +105,8 @@
               *ngFor="let precio of unidadesMedidaProducto[card.id!]">
               {{ precio.unidadMedida?.descripcion }}
               <span class="badge bg-primary rounded-pill">
-                {{ precio.precio | currency }}
+
+                {{(precio.precio | currency) }}
               </span>
             </li>
           </ul>
@@ -101,8 +114,54 @@
       </mat-card>
     </div>
   </div>
+</div>
 
-  <!-- Mensaje cuando no hay productos -->
+
+<!-- Tabla de productos -->
+<div *ngIf="mostrarPreciosCompra" class="table-responsive mt-3">
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Imagen</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Unidades y Precios de Compra</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let card of producto">
+        <td style="width: 80px; text-align: center;">
+          <img *ngIf="!imagenError[card.id!]" [src]="imagenRuta + card.nombreImagen" alt="{{ card.nombre }}"
+            style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;"
+            (error)="imagenError[card.id!] = true" />
+
+          <!-- Fallback cuando la imagen falla -->
+          <div *ngIf="imagenError[card.id!]" class="d-flex justify-content-center align-items-center"
+            style="width: 60px; height: 60px; background-color: #f0f0f0; border-radius: 4px; border: 1px solid #ddd;">
+            <i class="fas fa-image text-muted"></i>
+          </div>
+        </td>
+        <td>{{ card.nombre }}</td>
+        <td>{{ card.descripcion }}</td>
+
+
+        <td>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let precio of unidadesMedidaProducto[card.id!]">
+              {{ precio.unidadMedida?.descripcion }}
+              <span class="badge bg-primary rounded-pill">
+                {{ precio.precioCompra | currency }}
+              </span>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Mensaje cuando no hay productos -->
 <div *ngIf="noHayProductos" class="col-12 text-center mt-4">
   <div class="alert alert-warning shadow-sm" role="alert">
     <i class="fas fa-exclamation-circle me-2"></i>
@@ -110,22 +169,30 @@
   </div>
 </div>
 
-  <!-- Paginador -->
-  <nav *ngIf="!noHayProductos" aria-label="Page navigation" class="mt-3">
-    <ul class="pagination justify-content-center">
-      <li class="page-item">
-        <span class="page-link">Página {{ page + 1 }} de {{ totalPages.length }}</span>
-      </li>
-      <li class="page-item" [class.disabled]="isFirst">
-        <a class="page-link" role="button" [attr.aria-disabled]="isFirst" (click)="paginaAnterior()">
-          <i class="fas fa-step-backward"></i>
-        </a>
-      </li>
-      <li class="page-item" [class.disabled]="isLast">
-        <a class="page-link" role="button" [attr.aria-disabled]="isLast" (click)="paginaSiguiente()">
-          <i class="fas fa-step-forward"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
+<!-- Paginador -->
+<nav *ngIf="!noHayProductos" aria-label="Page navigation" class="mt-3">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <span class="page-link">Página {{ page + 1 }} de {{ totalPages.length }}</span>
+    </li>
+    <li class="page-item" [class.disabled]="isFirst">
+      <a class="page-link" role="button" [attr.aria-disabled]="isFirst" (click)="paginaAnterior()">
+        <i class="fas fa-step-backward"></i>
+      </a>
+    </li>
+    <li class="page-item" [class.disabled]="isLast">
+      <a class="page-link" role="button" [attr.aria-disabled]="isLast" (click)="paginaSiguiente()">
+        <i class="fas fa-step-forward"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+
+<!-- Botón de precios compra -->
+<div class="col-md-2 d-grid">
+  <button class="btn btn-primary btn-sm" type="button" (click)="toggleModoPrecios()">
+    <i class="fas fa-filter me-1"></i> {{ mostrarPreciosCompra ? 'Precios venta' : 'Precios compra' }}
+
+  </button>
 </div>
