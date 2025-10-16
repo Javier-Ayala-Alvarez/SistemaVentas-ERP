@@ -198,7 +198,23 @@ export class OperacionServicesService {
       });
     });
   }
+loadKardex(
+    terminoBusqueda: string, 
+    page: number, 
+    size: number, 
+    order: string, 
+    asc: boolean
+  ): Observable<any> {
+  
 
+  
+    // Construir la URL con los parámetros validados
+    const url = `${this.apiUrl}/kardex?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
+  
+    return this.httpClient.get(url).pipe(
+      catchError(this.mensajeSwal2.handleError) 
+    );
+  }
   loadFac(
     terminoBusqueda: string, 
     page: number, 

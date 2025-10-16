@@ -246,7 +246,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Kardex',
             type: 'item',
             url: '/component/kardex',
-            external: true,
+            external: false,
             roles: ['ADMIN', 'SUPERADMIN'],
             children: []
           }

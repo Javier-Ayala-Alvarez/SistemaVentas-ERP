@@ -29,10 +29,10 @@ export default class FacturaAdministradorComponent {
   totalPages: any[] = [];
   filtroFechaInicio: Date = new Date();
   filtroFechaFin: Date = new Date();
-  filtroNFactura!: string ; 
-  filtroTipoOperacion! : number; 
-  filtroSucursal! : number;
-  operaciones: OperacionClass[] = [] ;
+  filtroNFactura!: string;
+  filtroTipoOperacion!: number;
+  filtroSucursal!: number;
+  operaciones: OperacionClass[] = [];
 
 
   sucursales: any[] = [];
@@ -46,7 +46,7 @@ export default class FacturaAdministradorComponent {
 
     this.loadFacturas();
   }
-  constructor(private modalService: NgbModal,  private operacionesServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
+  constructor(private modalService: NgbModal, private operacionesServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
   ) {
 
   }
@@ -78,9 +78,9 @@ export default class FacturaAdministradorComponent {
 
   }
 
-   //mostrar datos en la tabla
-   loadFacturas() {
-       this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
+  //mostrar datos en la tabla
+  loadFacturas() {
+    this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.operaciones = dato.content;
         this.isFirst = dato.first;
@@ -104,7 +104,7 @@ export default class FacturaAdministradorComponent {
       this.ngOnInit();
     }
   }
-get busqueda(): string {
+  get busqueda(): string {
     const partes = [];
     if (this.filtroFechaFin) partes.push(`fechaFin:${this.filtroFechaFin}`);
     if (this.filtroFechaInicio) partes.push(`fechaInicio:${this.filtroFechaInicio}`);
@@ -112,8 +112,20 @@ get busqueda(): string {
     if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
     if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
     if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
-partes.push(`movimiento:${MOVIENTO_OPERACION}`)
+    partes.push(`movimiento:${MOVIENTO_OPERACION}`)
     return partes.join(',');
+  }
+  editar(dato: OperacionClass): void {
+    this.AgregarNuevo(dato);
+  }
+  AgregarNuevo(dato?: OperacionClass): void {
+    if (dato) {
+      console.log(dato)
+      // Navegar con parámetros
+      this.router.navigate(['/component/factura'], {
+        queryParams: { operacion: dato }
+      });
+    } 
   }
 
 }

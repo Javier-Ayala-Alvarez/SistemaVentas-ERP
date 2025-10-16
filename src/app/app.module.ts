@@ -58,7 +58,6 @@ import FacturaComponent from './demo/ui-element/vistas/factura/factura.component
 import FacturaAdministradorComponent from './demo/ui-element/vistas/factura-administrador/factura-administrador.component';
 import { FormaDePagoComponent } from './demo/ui-element/vistas/forma-de-pago/forma-de-pago.component';
 import GastosComponent from './demo/ui-element/vistas/gastos/gastos.component';
-import KardexComponent from './demo/ui-element/vistas/kardex/kardex.component';
 import ProductosComponent from './demo/ui-element/vistas/productos/productos.component';
 import ProveedoresComponent from './demo/ui-element/vistas/proveedores/proveedores.component';
 import ProveedoresReportesComponent from './demo/ui-element/vistas/proveedores-reportes/proveedores-reportes.component';
@@ -72,6 +71,7 @@ import { AgregarCotizacionComponent } from './demo/ui-element/vistas/agregar-cot
 import { BuscarProveedorComponent } from './demo/ui-element/vistas/buscar-proveedor/buscar-proveedor.component';
 import { SignInComponent } from './demo/authentication/sign-in/sign-in.component';
 import { authInterceptorProviders } from './demo/ui-element/services/auth-interceptor.service';
+import { KardexComponent } from './demo/ui-element/vistas/kardex/kardex.component';
 
 @NgModule({
   declarations: [

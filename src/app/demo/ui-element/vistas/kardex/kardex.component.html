@@ -1,1 +1,88 @@
-<p>kardex works!</p>
+<div class="container mt-4">
+  <div class="card shadow-sm p-4 mb-4 rounded">
+    <h3 class="mb-4 text-center">Administrador de Kardex</h3>
+
+    <!-- Filtros -->
+    <div class="card mb-4 border-0 shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 text-secondary">
+          <i class="fas fa-filter me-2"></i>Filtros
+        </h6>
+      </div>
+      <div class="card-body pt-3 pb-0">
+        <div class="row g-3 mb-2">
+          <div class="col-md-3">
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
+                   (input)="loadKardex()" placeholder="Fecha Inicio" />
+          </div>
+          <div class="col-md-3">
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"
+                   (input)="loadKardex()" placeholder="Fecha Fin" />
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-3">
+            <select class="form-select form-select-sm" [(ngModel)]="filtroSucursal">
+              <option [ngValue]="null">Sucursal</option>
+              <option *ngFor="let sucursal of sucursales" [ngValue]="sucursal.id">{{sucursal.nombre}}</option>
+            </select>
+          </div>
+          <div class="col-md-3 d-flex">
+            <button class="btn btn-warning w-100" (click)="loadKardex()">
+              <i class="fas fa-search me-1"></i> Buscar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla Kardex -->
+    <div class="card shadow-sm p-3 mb-4">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark text-center sticky-top">
+            <tr>
+              <th>#</th>
+              <th>Producto</th>
+              <th>Tipo Movimiento</th>
+              <th>Unidad</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Total</th>
+              <th>Stock</th>
+              <th>Valor Stock</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <tr *ngFor="let dato of kardex">
+              <td>{{dato.id}}</td>
+              <td>{{dato.idProducto}} - {{dato.nombreProducto}}</td>
+              <td>{{dato.operacion}}</td>
+              <td>{{dato.unidadOperacion}}</td>
+              <td>{{dato.cantidadMinima}}</td>
+              <td>{{dato.precioUnitario | currency}}</td>
+              <td>{{dato.total | currency}}</td>
+              <td>{{dato.stock}}</td>
+              <td>{{dato.valorStock}}</td>
+              <td>{{dato.fecha | date:'shortDate'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginador -->
+      <nav class="mt-3">
+        <ul class="pagination justify-content-end mb-0">
+          <li class="page-item" [class.disabled]="page === 0">
+            <a class="page-link" (click)="paginaAnterior()"><i class="fas fa-angle-left"></i></a>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link">Página {{page + 1}} de {{totalPages.length}}</span>
+          </li>
+          <li class="page-item" [class.disabled]="page + 1 >= totalPages.length">
+            <a class="page-link" (click)="paginaSiguiente()"><i class="fas fa-angle-right"></i></a>
+          </li>
+        </ul>
+      </nav>

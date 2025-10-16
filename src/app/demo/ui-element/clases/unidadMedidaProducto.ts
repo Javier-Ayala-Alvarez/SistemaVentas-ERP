@@ -13,7 +13,8 @@ export class UnidadMedidaProductoClass {
     usuarioModificacion?: UsuarioClass;
     fechaCreacion?: Data;
     fechaModificacion?: Data;
-
+    cantidad?: number;
+descuento?: number;
     
     constructor(init?: Partial<UnidadMedidaClass>){
         Object.assign(this, init);

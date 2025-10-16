@@ -32,8 +32,6 @@ export class BuscarProductoComponent {
   terminoBusqueda: string = '';
   totalPages: any[] = [];
   imagenRuta: string = "";
-  cantidad: number = 1;
-  descuento: number = 0;
   @Input() identificador: String = "";
 
 
@@ -68,8 +66,8 @@ export class BuscarProductoComponent {
     this.operacionDetalle = new OperacionDetalleClass();
     this.operacionDetalle.unidadMedida = unidadMedidaProducto.unidadMedida;
     this.operacionDetalle.producto = unidadMedidaProducto.producto;
-    this.operacionDetalle.cantidad = this.cantidad;
-    this.operacionDetalle.descuento = this.descuento;
+    this.operacionDetalle.cantidad = unidadMedidaProducto.cantidad || 0;
+    this.operacionDetalle.descuento = unidadMedidaProducto.descuento || 0;
     this.operacionDetalle.precioUnitario = unidadMedidaProducto.precio;
     this.operacion.agregarOperacionDetalle(this.operacionDetalle);
     if (this.identificador == "compra") {

@@ -61,12 +61,16 @@ export default class FacturaComponent implements OnInit {
 
 
   ngOnInit(): void {
+   
+    console.log( this.route.snapshot.queryParams['operacion'])
     this.loadDepartamento();
     this.loadMunicipio();
     this.loadDistrito();
     this.loadTipoOperacion();
     this.loadSucursal();
     this.limpiarArreglo();
+    
+
 
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
