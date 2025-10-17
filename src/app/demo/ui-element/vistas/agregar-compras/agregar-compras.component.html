@@ -36,7 +36,7 @@
         </div>
         <div class="col-md-3">
           <label for="municipio">Municipio</label>
-          <select [(ngModel)]="operacion.distrito" class="form-select" id="municipio" name="municipio" required name="municipio">
+          <select [(ngModel)]="operacion.municipio" class="form-select" id="municipio" name="municipio" required name="municipio">
             <option [ngValue]="null" selected>Seleccione el municipio</option>
             <option *ngFor="let dato of municipios" [ngValue]="dato">{{dato.nombre}}</option>
           </select>
