@@ -113,6 +113,14 @@ export const NavigationItems: NavigationItem[] = [
         children: [
           {
             id: 'button',
+            title: 'Inventario',
+            type: 'item',
+            url: '/component/Inventario',
+            roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
+            children: []
+          },
+          {
+            id: 'button',
             title: 'Productos',
             type: 'item',
             url: '/component/productos',

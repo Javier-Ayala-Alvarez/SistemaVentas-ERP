@@ -61,6 +61,9 @@ export default class AgregarComprasComponent implements OnInit {
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
 
+    const hoy = new Date();
+    this.operacion.fechaElaboracion = hoy.toISOString().split('T')[0];
+
   }
   constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
   ) {
@@ -135,12 +138,14 @@ export default class AgregarComprasComponent implements OnInit {
 
 
   loadTipoOperacion() {
-    this.tipoOperacionServices.buscarTipoOperacion("S").subscribe(
+    this.tipoOperacionServices.buscarTipoOperacion("E").subscribe(
       (dato: any) => {
         this.tipoOperaciones = dato;
         if (this.operacion.tipoOperacion) {
-          this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.id === this.operacion.tipoOperacion?.id);
+          this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.tipoOperacion === this.operacion.tipoOperacion);
         }
+              
+
       }
 
     );
@@ -176,5 +181,6 @@ export default class AgregarComprasComponent implements OnInit {
     });
     modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
     modalRef.componentInstance.totalVenta = this.operacion.total; // ← acá mandás el parámetro
+    console.log(this.operacion);
   }
 }

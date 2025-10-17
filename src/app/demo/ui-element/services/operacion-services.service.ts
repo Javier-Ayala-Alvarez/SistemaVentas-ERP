@@ -198,6 +198,24 @@ export class OperacionServicesService {
       });
     });
   }
+
+  loadInventario(
+    terminoBusqueda: string, 
+    page: number, 
+    size: number, 
+    order: string, 
+    asc: boolean
+  ): Observable<any> {
+  
+
+  
+    // Construir la URL con los parámetros validados
+    const url = `${this.apiUrl}/ListInventario?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
+  
+    return this.httpClient.get(url).pipe(
+      catchError(this.mensajeSwal2.handleError) 
+    );
+  }
 loadKardex(
     terminoBusqueda: string, 
     page: number, 

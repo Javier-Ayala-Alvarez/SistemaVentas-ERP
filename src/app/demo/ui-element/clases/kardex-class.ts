@@ -23,6 +23,11 @@ export class KardexClass {
     usuarioModificacion?: UsuarioClass;
     estado?: string;
 
+    comprobante?: string;
+    proveedorCliente?: string;
+    lote?: string;
+
+
     constructor(init?: Partial<KardexClass>) {
         Object.assign(this, init);
     }

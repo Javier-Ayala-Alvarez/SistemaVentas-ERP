@@ -32,7 +32,7 @@ import { CajasServicesService } from '../../services/cajas-services.service';
 import { CajaClass } from '../../clases/caja-class';
 import { LoginServicesService } from '../../services/login-services.service';
 
-const MOVIENTO_OPERACION = "E"
+const MOVIENTO_OPERACION = "S"
 
 @Component({
   selector: 'app-factura',
@@ -202,7 +202,7 @@ export default class FacturaComponent implements OnInit {
           this.operacion.tipoOperacion = seleccionado;
         }
         if (this.operacion.tipoOperacion) {
-          this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.id === this.operacion.tipoOperacion?.id);
+                    this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.tipoOperacion === this.operacion.tipoOperacion);
         }
       }
 

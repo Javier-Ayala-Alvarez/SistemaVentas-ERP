@@ -69,6 +69,7 @@ export class BuscarProductoComponent {
     this.operacionDetalle.cantidad = unidadMedidaProducto.cantidad || 0;
     this.operacionDetalle.descuento = unidadMedidaProducto.descuento || 0;
     this.operacionDetalle.precioUnitario = unidadMedidaProducto.precio;
+    this.operacionDetalle.total = unidadMedidaProducto.cantidad || 0;
     this.operacion.agregarOperacionDetalle(this.operacionDetalle);
     if (this.identificador == "compra") {
       this.router.navigate(['/component/Nuevacompras']);

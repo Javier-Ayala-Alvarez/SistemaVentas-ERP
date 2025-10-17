@@ -26,6 +26,7 @@ import { AgregarCotizacionComponent } from './vistas/agregar-cotizacion/agregar-
 import { SignInComponent } from '../authentication/sign-in/sign-in.component';
 import { RoleGuard } from './services/guards.guard';
 import { KardexComponent } from './vistas/kardex/kardex.component';
+import { InventarioComponent } from './vistas/inventario/inventario.component';
 
 const routes: Routes = [
   {
@@ -92,7 +93,11 @@ const routes: Routes = [
         path: 'productos',component:ProductosComponent,
           canActivate: [RoleGuard],
         data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
-      },
+      },{
+        path: 'Inventario',component:InventarioComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'GENERAL','SUPERADMIN'] }
+      }, 
       {
         path: 'AgregarProducto',component:AgregarProductoComponent,
           canActivate: [RoleGuard],
@@ -154,6 +159,13 @@ const routes: Routes = [
       , 
       {
         path: 'kardex',component: KardexComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'SUPERADMIN'] }
+      }
+      
+      , 
+      {
+        path: 'Inventario',component: InventarioComponent,
           canActivate: [RoleGuard],
         data: { roles: ['ADMIN', 'SUPERADMIN'] }
       }

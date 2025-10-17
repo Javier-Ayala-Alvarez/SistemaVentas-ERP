@@ -72,6 +72,7 @@ import { BuscarProveedorComponent } from './demo/ui-element/vistas/buscar-provee
 import { SignInComponent } from './demo/authentication/sign-in/sign-in.component';
 import { authInterceptorProviders } from './demo/ui-element/services/auth-interceptor.service';
 import { KardexComponent } from './demo/ui-element/vistas/kardex/kardex.component';
+import { InventarioComponent } from './demo/ui-element/vistas/inventario/inventario.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +129,8 @@ import { KardexComponent } from './demo/ui-element/vistas/kardex/kardex.componen
     AgregarCotizacionComponent,
     BuscarProveedorComponent,
     BuscarProductoComponent,
-    SignInComponent
+    SignInComponent,
+    InventarioComponent
      ],
   imports: [
     MatCardModule,

@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <div class="card shadow-sm p-4 mb-4 rounded">
-    <h3 class="mb-4 text-center">Administrador de Kardex</h3>
+    <h3 class="mb-4 text-center">Administrador de Inventario</h3>
 
     <!-- Filtros -->
     <div class="card mb-4 border-0 shadow-sm">
@@ -45,34 +45,18 @@
             <tr>
               <th>#</th>
               <th>Producto</th>
-              <th>Tipo Movimiento</th>
-              <th>Unidad</th>
-              <th>Cantidad</th>
-              <th>Cantidad factorial</th>
               <th>Precio Unitario compra</th>
-              <th>Total</th>
-              <th>Stock</th>
+              <th>Stock factorial</th>
               <th>Valor Stock</th>
-              <th>Fecha</th>
-              <th>Proveedor/Cliente</th>
-              <th>Lote</th>
             </tr>
           </thead>
           <tbody class="text-center">
             <tr *ngFor="let dato of kardex">
               <td>{{dato.id}}</td>
               <td>{{dato.idProducto}} - {{dato.nombreProducto}}</td>
-              <td>{{dato.operacion}}</td>
-              <td>{{dato.unidadOperacion}}</td>
-              <td>{{dato.cantidadOriginal}}</td>
-              <td>{{dato.cantidadMinima}}</td>
               <td>{{dato.precioUnitario | currency}}</td>
-              <td>{{dato.total | currency}}</td>
               <td>{{dato.stock}}</td>
               <td>{{dato.valorStock}}</td>
-              <td>{{dato.fecha | date:'shortDate'}}</td>
-              <td>{{dato.proveedorCliente}}</td>
-               <td>{{dato.lote}}</td>
             </tr>
           </tbody>
         </table>
