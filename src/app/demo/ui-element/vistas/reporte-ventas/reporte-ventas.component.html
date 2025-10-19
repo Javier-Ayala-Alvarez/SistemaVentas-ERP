@@ -1,0 +1,79 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Reporte de Ventas</h2>
+
+  <form>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label class="form-label" for="fechaInicio">Fecha inicio</label>
+        <input 
+          id="fechaInicio"
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="filtros.fechaInicio" 
+          name="fechaInicio" 
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label" for="fechaFin">Fecha fin</label>
+        <input 
+          id="fechaFin"
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="filtros.fechaFin" 
+          name="fechaFin" 
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label" for="sucursal">Sucursal</label>
+        <select 
+          id="sucursal" 
+          class="form-select form-select-sm" 
+          [(ngModel)]="filtros.idSucursal" 
+          name="idSucursal"
+        >
+          <option [ngValue]="null">-- Seleccione Sucursal --</option>
+          <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <button class="btn btn-info me-2" type="button" (click)="abrirVistaPrevia()">Vista Previa</button>
+      <button class="btn btn-success" type="button" (click)="descargarPDF()">Descargar PDF</button>
+    </div>
+  </form>
+
+ <!-- Modal -->
+<div class="modal fade" tabindex="-1" aria-hidden="true" #modalRef>
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Vista Previa del Reporte</h5>
+        <button type="button" class="btn-close" (click)="cerrarModal()" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <ng-container *ngIf="!isLoading && pdfUrl; else loadingTemplate">
+          <iframe [src]="pdfUrl" width="100%" height="600px" style="border:none;"></iframe>
+        </ng-container>
+
+        <ng-template #loadingTemplate>
+          <div class="text-center py-5">
+            <span class="spinner-border" role="status" aria-hidden="true"></span>
+            <p>Cargando PDF...</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+        <button type="button" class="btn btn-success" (click)="descargarPDF()" [disabled]="!pdfBlob">Descargar PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>

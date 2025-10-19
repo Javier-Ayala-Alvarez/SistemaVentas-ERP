@@ -18,30 +18,35 @@ export class OperacionServicesService {
   formaPagoOperacion: FormaPagoOperacion[] = [];
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
-  calcularTotales(): void {
-    let subTotal = 0;
-    let iva = 0;
-    let retencion = 0;
+calcularTotales(): void {
+  let subTotal = 0;
+  let iva = 0;
+  let retencion = 0;
 
-    for (let item of this.operacionDetalle) {
-      const precioUnitario = item.precioUnitario || 0;
-      const cantidad = item.cantidad || 0;
-      const descuento = item.descuento || 0;
+  for (let item of this.operacionDetalle) {
+    const precioUnitario = item.precioUnitario || 0;
+    const cantidad = item.cantidad || 0;
+    const descuento = item.descuento || 0;
 
-      const totalItem = (precioUnitario * cantidad) - descuento;
-      const ivaItem = totalItem * 0.13; // IVA del 13%
-      const retencionItem = totalItem * 0.01; // Retención del 1%
+    const totalItem = (precioUnitario * cantidad) - descuento;
 
-      subTotal += totalItem;
-      iva += ivaItem;
-      retencion += retencionItem;
-    }
+    // Precio base e IVA incluido
+    const precioBase = totalItem / 1.13;
+    const ivaItem = totalItem - precioBase;
 
-    this.operacion.subTotal = subTotal;
-    this.operacion.iva = iva;
-    this.operacion.retencion = retencion;
-    this.operacion.total = subTotal + iva - retencion;
+    subTotal += precioBase;
+    iva += ivaItem;
+    //retencion += totalItem * 0.01; // sin redondeo
   }
+
+  // Redondeamos solo al final
+  this.operacion.subTotal = parseFloat(subTotal.toFixed(2));
+  this.operacion.iva = parseFloat(iva.toFixed(2));
+  this.operacion.retencion = parseFloat(retencion.toFixed(2));
+  this.operacion.total = parseFloat((subTotal + iva - retencion).toFixed(2));
+}
+
+
 
 
 
@@ -90,7 +95,7 @@ export class OperacionServicesService {
       });
     });
   }
-  limpiarArreglos(){
+  limpiarArreglos() {
     this.operacion = new OperacionClass();
     this.operacionDetalle = [];
     this.formaPagoOperacion = [];
@@ -200,55 +205,75 @@ export class OperacionServicesService {
   }
 
   loadInventario(
-    terminoBusqueda: string, 
-    page: number, 
-    size: number, 
-    order: string, 
+    terminoBusqueda: string,
+    page: number,
+    size: number,
+    order: string,
     asc: boolean
   ): Observable<any> {
-  
 
-  
+
+
     // Construir la URL con los parámetros validados
     const url = `${this.apiUrl}/ListInventario?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
-  
+
     return this.httpClient.get(url).pipe(
-      catchError(this.mensajeSwal2.handleError) 
+      catchError(this.mensajeSwal2.handleError)
     );
   }
-loadKardex(
-    terminoBusqueda: string, 
-    page: number, 
-    size: number, 
-    order: string, 
+  loadKardex(
+    terminoBusqueda: string,
+    page: number,
+    size: number,
+    order: string,
     asc: boolean
   ): Observable<any> {
-  
 
-  
+
+
     // Construir la URL con los parámetros validados
     const url = `${this.apiUrl}/kardex?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
-  
+
     return this.httpClient.get(url).pipe(
-      catchError(this.mensajeSwal2.handleError) 
+      catchError(this.mensajeSwal2.handleError)
     );
   }
   loadFac(
-    terminoBusqueda: string, 
-    page: number, 
-    size: number, 
-    order: string, 
+    terminoBusqueda: string,
+    page: number,
+    size: number,
+    order: string,
     asc: boolean
   ): Observable<any> {
-  
 
-  
+
+
     // Construir la URL con los parámetros validados
     const url = `${this.apiUrl}/List?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
-  
+
     return this.httpClient.get(url).pipe(
-      catchError(this.mensajeSwal2.handleError) 
+      catchError(this.mensajeSwal2.handleError)
     );
   }
-  
+  generarReportePDF(inicio: string, fin: string, caja: string, idSucursal: String) {
+    // Solo agregamos parámetros si tienen valor
+    let url = `${this.apiUrl}/reporte/pdf?`;
+
+    if (inicio) url += `inicio=${inicio}&`;
+    if (fin) url += `fin=${fin}&`;
+    if (caja) url += `caja=${caja}&`;
+    if (idSucursal) url += `idSucursal=${idSucursal}&`;
+    // Quitamos el último &
+    url = url.slice(0, -1);
+
+    return this.httpClient.get(url, { responseType: 'blob' }).pipe(
+      catchError((error) => {
+        catchError(this.mensajeSwal2.handleError)
+        // Para que el observable siga siendo consistente
+        return throwError(() => error);
+      })
+    );
+  }
+
+
 }

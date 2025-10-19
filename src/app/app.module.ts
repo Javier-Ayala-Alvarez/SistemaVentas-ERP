@@ -73,6 +73,8 @@ import { SignInComponent } from './demo/authentication/sign-in/sign-in.component
 import { authInterceptorProviders } from './demo/ui-element/services/auth-interceptor.service';
 import { KardexComponent } from './demo/ui-element/vistas/kardex/kardex.component';
 import { InventarioComponent } from './demo/ui-element/vistas/inventario/inventario.component';
+import { ReporteVentasComponent } from './demo/ui-element/vistas/reporte-ventas/reporte-ventas.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -130,7 +132,8 @@ import { InventarioComponent } from './demo/ui-element/vistas/inventario/inventa
     BuscarProveedorComponent,
     BuscarProductoComponent,
     SignInComponent,
-    InventarioComponent
+    InventarioComponent,
+    ReporteVentasComponent
      ],
   imports: [
     MatCardModule,
@@ -154,7 +157,9 @@ import { InventarioComponent } from './demo/ui-element/vistas/inventario/inventa
     CommonModule,
     MatPaginatorModule,
     HttpClientModule,
-    MatCardModule ],
+    MatCardModule,
+  FormsModule,
+  LayoutModule ],
   providers: [
     authInterceptorProviders, {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     provideAnimationsAsync(),

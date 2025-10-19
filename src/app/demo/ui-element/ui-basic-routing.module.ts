@@ -27,6 +27,7 @@ import { SignInComponent } from '../authentication/sign-in/sign-in.component';
 import { RoleGuard } from './services/guards.guard';
 import { KardexComponent } from './vistas/kardex/kardex.component';
 import { InventarioComponent } from './vistas/inventario/inventario.component';
+import { ReporteVentasComponent } from './vistas/reporte-ventas/reporte-ventas.component';
 
 const routes: Routes = [
   {
@@ -152,13 +153,17 @@ const routes: Routes = [
       }
       , 
       {
-        path: 'ventas-fecha', component: VentasFechaComponent,
+        path: 'ventas-fecha', component: ReporteVentasComponent,
           canActivate: [RoleGuard],
         data: { roles: ['ADMIN','SUPERADMIN'] }
       }
       , 
       {
         path: 'kardex',component: KardexComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'SUPERADMIN'] }
+      },{
+        path: 'ventas-fecha',component: ReporteVentasComponent,
           canActivate: [RoleGuard],
         data: { roles: ['ADMIN', 'SUPERADMIN'] }
       }

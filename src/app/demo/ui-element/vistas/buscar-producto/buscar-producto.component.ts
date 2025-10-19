@@ -46,6 +46,7 @@ export class BuscarProductoComponent {
     this.productoServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
         this.producto = dato.content;
+
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
@@ -56,6 +57,11 @@ export class BuscarProductoComponent {
     this.productoServices.listaUnidadProductoList(id).subscribe(
       (dato: any) => {
         this.unidadesMedidaProducto = dato;
+        if (this.identificador === 'compra') {
+          this.unidadesMedidaProducto?.forEach(unidad => {
+            unidad.precio = 0; // Inicializa el precio en 0
+          });
+        }
       }
     );
   }
@@ -69,7 +75,7 @@ export class BuscarProductoComponent {
     this.operacionDetalle.cantidad = unidadMedidaProducto.cantidad || 0;
     this.operacionDetalle.descuento = unidadMedidaProducto.descuento || 0;
     this.operacionDetalle.precioUnitario = unidadMedidaProducto.precio;
-    this.operacionDetalle.total = unidadMedidaProducto.cantidad || 0;
+    this.operacionDetalle.total = (unidadMedidaProducto.cantidad ?? 0) * (unidadMedidaProducto.precio ?? 0);
     this.operacion.agregarOperacionDetalle(this.operacionDetalle);
     if (this.identificador == "compra") {
       this.router.navigate(['/component/Nuevacompras']);

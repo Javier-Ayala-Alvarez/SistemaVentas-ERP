@@ -97,7 +97,11 @@
               <tr *ngFor="let unidad of unidadesMedidaProducto">
                 <td>{{ unidad.unidadMedida?.abreviatura }}</td>
                 <td>{{ unidad.unidadMedida?.descripcion }}</td>
-                <td>{{ unidad.precio | number:'1.2-2' }}</td>
+                <td *ngIf="identificador === 'compra'">
+                  <input type="number" class="form-control form-control-sm" min="1" placeholder="Precio"
+                    [(ngModel)]="unidad.precio" />
+                </td >
+                <td *ngIf="identificador !== 'compra'">{{ unidad.precio | number:'1.2-2' }}</td>
                 <td>
                   <input type="number" class="form-control form-control-sm" min="1" placeholder="Cantidad"
                     [(ngModel)]="unidad.cantidad" />

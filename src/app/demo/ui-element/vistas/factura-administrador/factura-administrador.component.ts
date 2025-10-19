@@ -7,14 +7,12 @@ import { TipoOperacionServicesService } from '../../services/tipo-operacion-serv
 import { OperacionClass } from '../../clases/operaciones-class';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 
-const MOVIENTO_OPERACION = "E"
-/**
- * @title Basic select with initial value and no form
- */
+const MOVIENTO_OPERACION = "S";
+
 @Component({
   selector: 'app-factura-administrador',
   templateUrl: './factura-administrador.component.html',
-  styleUrl: './factura-administrador.component.scss'
+  styleUrls: ['./factura-administrador.component.scss'] // ✅ corregido
 })
 export default class FacturaAdministradorComponent {
   operacion: OperacionClass = new OperacionClass();
@@ -27,112 +25,123 @@ export default class FacturaAdministradorComponent {
   isLast: boolean = false;
   filtroTerminoBusqueda: string = '';
   totalPages: any[] = [];
-  filtroFechaInicio: Date = new Date();
-  filtroFechaFin: Date = new Date();
+ filtroFechaInicio: Date | null = null;
+filtroFechaFin: Date | null = null;
+
   filtroNFactura!: string;
   filtroTipoOperacion!: number;
   filtroSucursal!: number;
   operaciones: OperacionClass[] = [];
 
-
   sucursales: any[] = [];
   tipoOperaciones: any[] = [];
 
-
+  constructor(
+    private modalService: NgbModal,
+    private operacionesServices: OperacionServicesService,
+    private sucursalServices: SucursalServicesService,
+    private tipoOperacionServices: TipoOperacionServicesService,
+    private router: Router,
+    private datePipe: DatePipe,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.loadTipoOperacion();
     this.loadSucursal();
-
     this.loadFacturas();
   }
-  constructor(private modalService: NgbModal, private operacionesServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
-  ) {
 
-  }
-
-
-  //mostrar datos de la sucursal
+  // Mostrar datos de sucursales
   loadSucursal() {
-    this.sucursalServices.buscar().subscribe(
-      (dato: any) => {
+    this.sucursalServices.buscar().subscribe({
+      next: (dato: any) => {
         this.sucursales = dato;
         if (this.operacion) {
-          this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);
+          this.operacion.sucursal = this.sucursales?.find(
+            emp => emp.id === this.operacion.sucursal?.id
+          );
         }
-      }
-    );
+      },
+      error: (err) => console.error('Error al cargar sucursales:', err)
+    });
   }
 
-
+  // Mostrar tipos de operación
   loadTipoOperacion() {
-    this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe(
-      (dato: any) => {
+    this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe({
+      next: (dato: any) => {
         this.tipoOperaciones = dato;
         if (this.operacion.tipoOperacion) {
-          this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.id === this.operacion.tipoOperacion?.id);
+          this.operacion.tipoOperacion = this.tipoOperaciones?.find(
+            emp => emp.id === this.operacion.tipoOperacion?.id
+          );
         }
-      }
-
-    );
-
+      },
+      error: (err) => console.error('Error al cargar tipos de operación:', err)
+    });
   }
 
-  //mostrar datos en la tabla
+  // Mostrar facturas en tabla
   loadFacturas() {
-    this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
-      (dato: any) => {
-        this.operaciones = dato.content;
-        this.isFirst = dato.first;
-        this.isLast = dato.last;
-        this.totalPages = new Array(dato.totalPages);
-      }
-    );
+    console.log("🔍 Filtros enviados:", this.busqueda);
+    this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc)
+      .subscribe({
+        next: (dato: any) => {
+          console.log("✅ Respuesta del backend:", dato);
+          this.operaciones = dato.content || dato; // soporta paginación o lista directa
+          this.isFirst = dato.first ?? false;
+          this.isLast = dato.last ?? false;
+          this.totalPages = new Array(dato.totalPages ?? 1);
+        },
+        error: (err) => {
+          console.error("❌ Error al cargar facturas:", err);
+        }
+      });
   }
 
-  //Ir a la siguiente pagina
+  // Navegar entre páginas
   paginaSiguiente(): void {
     if (!this.isLast) {
       this.page++;
-      this.ngOnInit();
+      this.loadFacturas();
     }
   }
-  //ir a la pagina anterior
+
   paginaAnterior(): void {
     if (!this.isFirst) {
       this.page--;
-      this.ngOnInit();
+      this.loadFacturas();
     }
   }
+
+  // Generar cadena de búsqueda
   get busqueda(): string {
     const partes = [];
-    if (this.filtroFechaFin) partes.push(`fechaFin:${this.filtroFechaFin}`);
-    if (this.filtroFechaInicio) partes.push(`fechaInicio:${this.filtroFechaInicio}`);
+    const fechaInicio = this.datePipe.transform(this.filtroFechaInicio, 'yyyy-MM-dd');
+    const fechaFin = this.datePipe.transform(this.filtroFechaFin, 'yyyy-MM-dd');
+
+    if (fechaFin) partes.push(`fechaFin:${fechaFin}`);
+    if (fechaInicio) partes.push(`fechaInicio:${fechaInicio}`);
     if (this.filtroNFactura) partes.push(`nFactura:${this.filtroNFactura}`);
     if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
     if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
     if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
-    partes.push(`movimiento:${MOVIENTO_OPERACION}`)
+    partes.push(`movimiento:${MOVIENTO_OPERACION}`);
     return partes.join(',');
   }
+
+  // Editar o agregar nuevo
   editar(dato: OperacionClass): void {
     this.AgregarNuevo(dato);
   }
+
   AgregarNuevo(dato?: OperacionClass): void {
     if (dato) {
-      console.log(dato)
-      // Navegar con parámetros
+      console.log("📝 Editando factura:", dato);
       this.router.navigate(['/component/factura'], {
-        queryParams: { operacion: dato }
+        queryParams: { operacion: JSON.stringify(dato) } // ✅ serializar objeto
       });
-    } 
+    }
   }
-
 }
-
-
-
-
-
-
-

@@ -14,7 +14,7 @@ export class InventarioComponent {
 
   page: number = 0;
   size: number = 8;
-  order: string = 'id';
+  order: string = 'id_producto';
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;

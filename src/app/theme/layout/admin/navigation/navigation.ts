@@ -214,26 +214,6 @@ export const NavigationItems: NavigationItem[] = [
     roles: ['ADMIN', 'SUPERADMIN'],
     children: [
       {
-        id: 'Proveedores',
-        title: 'Proveedores',
-        type: 'item',
-        url: '/component/proveedores-reportes',
-        classes: 'nav-item',
-        icon: 'feather icon-truck',
-        roles: ['ADMIN', 'SUPERADMIN'],
-        children: []
-      },
-      {
-        id: 'Clientes',
-        title: 'Clientes',
-        type: 'item',
-        url: '/component/clientes-reportes',
-        classes: 'nav-item',
-        icon: 'feather icon-user-check',
-        roles: ['ADMIN', 'SUPERADMIN'],
-        children: []
-      },
-      {
         id: 'Ventas',
         title: 'Ventas',
         type: 'collapse',
@@ -245,7 +225,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Ventas Fecha',
             type: 'item',
             url: '/component/ventas-fecha',
-            external: true,
+            external: false,
             roles: ['ADMIN', 'SUPERADMIN'],
             children: []
           },
