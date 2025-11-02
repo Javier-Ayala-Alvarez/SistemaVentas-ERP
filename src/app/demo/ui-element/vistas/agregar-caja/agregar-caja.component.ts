@@ -1,4 +1,3 @@
-// component/cajas/agregar-caja/agregar-caja.component.ts
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl, ValidationErrors, ValidatorFn, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,14 +28,14 @@ export class AgregarCajaComponent implements OnInit {
       id: [0],
       sucursal: [null as SucursalClass | null, [Validators.required]],
 
-      fechaInicio: [null as string | null, [Validators.required]],
-      horaInicio: [null as string | null, [Validators.required, this.hhmm24()]],
+      fechaInicio: [null as string | null, [Validators.required]],   // 'YYYY-MM-DD'
+      horaInicio:  [null as string | null, [Validators.required, this.hhmm24()]], // 'HH:mm'
 
-      fechaCierre: [null as string | null], // required dinámico en edición
-      horaCierre: [null as string | null, this.hhmm24OrEmpty()],
+      fechaCierre: [null as string | null],                          // 'YYYY-MM-DD' (requerido en edición)
+      horaCierre:  [null as string | null, this.hhmm24OrEmpty()],    // 'HH:mm'
 
       efectivoApertura: [null as number | null, [Validators.required, Validators.min(0)]],
-      efectivoCierre: [null as number | null], // required dinámico en edición
+      efectivoCierre:   [null as number | null], // requerido en edición
 
       estado: [null as string | null]
     },
@@ -53,44 +52,86 @@ export class AgregarCajaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.modoEdicion = !!this.caja && !!this.caja.id;
+    this.modoEdicion = !!this.caja?.id;
 
-    // Cargar sucursales y luego setear el valor correcto si es edición
+    // Cargar sucursales y luego resincronizar sucursal del formulario si es edición
     this.loadSucursal();
 
-    // Inicializar el formulario con los datos (edición) o default (creación)
     if (this.modoEdicion && this.caja) {
       this.form.patchValue({
         id: this.caja.id ?? 0,
+        // sucursal se resincroniza en loadSucursal() para asegurar misma referencia
         sucursal: this.caja.sucursal ?? null,
+
         fechaInicio: this.toISODate(this.caja.fechaInicio),
-        horaInicio: this.caja.horaInicio ?? null,
+        horaInicio:  this.toHHmm(this.caja.horaInicio),
+
         fechaCierre: this.toISODate(this.caja.fechaCierre),
-        horaCierre: this.caja.horaCierre ?? null,
+        horaCierre:  this.toHHmm(this.caja.horaCierre),
+
         efectivoApertura: this.caja.efectivoApertura ?? null,
-        efectivoCierre: this.caja.efectivoCierre ?? null,
+        efectivoCierre:   this.caja.efectivoCierre ?? null,
         estado: this.caja.estado ?? null
       });
     } else {
       // valores por defecto en creación
       const hoyISO = this.toISODate(new Date());
+      const ahora  = this.toHHmm(new Date());
       this.form.patchValue({
         fechaInicio: hoyISO,
-        efectivoApertura: 0
-      });
-      // limpiar campos de cierre
-      this.form.patchValue({
+        horaInicio:  ahora,
+        efectivoApertura: 0,
+        // limpiar cierre
         fechaCierre: null,
-        horaCierre: null,
+        horaCierre:  null,
         efectivoCierre: null
       });
     }
 
-    // Aplicar validadores condicionales según modo
+    // Validadores condicionales según modo
     this.actualizarValidadoresPorModo();
   }
 
-  // ---------- VALIDADORES REUSABLES ----------
+  // ---------- HELPERS DE FORMATO FECHA/HORA ----------
+
+  /** 'YYYY-MM-DD' desde Date|string */
+  private toISODate(v: Date | string | null | undefined): string | null {
+    if (!v) return null;
+    const d = v instanceof Date ? v : new Date(v);
+    if (isNaN(d.getTime())) return null;
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  /** 'HH:mm' desde Date|string|'HH:mm:ss' */
+  private toHHmm(v: Date | string | null | undefined): string | null {
+    if (v == null) return null;
+
+    if (v instanceof Date) {
+      const hh = String(v.getHours()).padStart(2, '0');
+      const mi = String(v.getMinutes()).padStart(2, '0');
+      return `${hh}:${mi}`;
+    }
+
+    // si viene 'HH:mm' o 'HH:mm:ss'
+    const s = String(v).trim();
+    const m = /^([01]\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?$/.exec(s);
+    if (m) return `${m[1]}:${m[2]}`;
+
+    // si viene ISO/fecha completa
+    const d = new Date(s);
+    if (!isNaN(d.getTime())) {
+      const hh = String(d.getHours()).padStart(2, '0');
+      const mi = String(d.getMinutes()).padStart(2, '0');
+      return `${hh}:${mi}`;
+    }
+
+    return null;
+  }
+
+  // ---------- VALIDADORES ----------
 
   private hhmm24(): ValidatorFn {
     const re = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -110,11 +151,10 @@ export class AgregarCajaComponent implements OnInit {
     };
   }
 
-  /** Validador a nivel de grupo: si es edición, exige cierre > inicio y presencia de campos de cierre */
+  /** A nivel de grupo: en edición exige cierre > inicio y presencia de campos de cierre */
   private cierreDespuesDeInicio(): ValidatorFn {
     return (group: AbstractControl): ValidationErrors | null => {
       const fg = group as FormGroup;
-      // Podemos leer this.modoEdicion porque el validador es un método de instancia
       if (!this.modoEdicion) return null;
 
       const fi = fg.get('fechaInicio')?.value as string | null;
@@ -122,22 +162,17 @@ export class AgregarCajaComponent implements OnInit {
       const fc = fg.get('fechaCierre')?.value as string | null;
       const hc = fg.get('horaCierre')?.value as string | null;
 
-      // presencia de valores en edición
-      if (!fi || !hi || !fc || !hc) {
-        return { cierreInvalido: true }; // faltan datos de cierre o inicio
-      }
+      if (!fi || !hi || !fc || !hc) return { cierreInvalido: true };
 
-      // formato hora ya validado en controles, igual verificamos parse
-      const dIni = this.combine(fi, hi);
-      const dFin = this.combine(fc, hc);
-      if (!dIni || !dFin) return { cierreInvalido: true };
+      const ini = this.combine(fi, hi);
+      const fin = this.combine(fc, hc);
+      if (!ini || !fin) return { cierreInvalido: true };
 
-      return dFin > dIni ? null : { cierreNoPosterior: true };
+      return fin > ini ? null : { cierreNoPosterior: true };
     };
   }
 
   private combine(fechaISO: string, hhmm: string): Date | null {
-    // fechaISO: 'YYYY-MM-DD'
     const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(hhmm ?? '');
     if (!m) return null;
     const d = new Date(fechaISO);
@@ -146,22 +181,11 @@ export class AgregarCajaComponent implements OnInit {
     return d;
   }
 
-  private toISODate(v: Date | string | null | undefined): string | null {
-    if (!v) return null;
-    const d = v instanceof Date ? v : new Date(v);
-    if (isNaN(d.getTime())) return null;
-    // a 'YYYY-MM-DD'
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${d.getFullYear()}-${mm}-${dd}`;
-    // (si tu backend necesita zona/offset, maneja aparte)
-  }
-
   // ---------- LÓGICA DE MODO Y VALIDADORES DINÁMICOS ----------
 
   private actualizarValidadoresPorModo(): void {
     const fechaCierre = this.form.get('fechaCierre');
-    const horaCierre = this.form.get('horaCierre');
+    const horaCierre  = this.form.get('horaCierre');
     const efectivoCierre = this.form.get('efectivoCierre');
 
     if (this.modoEdicion) {
@@ -182,8 +206,6 @@ export class AgregarCajaComponent implements OnInit {
     fechaCierre?.updateValueAndValidity();
     horaCierre?.updateValueAndValidity();
     efectivoCierre?.updateValueAndValidity();
-
-    // Revalidar el grupo por el validador cruzado
     this.form.updateValueAndValidity();
   }
 
@@ -191,8 +213,8 @@ export class AgregarCajaComponent implements OnInit {
 
   loadSucursal(): void {
     this.sucursalServices.buscar().subscribe((dato: SucursalClass[]) => {
-      this.sucursales = dato;
-      // si estamos en edición y ya teníamos id de sucursal, resincronizar objeto
+      this.sucursales = dato || [];
+      // resincronizar sucursal (misma referencia) si estamos en edición
       if (this.modoEdicion && this.caja?.sucursal?.id) {
         const sel = this.sucursales.find(s => s.id === this.caja!.sucursal!.id) ?? null;
         this.form.patchValue({ sucursal: sel });
@@ -207,9 +229,13 @@ export class AgregarCajaComponent implements OnInit {
       return;
     }
 
+    // Asegura que las horas vayan en 'HH:mm' (si el backend quiere 'HH:mm:ss', ajusta aquí)
+    const v = this.form.value;
     const payload: CajaClass = {
       ...this.caja, // conserva id si existía
-      ...this.form.value
+      ...v,
+      horaInicio: this.toHHmm(v.horaInicio) ?? null,
+      horaCierre: this.toHHmm(v.horaCierre) ?? null
     };
 
     if (this.modoEdicion) {

@@ -9,26 +9,54 @@
           <i class="fas fa-filter me-2"></i>Filtros
         </h6>
       </div>
+
       <div class="card-body pt-3 pb-0">
+        <!-- Fila 1: Nombre + Fechas -->
         <div class="row g-3 mb-2">
-          <div class="col-md-3">
-            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
-                   (input)="loadKardex()" placeholder="Fecha Inicio" />
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              [(ngModel)]="filtroNombre"
+              (input)="loadKardex()"
+              placeholder="Nombre de producto/cliente"
+            />
           </div>
-          <div class="col-md-3">
-            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"
-                   (input)="loadKardex()" placeholder="Fecha Fin" />
+          <div class="col-md-4">
+            <input
+              type="date"
+              class="form-control form-control-sm"
+              [(ngModel)]="filtroFechaInicio"
+              (input)="loadKardex()"
+              placeholder="Fecha Inicio"
+            />
+          </div>
+          <div class="col-md-4">
+            <input
+              type="date"
+              class="form-control form-control-sm"
+              [(ngModel)]="filtroFechaFin"
+              (input)="loadKardex()"
+              placeholder="Fecha Fin"
+            />
           </div>
         </div>
 
+        <!-- Fila 2: Sucursal + Buscar -->
         <div class="row g-3">
-          <div class="col-md-3">
-            <select class="form-select form-select-sm" [(ngModel)]="filtroSucursal">
+          <div class="col-md-4">
+            <select
+              class="form-select form-select-sm"
+              [(ngModel)]="filtroSucursal"
+              (change)="loadKardex()"
+            >
               <option [ngValue]="null">Sucursal</option>
-              <option *ngFor="let sucursal of sucursales" [ngValue]="sucursal.id">{{sucursal.nombre}}</option>
+              <option *ngFor="let sucursal of sucursales" [ngValue]="sucursal.id">
+                {{ sucursal.nombre }}
+              </option>
             </select>
           </div>
-          <div class="col-md-3 d-flex">
+          <div class="col-md-4 d-flex">
             <button class="btn btn-warning w-100" (click)="loadKardex()">
               <i class="fas fa-search me-1"></i> Buscar
             </button>
@@ -38,57 +66,71 @@
     </div>
 
     <!-- Tabla Kardex -->
-    <div class="card shadow-sm p-3 mb-4">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-dark text-center sticky-top">
-            <tr>
-              <th>#</th>
-              <th>Producto</th>
-              <th>Tipo Movimiento</th>
-              <th>Unidad</th>
-              <th>Cantidad</th>
-              <th>Cantidad factorial</th>
-              <th>Precio Unitario compra</th>
-              <th>Total</th>
-              <th>Stock</th>
-              <th>Valor Stock</th>
-              <th>Fecha</th>
-              <th>Proveedor/Cliente</th>
-              <th>Lote</th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            <tr *ngFor="let dato of kardex">
-              <td>{{dato.id}}</td>
-              <td>{{dato.idProducto}} - {{dato.nombreProducto}}</td>
-              <td>{{dato.operacion}}</td>
-              <td>{{dato.unidadOperacion}}</td>
-              <td>{{dato.cantidadOriginal}}</td>
-              <td>{{dato.cantidadMinima}}</td>
-              <td>{{dato.precioUnitario | currency}}</td>
-              <td>{{dato.total | currency}}</td>
-              <td>{{dato.stock}}</td>
-              <td>{{dato.valorStock | currency}}</td>
-              <td>{{dato.fecha | date:'shortDate'}}</td>
-              <td>{{dato.proveedorCliente}}</td>
-               <td>{{dato.lote}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="card shadow-sm mb-4 p-3 rounded table-responsive" style="max-height: 560px;">
+      <table class="table table-striped table-hover align-middle mb-0">
+        <thead class="table-dark text-center sticky-top" style="z-index:1;">
+          <tr>
+            <th>#</th>
+            <th>Producto</th>
+            <th>Tipo Movimiento</th>
+            <th>Unidad</th>
+            <th>Cantidad</th>
+            <th>Cantidad factorial</th>
+            <th>Precio Unitario compra</th>
+            <th>Total</th>
+            <th>Stock</th>
+            <th>Valor Stock</th>
+            <th>Fecha</th>
+            <th>Proveedor/Cliente</th>
+            <th>Lote</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-center">
+          <tr *ngFor="let dato of kardex">
+            <td>{{ dato.id }}</td>
+            <td class="text-truncate" style="max-width:240px" [title]="dato?.nombreProducto">
+              {{ dato.idProducto }} - {{ dato.nombreProducto }}
+            </td>
+            <td>{{ dato.operacion }}</td>
+            <td>{{ dato.unidadOperacion }}</td>
+            <td>{{ dato.cantidadOriginal }}</td>
+            <td>{{ dato.cantidadMinima }}</td>
+            <td>{{ dato.precioUnitario | currency:'USD':'symbol-narrow':'1.2-4' }}</td>
+            <td>{{ dato.total | currency:'USD':'symbol-narrow':'1.2-4' }}</td>
+            <td>{{ dato.stock }}</td>
+            <td>{{ dato.valorStock | currency:'USD':'symbol-narrow':'1.2-4' }}</td>
+            <td>{{ $any(dato?.fecha) | date:'yyyy-MM-dd HH:mm' }}</td>
+            <td class="text-truncate" style="max-width:220px" [title]="dato?.proveedorCliente">
+              {{ dato.proveedorCliente }}
+            </td>
+            <td>{{ dato.lote }}</td>
+          </tr>
+
+          <tr *ngIf="kardex?.length === 0">
+            <td colspan="13" class="text-center text-muted">No hay movimientos que coincidan con los filtros.</td>
+          </tr>
+        </tbody>
+      </table>
 
       <!-- Paginador -->
       <nav class="mt-3">
         <ul class="pagination justify-content-end mb-0">
           <li class="page-item" [class.disabled]="page === 0">
-            <a class="page-link" (click)="paginaAnterior()"><i class="fas fa-angle-left"></i></a>
+            <a class="page-link" style="cursor: pointer;" (click)="paginaAnterior()" aria-label="Anterior">
+              <i class="fas fa-angle-left"></i>
+            </a>
           </li>
           <li class="page-item disabled">
-            <span class="page-link">Página {{page + 1}} de {{totalPages.length}}</span>
+            <span class="page-link">Página {{ page + 1 }} de {{ totalPages?.length || 1 }}</span>
           </li>
-          <li class="page-item" [class.disabled]="page + 1 >= totalPages.length">
-            <a class="page-link" (click)="paginaSiguiente()"><i class="fas fa-angle-right"></i></a>
+          <li class="page-item" [class.disabled]="page + 1 >= (totalPages?.length || 1)">
+            <a class="page-link" style="cursor: pointer;" (click)="paginaSiguiente()" aria-label="Siguiente">
+              <i class="fas fa-angle-right"></i>
+            </a>
           </li>
         </ul>
       </nav>
+    </div>
+  </div>
+</div>
