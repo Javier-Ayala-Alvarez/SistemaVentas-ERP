@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgregarCajaComponent } from '../agregar-caja/agregar-caja.component';
 import { CajasServicesService } from '../../services/cajas-services.service';
 import { CajaClass } from '../../clases/caja-class';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
 import { SucursalClass } from '../../clases/sucursal-class';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { OperacionServicesService } from '../../services/operacion-services.service';
 
 
 
@@ -33,7 +35,14 @@ export default class CajasComponent {
   selectComboSucursal: any | null = null;
   totalPages: any[] = [];
   sucursales: any[] = [];
-  constructor(private modalService: NgbModal, private cajasServices: CajasServicesService, private sucursalServices: SucursalServicesService) { }
+
+
+    pdfUrl: SafeResourceUrl | null = null;
+    pdfBlob: Blob | null = null;
+    isLoading: boolean = false;
+  constructor(private modalService: NgbModal, private cajasServices: CajasServicesService, private sucursalServices: SucursalServicesService, private cdr: ChangeDetectorRef,private sanitizer: DomSanitizer,
+  private operacion: OperacionServicesService
+  ) { }
 
 
   ngOnInit(): void {
@@ -186,5 +195,40 @@ get cerradas(): number {
   const total = this.cajas?.length ?? 0;
   return total - this.abiertas;
 }
-
+async descargarPDF(caja: CajaClass) {
+    try {
+      await this.generarPDF(caja);
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(this.pdfBlob!);
+      link.download = 'reporte_ventas.pdf';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    } catch (err) {
+      console.error('No se pudo descargar PDF', err);
+    }
+  }
+public generarPDF(caja: CajaClass): Promise<void> {
+    this.isLoading = true;
+    this.cdr.detectChanges(); // fuerza actualización de vista
+    return new Promise((resolve, reject) => {
+     
+this.operacion.generarReportePDF('', '', String(caja!.id), '')
+        .subscribe({
+          next: (response: Blob) => {
+            this.pdfBlob = response;
+            const objectUrl = URL.createObjectURL(response);
+            this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
+            this.isLoading = false;
+            this.cdr.detectChanges(); // refresca vista otra vez
+            resolve();
+          },
+          error: (err) => {
+            console.error('Error al generar PDF', err);
+            this.isLoading = false;
+            this.cdr.detectChanges();
+            reject(err);
+          }
+        });
+    });
+  }
 }
