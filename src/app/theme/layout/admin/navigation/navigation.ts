@@ -1,5 +1,5 @@
 export interface NavigationItem {
-   id: string;
+  id: string;
   title: string;
   type?: 'item' | 'collapse' | 'group';
   translate?: string;
@@ -13,11 +13,13 @@ export interface NavigationItem {
   breadcrumbs?: boolean;
   function?: any;
   roles?: string[];
-  children: NavigationItem[]; // <-- opcional aquí
+  children: NavigationItem[];
 }
+
 export const NavigationItems: NavigationItem[] = [
+  // ===================== OPERACIONES =====================
   {
-    id: 'navigation',
+    id: 'operaciones',
     title: 'Operaciones',
     type: 'group',
     icon: 'feather icon-activity',
@@ -25,24 +27,24 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'dashboard',
-        title: 'Dashboard',
+        title: 'Consulta Precios',
         type: 'item',
         url: '/component/dashboard',
-        icon: 'feather icon-pie-chart', // más representativo para dashboard
+        icon: 'feather icon-search', // Nuevo ícono más representativo
         roles: ['ADMIN', 'FACTURA', 'GENERAL', 'SUPERADMIN'],
         children: []
       },
       {
-        id: 'FacturasAdministrador',
-        title: 'Factura-Administrador',
+        id: 'facturas-admin',
+        title: 'Facturas Admin',
         type: 'item',
         url: '/component/administrador-factura',
-        icon: 'feather icon-clipboard', // representa gestión documental
+        icon: 'feather icon-clipboard',
         roles: ['ADMIN', 'FACTURA', 'GENERAL', 'SUPERADMIN'],
         children: []
       },
       {
-        id: 'Facturas',
+        id: 'facturas',
         title: 'Facturas',
         type: 'item',
         url: '/component/factura',
@@ -51,16 +53,16 @@ export const NavigationItems: NavigationItem[] = [
         children: []
       },
       {
-        id: 'Cotizaciones',
+        id: 'cotizaciones',
         title: 'Cotizaciones',
         type: 'item',
         url: '/component/cotizaciones',
-        icon: 'feather icon-file', // representa un documento general
+        icon: 'feather icon-edit',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
         children: []
       },
       {
-        id: 'Compras',
+        id: 'compras',
         title: 'Compras',
         type: 'item',
         url: '/component/compras',
@@ -69,7 +71,7 @@ export const NavigationItems: NavigationItem[] = [
         children: []
       },
       {
-        id: 'Gastos',
+        id: 'gastos',
         title: 'Gastos',
         type: 'item',
         url: '/component/gastos',
@@ -78,127 +80,119 @@ export const NavigationItems: NavigationItem[] = [
         children: []
       },
       {
-        id: 'Cajas',
+        id: 'cajas',
         title: 'Cajas',
         type: 'item',
-        url: 'component/cajas',
-        icon: 'feather icon-box', // más intuitivo para “Caja”
+        url: '/component/cajas',
+        icon: 'feather icon-briefcase',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
         children: []
       },
       {
-        id: 'Remesas',
+        id: 'remesas',
         title: 'Remesas',
         type: 'item',
         url: '/component/remesas',
-        icon: 'feather icon-send', // mejor para remesas/envíos
+  icon: 'fas fa-money-bill-wave',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
         children: []
       }
     ]
   },
+
+  // ===================== FICHEROS =====================
   {
     id: 'ficheros',
     title: 'Ficheros',
     type: 'group',
-    icon: 'feather icon-archive', // mejor que database para ficheros
+    icon: 'feather icon-folder',
     roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
     children: [
       {
-        id: 'basic',
+        id: 'productos',
         title: 'Productos',
         type: 'collapse',
         icon: 'feather icon-package',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
         children: [
           {
-            id: 'button',
+            id: 'inventario',
             title: 'Inventario',
             type: 'item',
             url: '/component/Inventario',
+            icon: 'feather icon-layers',
             roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
             children: []
           },
           {
-            id: 'button',
+            id: 'productos-item',
             title: 'Productos',
             type: 'item',
             url: '/component/productos',
+            icon: 'feather icon-list',
             roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
             children: []
           },
           {
-            id: 'badges',
-            title: 'Categoria',
+            id: 'categorias',
+            title: 'Categorías',
             type: 'item',
             url: '/component/categoria',
+            icon: 'feather icon-tag',
             roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
             children: []
           },
           {
-            id: 'badges',
+            id: 'unidades',
             title: 'Unidades',
             type: 'item',
             url: '/component/unidades',
+            icon: 'feather icon-shuffle',
             roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
             children: []
           }
         ]
       },
       {
-        id: 'basic',
+        id: 'clientes',
         title: 'Clientes',
-        type: 'collapse',
-        icon: 'feather icon-user-check', // más específico para clientes
+        type: 'item',
+        url: '/component/clientes',
+        icon: 'feather icon-user-check',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
-        children: [
-          {
-            id: 'button',
-            title: 'Clientes',
-            type: 'item',
-            url: '/component/clientes',
-            roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
-            children: []
-          }
-        ]
+        children: []
       },
       {
-        id: 'basic',
+        id: 'proveedores',
         title: 'Proveedores',
-        type: 'collapse',
+        type: 'item',
+        url: '/component/proveedores',
         icon: 'feather icon-truck',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
-        children: [
-          {
-            id: 'button',
-            title: 'Proveedores',
-            type: 'item',
-            url: '/component/proveedores',
-            roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
-            children: []
-          }
-        ]
+        children: []
       },
       {
-        id: 'basic',
+        id: 'configuracion',
         title: 'Configuración',
         type: 'collapse',
-        icon: 'feather icon-settings', // mejor que package para configuración
+        icon: 'feather icon-settings',
         roles: ['ADMIN', 'SUPERADMIN'],
         children: [
           {
-            id: 'button',
+            id: 'empresa',
             title: 'Empresa',
             type: 'item',
             url: '/component/empresa',
+            icon: 'feather icon-briefcase',
             roles: ['ADMIN', 'SUPERADMIN'],
             children: []
           },
           {
-            id: 'badges',
+            id: 'sucursal',
             title: 'Sucursal',
             type: 'item',
             url: '/component/sucursal',
+            icon: 'feather icon-map-pin',
             roles: ['ADMIN', 'SUPERADMIN'],
             children: []
           }
@@ -206,26 +200,28 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
+  // ===================== REPORTES =====================
   {
-    id: 'Reportes',
+    id: 'reportes',
     title: 'Reportes',
     type: 'group',
     icon: 'feather icon-bar-chart-2',
     roles: ['ADMIN', 'SUPERADMIN'],
     children: [
       {
-        id: 'Ventas',
+        id: 'ventas',
         title: 'Ventas',
         type: 'collapse',
         icon: 'feather icon-shopping-bag',
         roles: ['ADMIN', 'SUPERADMIN'],
         children: [
           {
-            id: 'VentaFecha',
-            title: 'Ventas Fecha',
+            id: 'ventas-fecha',
+            title: 'Ventas por Fecha',
             type: 'item',
             url: '/component/ventas-fecha',
-            external: false,
+            icon: 'feather icon-calendar',
             roles: ['ADMIN', 'SUPERADMIN'],
             children: []
           },
@@ -234,7 +230,7 @@ export const NavigationItems: NavigationItem[] = [
             title: 'Kardex',
             type: 'item',
             url: '/component/kardex',
-            external: false,
+            icon: 'feather icon-book',
             roles: ['ADMIN', 'SUPERADMIN'],
             children: []
           }
@@ -242,19 +238,21 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
+  // ===================== AUTH =====================
   {
-    id: 'Authentication',
-    title: 'Authentication',
+    id: 'auth',
+    title: 'Seguridad',
     type: 'group',
     icon: 'feather icon-lock',
     roles: ['ADMIN', 'SUPERADMIN'],
     children: [
       {
-        id: 'Usuarios',
+        id: 'usuarios',
         title: 'Usuarios',
         type: 'item',
         url: '/component/auth/signup',
-        icon: 'feather icon-users', // plural para gestión de usuarios
+        icon: 'feather icon-users',
         target: true,
         breadcrumbs: false,
         roles: ['ADMIN', 'SUPERADMIN'],

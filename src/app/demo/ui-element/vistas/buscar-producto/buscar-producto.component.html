@@ -4,7 +4,6 @@
 </div>
 
 <div class="modal-body">
-
   <div class="row g-3">
     <!-- Tabla de Productos -->
     <div class="col-md-5">
@@ -16,36 +15,44 @@
               <tr>
                 <th (click)="ordenarPor('nombre')" style="cursor:pointer" class="text-white">
                   Nombre
-                  <i class="fas"
-                    [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                  <i class="fas" [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
                 </th>
                 <th (click)="ordenarPor('descripcion')" style="cursor:pointer" class="text-white">
                   Descripción
-                  <i class="fas"
-                    [ngClass]="order === 'descripcion' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+                  <i class="fas" [ngClass]="order === 'descripcion' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
                 </th>
                 <th>Imagen</th>
               </tr>
               <tr>
                 <th>
-                  <input class="form-control form-control-sm" [(ngModel)]="filtroNombre"
-                    (input)="loadProducto()" placeholder="Nombre" style="min-width: 110px;" />
+                  <input class="form-control form-control-sm"
+                         [(ngModel)]="filtroNombre"
+                         (input)="loadProducto()"
+                         placeholder="Nombre"
+                         style="min-width: 110px;" />
                 </th>
                 <th>
-                  <input class="form-control form-control-sm" [(ngModel)]="filtroDescripcion"
-                    (input)="loadProducto()" placeholder="Descripción" />
+                  <input class="form-control form-control-sm"
+                         [(ngModel)]="filtroDescripcion"
+                         (input)="loadProducto()"
+                         placeholder="Descripción" />
                 </th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of producto" (click)="loadUnidadProducto(data.id)" class="cursor-pointer"
-                style="transition: background-color 0.2s ease;">
+              <tr *ngFor="let data of producto"
+                  (click)="loadUnidadProducto(data.id)"
+                  class="cursor-pointer"
+                  style="transition: background-color 0.2s ease;">
                 <td>{{ data.nombre }}</td>
                 <td>{{ data.descripcion }}</td>
                 <td>
-                  <img *ngIf="data.nombreImagen" [src]="imagenRuta + data.nombreImagen" class="img-thumbnail"
-                    style="max-height: 50px; max-width: 50px;" alt="Imagen producto" />
+                  <img *ngIf="data.nombreImagen"
+                       [src]="imagenRuta + data.nombreImagen"
+                       class="img-thumbnail"
+                       style="max-height: 50px; max-width: 50px;"
+                       alt="Imagen producto" />
                 </td>
               </tr>
             </tbody>
@@ -67,8 +74,7 @@
               </button>
             </li>
             <li class="page-item" [class.disabled]="page >= totalPages.length - 1">
-              <button class="page-link" (click)="paginaSiguiente()" [disabled]="page >= totalPages.length - 1"
-                aria-label="Siguiente">
+              <button class="page-link" (click)="paginaSiguiente()" [disabled]="page >= totalPages.length - 1" aria-label="Siguiente">
                 <i class="fas fa-step-forward"></i>
               </button>
             </li>
@@ -88,34 +94,87 @@
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Precio</th>
-                <th style="width: 100px;">Cantidad</th>
-                <th style="width: 110px;">Descuento (%)</th>
+                <th style="width: 120px;">Cantidad</th>
+                <th style="width: 130px;">Descuento (%)</th>
                 <th>Agregar</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let unidad of unidadesMedidaProducto">
+              <tr *ngFor="let unidad of unidadesMedidaProducto; let i = index">
                 <td>{{ unidad.unidadMedida?.abreviatura }}</td>
-                <td>{{ unidad.unidadMedida?.descripcion }}</td>
+                <td class="text-start">{{ unidad.unidadMedida?.descripcion }}</td>
+
+                <!-- Precio (solo para compra) -->
                 <td *ngIf="identificador === 'compra'">
-                  <input type="number" class="form-control form-control-sm" min="1" placeholder="Precio"
-                    [(ngModel)]="unidad.precio" />
-                </td >
+                  <input type="number"
+                         class="form-control form-control-sm"
+                         placeholder="Precio"
+                         min="0.01"
+                         step="any"
+                         [(ngModel)]="unidad.precio"
+                         [ngModelOptions]="{standalone: true}"
+                         #precioCtrl="ngModel"
+                         required>
+                  <small class="text-danger d-block text-start"
+                         *ngIf="precioCtrl.invalid && (precioCtrl.dirty || precioCtrl.touched)">
+                    <ng-container *ngIf="precioCtrl.errors?.['required']">El precio es requerido.</ng-container>
+                    <ng-container *ngIf="precioCtrl.errors?.['min']">Debe ser mayor a 0.</ng-container>
+                  </small>
+                </td>
                 <td *ngIf="identificador !== 'compra'">{{ unidad.precio | number:'1.2-2' }}</td>
+
+                <!-- Cantidad -->
                 <td>
-                  <input type="number" class="form-control form-control-sm" min="1" placeholder="Cantidad"
-                    [(ngModel)]="unidad.cantidad" />
+                  <input type="number"
+                         class="form-control form-control-sm"
+                         placeholder="Cantidad"
+                         min="1"
+                         step="1"
+                         [(ngModel)]="unidad.cantidad"
+                         [ngModelOptions]="{standalone: true}"
+                         #cantCtrl="ngModel"
+                         required>
+                  <small class="text-danger d-block text-start"
+                         *ngIf="cantCtrl.invalid && (cantCtrl.dirty || cantCtrl.touched)">
+                    <ng-container *ngIf="cantCtrl.errors?.['required']">La cantidad es requerida.</ng-container>
+                    <ng-container *ngIf="cantCtrl.errors?.['min']">Debe ser al menos 1.</ng-container>
+                  </small>
                 </td>
+
+                <!-- Descuento -->
                 <td>
-                  <input type="number" class="form-control form-control-sm" min="0" max="100" placeholder="%"
-                    [(ngModel)]="unidad.descuento" />
+                  <input type="number"
+                         class="form-control form-control-sm"
+                         placeholder="%"
+                         min="0"
+                         max="100"
+                         step="0.01"
+                         [(ngModel)]="unidad.descuento"
+                         [ngModelOptions]="{standalone: true}"
+                         #descCtrl="ngModel">
+                  <small class="text-danger d-block text-start"
+                         *ngIf="descCtrl.invalid && (descCtrl.dirty || descCtrl.touched)">
+                    <ng-container *ngIf="descCtrl.errors?.['min']">No puede ser menor que 0%.</ng-container>
+                    <ng-container *ngIf="descCtrl.errors?.['max']">No puede exceder 100%.</ng-container>
+                  </small>
                 </td>
+
+                <!-- Agregar -->
                 <td class="text-center">
-                  <button type="button" class="btn btn-success btn-sm rounded-circle" (click)="guardar(unidad)"
-                    title="Agregar producto">
+                  <button type="button"
+                          class="btn btn-success btn-sm rounded-circle"
+                          (click)="guardar(unidad)"
+                          [disabled]="(identificador === 'compra' && (!unidad.precio || unidad.precio <= 0)) ||
+                                      (!unidad.cantidad || unidad.cantidad < 1) ||
+                                      (unidad.descuento ?? 0) < 0 || (unidad.descuento ?? 0) > 100"
+                          title="Agregar producto">
                     <i class="fas fa-check"></i>
                   </button>
                 </td>
+              </tr>
+
+              <tr *ngIf="!unidadesMedidaProducto || unidadesMedidaProducto.length === 0">
+                <td colspan="6" class="text-muted py-3">Seleccione un producto para ver sus unidades.</td>
               </tr>
             </tbody>
           </table>
@@ -130,7 +189,7 @@
 </div>
 
 <style>
-  /* Hover efecto en filas clickeables tabla productos */
+  /* Hover efecto en filas clicables (tabla productos) */
   tr.cursor-pointer:hover {
     background-color: #e9f5ff;
     cursor: pointer;

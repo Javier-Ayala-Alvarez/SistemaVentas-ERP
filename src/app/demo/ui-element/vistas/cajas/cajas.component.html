@@ -1,155 +1,219 @@
 <div class="container mt-4">
-    <div class="card shadow-sm p-4 mb-4 rounded">
-        <h3 class="mb-4 text-center">Cajas</h3>
-
-        <!-- Botón Agregar -->
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <button class="btn btn-primary w-100" (click)="openModal()">Agregar</button>
-            </div>
-        </div>
-
-        <!-- Filtros -->
-        <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-light">
-                <h6 class="mb-0 text-secondary">
-                    <i class="fas fa-filter me-2"></i>Filtros
-                </h6>
-            </div>
-            <div class="card-body pt-3 pb-0">
-                <div class="row g-2">
-                    <div class="col-md-2">
-                        <input class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="loadcajas()"
-                            placeholder="Código" />
-                    </div>
-                    <div class="col-md-2">
-                        <select [(ngModel)]="filtroIdSucursal" class="form-select form-select-sm"
-                            (change)="loadcajas()">
-                            <option [ngValue]="null">Todas</option>
-                            <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{dato.nombre}}</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
-                            (input)="loadcajas()" placeholder="Fecha Inicio" />
-                    </div>
-                    <div class="col-md-2">
-                        <input class="form-control form-control-sm" [(ngModel)]="filtroHoraInicio" (input)="loadcajas()"
-                            placeholder="Hora Inicio" />
-                    </div>
-                    <div class="col-md-2">
-                        <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"
-                            (input)="loadcajas()" placeholder="Fecha Fin" />
-                    </div>
-                    <div class="col-md-2">
-                        <input class="form-control form-control-sm" [(ngModel)]="filtroHoraFin" (input)="loadcajas()"
-                            placeholder="Hora Fin" />
-                    </div>
-                    <div class="col-md-2">
-                        <input class="form-control form-control-sm" [(ngModel)]="filtroEfectivoInicio"
-                            (input)="loadcajas()" placeholder="Efectivo Inicio" />
-                    </div>
-                    <div class="col-md-2">
-                        <input class="form-control form-control-sm" [(ngModel)]="filtroEfectivoCierre"
-                            (input)="loadcajas()" placeholder="Efectivo Cierre" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tabla mejorada -->
-        <div class="card shadow-sm mb-4 p-3 rounded">
-            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-dark text-center sticky-top" style="z-index: 1;">
-                        <tr>
-                            <th (click)="ordenarPor('id')" style="cursor:pointer">
-                                Código
-                                <i class="fas"
-                                    [ngClass]="order === 'id' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                            </th>
-                            <th>Sucursal</th>
-                            <th (click)="ordenarPor('fechaInicio')" style="cursor:pointer">
-                                Fecha Inicio
-                                <i class="fas"
-                                    [ngClass]="order === 'fechaInicio' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                            </th>
-                            <th (click)="ordenarPor('horaInicio')" style="cursor:pointer">
-                                Hora Inicio
-                                <i class="fas"
-                                    [ngClass]="order === 'horaInicio' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                            </th>
-                            <th (click)="ordenarPor('fechaFin')" style="cursor:pointer">
-                                Fecha Fin
-                                <i class="fas"
-                                    [ngClass]="order === 'fechaFin' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                            </th>
-                            <th (click)="ordenarPor('horaFin')" style="cursor:pointer">
-                                Hora Fin
-                                <i class="fas"
-                                    [ngClass]="order === 'horaFin' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                            </th>
-                            <th (click)="ordenarPor('efectivoApertura')" style="cursor:pointer">
-                                Efectivo Apertura
-                                <i class="fas"
-                                    [ngClass]="order === 'efectivoApertura' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                            </th>
-                            <th (click)="ordenarPor('efectivoCierre')" style="cursor:pointer">
-                                Efectivo Cierre
-                                <i class="fas"
-                                    [ngClass]="order === 'efectivoCierre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                            </th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <tr *ngFor="let data of cajas"
-                            [ngClass]="{'table-warning': !data.fechaCierre && !data.horaCierre && !data.efectivoCierre}">
-                            <td>{{data.id}}</td>
-                            <td>{{data.sucursal?.nombre}}</td>
-                            <td>{{data.fechaInicio}}</td>
-                            <td>{{data.horaInicio}}</td>
-                            <td>{{data.fechaCierre}}</td>
-                            <td>{{data.horaCierre}}</td>
-                            <td class="text-end">{{data.efectivoApertura}}</td>
-                            <td class="text-end">{{data.efectivoCierre}}</td>
-                            <td>
-                                <div class="d-flex justify-content-center gap-2">
-                                    <button class="btn btn-outline-primary btn-sm" title="Editar"
-                                        (click)="editar(data)">
-                                        <i class="fas fa-pen"></i>
-                                    </button>
-                                    <button class="btn btn-outline-danger btn-sm" title="Eliminar"
-                                        (click)="eliminar(data)">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Paginador -->
-            <nav class="mt-3">
-                <ul class="pagination justify-content-end mb-0">
-                    <li class="page-item disabled"><span class="page-link">Items por página</span></li>
-                    <li class="page-item disabled"><span class="page-link">Página {{page+1}} de
-                            {{totalPages.length}}</span></li>
-                    <li class="page-item" [class.disabled]="page === 0">
-                        <a class="page-link" style="cursor: pointer;" (click)="paginaAnterior()" aria-label="Anterior">
-                            <i class="fas fa-angle-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item" [class.disabled]="page + 1 >= totalPages.length">
-                        <a class="page-link" style="cursor: pointer;" (click)="paginaSiguiente()"
-                            aria-label="Siguiente">
-                            <i class="fas fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
+  <div class="card shadow-sm p-4 mb-4 rounded">
+    <!-- Encabezado -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+      <h3 class="mb-0 text-center text-md-start">Cajas</h3>
+      <button class="btn btn-primary" (click)="openModal()" aria-label="Agregar caja">
+        <i class="fas fa-plus me-2"></i>Agregar
+      </button>
     </div>
+
+    <!-- Resumen -->
+    <div class="card border-0 shadow-sm mb-4" *ngIf="cajas?.length">
+      <div class="card-body d-flex flex-wrap gap-4 align-items-center">
+        <div>
+          <div class="text-muted small">Total Apertura</div>
+          <div class="h5 mb-0">
+            {{ totalApertura | currency:'USD':'symbol-narrow':'1.2-2' }}
+          </div>
+        </div>
+
+        <div>
+          <div class="text-muted small">Total Cierre</div>
+          <div class="h5 mb-0">
+            {{ totalCierre | currency:'USD':'symbol-narrow':'1.2-2' }}
+          </div>
+        </div>
+
+        <div>
+          <div class="text-muted small">Diferencia (Cierre - Apertura)</div>
+          <div class="h5 mb-0" [ngClass]="{ 'text-success': diferencia >= 0, 'text-danger': diferencia < 0 }">
+            {{ diferencia | currency:'USD':'symbol-narrow':'1.2-2' }}
+          </div>
+        </div>
+
+        <div class="ms-auto d-flex flex-wrap gap-2">
+          <span class="badge rounded-pill bg-warning text-dark">Abiertas: {{ abiertas }}</span>
+          <span class="badge rounded-pill bg-success">Cerradas: {{ cerradas }}</span>
+          <span class="badge rounded-pill bg-secondary">Total: {{ cajas?.length || 0 }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- /Resumen -->
+
+    <!-- Filtros -->
+    <div class="card mb-4 border-0 shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="mb-0 text-secondary">
+          <i class="fas fa-filter me-2"></i>Filtros
+        </h6>
+      </div>
+      <div class="card-body pt-3 pb-0">
+        <div class="row g-2">
+          <div class="col-6 col-md-2">
+            <input class="form-control form-control-sm"
+                   [(ngModel)]="filtroCodigo"
+                   (input)="loadcajas()"
+                   placeholder="Código"
+                   aria-label="Filtrar por código" />
+          </div>
+
+          <div class="col-6 col-md-2">
+            <select [(ngModel)]="filtroIdSucursal"
+                    class="form-select form-select-sm"
+                    (change)="loadcajas()"
+                    aria-label="Filtrar por sucursal">
+              <option [ngValue]="null">Todas</option>
+              <option *ngFor="let dato of sucursales" [ngValue]="dato.id">{{ dato.nombre }}</option>
+            </select>
+          </div>
+
+          <div class="col-6 col-md-2">
+            <input type="date"
+                   class="form-control form-control-sm"
+                   [(ngModel)]="filtroFechaInicio"
+                   (input)="loadcajas()"
+                   placeholder="Fecha Inicio"
+                   aria-label="Fecha inicio" />
+          </div>
+
+          <div class="col-6 col-md-2">
+            <input class="form-control form-control-sm"
+                   [(ngModel)]="filtroHoraInicio"
+                   (input)="loadcajas()"
+                   placeholder="Hora Inicio"
+                   aria-label="Hora inicio" />
+          </div>
+
+          <div class="col-6 col-md-2">
+            <input type="date"
+                   class="form-control form-control-sm"
+                   [(ngModel)]="filtroFechaFin"
+                   (input)="loadcajas()"
+                   placeholder="Fecha Fin"
+                   aria-label="Fecha fin" />
+          </div>
+
+          <div class="col-6 col-md-2">
+            <input class="form-control form-control-sm"
+                   [(ngModel)]="filtroHoraFin"
+                   (input)="loadcajas()"
+                   placeholder="Hora Fin"
+                   aria-label="Hora fin" />
+          </div>
+
+          <div class="col-6 col-md-2">
+            <input class="form-control form-control-sm"
+                   [(ngModel)]="filtroEfectivoInicio"
+                   (input)="loadcajas()"
+                   placeholder="Efectivo Inicio"
+                   aria-label="Efectivo inicio" />
+          </div>
+
+          <div class="col-6 col-md-2">
+            <input class="form-control form-control-sm"
+                   [(ngModel)]="filtroEfectivoCierre"
+                   (input)="loadcajas()"
+                   placeholder="Efectivo Cierre"
+                   aria-label="Efectivo cierre" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Filtros -->
+
+    <!-- Tabla -->
+    <div class="card shadow-sm mb-4 p-3 rounded">
+      <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark text-center sticky-top" style="z-index: 1;">
+            <tr>
+              <th (click)="ordenarPor('id')" style="cursor:pointer">
+                Código
+                <i class="fas" [ngClass]="order === 'id' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+              </th>
+              <th>Sucursal</th>
+              <th (click)="ordenarPor('fechaInicio')" style="cursor:pointer">
+                Fecha Inicio
+                <i class="fas" [ngClass]="order === 'fechaInicio' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+              </th>
+              <th (click)="ordenarPor('horaInicio')" style="cursor:pointer">
+                Hora Inicio
+                <i class="fas" [ngClass]="order === 'horaInicio' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+              </th>
+              <th (click)="ordenarPor('fechaFin')" style="cursor:pointer">
+                Fecha Fin
+                <i class="fas" [ngClass]="order === 'fechaFin' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+              </th>
+              <th (click)="ordenarPor('horaFin')" style="cursor:pointer">
+                Hora Fin
+                <i class="fas" [ngClass]="order === 'horaFin' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+              </th>
+              <th (click)="ordenarPor('efectivoApertura')" style="cursor:pointer">
+                Efectivo Apertura
+                <i class="fas" [ngClass]="order === 'efectivoApertura' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+              </th>
+              <th (click)="ordenarPor('efectivoCierre')" style="cursor:pointer">
+                Efectivo Cierre
+                <i class="fas" [ngClass]="order === 'efectivoCierre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
+              </th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody class="text-center">
+            <tr *ngFor="let data of cajas"
+                [ngClass]="{ 'table-warning': !data?.fechaCierre && !data?.horaCierre && !data?.efectivoCierre }">
+              <td>{{ data.id }}</td>
+              <td>{{ data.sucursal?.nombre }}</td>
+              <td>{{ data.fechaInicio }}</td>
+              <td>{{ data.horaInicio }}</td>
+              <td>{{ data.fechaCierre }}</td>
+              <td>{{ data.horaCierre }}</td>
+              <td class="text-end">{{ data.efectivoApertura | number:'1.2-2' }}</td>
+              <td class="text-end">{{ data.efectivoCierre | number:'1.2-2' }}</td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <button class="btn btn-outline-primary btn-sm" title="Editar" (click)="editar(data)">
+                    <i class="fas fa-pen"></i>
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm" title="Eliminar" (click)="eliminar(data)">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="!cajas?.length">
+              <td colspan="9" class="text-center text-muted py-4">Sin resultados</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginador -->
+      <nav class="mt-3" aria-label="Paginación de cajas">
+        <ul class="pagination justify-content-end mb-0">
+          <li class="page-item disabled">
+            <span class="page-link">Items por página</span>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link">Página {{ page + 1 }} de {{ totalPages.length }}</span>
+          </li>
+          <li class="page-item" [class.disabled]="page === 0">
+            <a class="page-link" style="cursor: pointer;" (click)="paginaAnterior()" aria-label="Anterior">
+              <i class="fas fa-angle-left"></i>
+            </a>
+          </li>
+          <li class="page-item" [class.disabled]="page + 1 >= totalPages.length">
+            <a class="page-link" style="cursor: pointer;" (click)="paginaSiguiente()" aria-label="Siguiente">
+              <i class="fas fa-angle-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /Paginador -->
+    </div>
+    <!-- /Tabla -->
+  </div>
 </div>

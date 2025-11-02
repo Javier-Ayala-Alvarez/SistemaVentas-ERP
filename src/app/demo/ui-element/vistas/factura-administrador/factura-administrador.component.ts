@@ -12,7 +12,7 @@ const MOVIENTO_OPERACION = "S";
 @Component({
   selector: 'app-factura-administrador',
   templateUrl: './factura-administrador.component.html',
-  styleUrls: ['./factura-administrador.component.scss'] // ✅ corregido
+  styleUrls: ['./factura-administrador.component.scss']
 })
 export default class FacturaAdministradorComponent {
   operacion: OperacionClass = new OperacionClass();

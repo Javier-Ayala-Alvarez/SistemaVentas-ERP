@@ -135,4 +135,56 @@ export default class CajasComponent {
     this.loadcajas();
   }
 
+
+  // Helpers seguros para convertir a número
+private toNumber(v: any): number {
+  if (v === null || v === undefined) return 0;
+  if (typeof v === 'number' && !isNaN(v)) return v;
+  if (typeof v === 'string') {
+    // Limpia posibles separadores y símbolos: "1,234.50" o "1.234,50" o " $1,234 "
+    const clean = v.trim()
+      .replace(/\s/g, '')
+      .replace(/\$/g, '')
+      .replace(/,/g, '.'); // si tu backend ya manda punto decimal, esto no le afecta
+    const n = parseFloat(clean);
+    return isNaN(n) ? 0 : n;
+  }
+  const n = Number(v);
+  return isNaN(n) ? 0 : n;
+}
+
+get totalApertura(): number {
+  const src = this.cajas ?? [];
+  return src.reduce((t, c: any) => t + this.toNumber(c?.efectivoApertura), 0);
+}
+
+get totalCierre(): number {
+  const src = this.cajas ?? [];
+  return src.reduce((t, c: any) => t + this.toNumber(c?.efectivoCierre), 0);
+}
+
+get diferencia(): number {
+  return this.totalCierre - this.totalApertura;
+}
+
+// Considera cerrada si TIENE fecha/hora/efectivo de cierre (no solo que no sean null,
+// además chequeamos strings vacíos)
+private hasValue(v: any): boolean {
+  return !(v === null || v === undefined || (typeof v === 'string' && v.trim() === ''));
+}
+
+get abiertas(): number {
+  const src = this.cajas ?? [];
+  return src.filter(c =>
+    !this.hasValue(c?.fechaCierre) &&
+    !this.hasValue(c?.horaCierre)  &&
+    !this.hasValue(c?.efectivoCierre)
+  ).length;
+}
+
+get cerradas(): number {
+  const total = this.cajas?.length ?? 0;
+  return total - this.abiertas;
+}
+
 }

@@ -17,6 +17,9 @@ import { OperacionServicesService } from '../../services/operacion-services.serv
 import { filter } from 'rxjs';
 import Swal from 'sweetalert2';
 
+// 👇 Import para el template-driven form
+import { NgForm } from '@angular/forms';
+
 @Component({
   selector: 'app-agregar-cotizacion',
   templateUrl: './agregar-cotizacion.component.html',
@@ -24,20 +27,40 @@ import Swal from 'sweetalert2';
 })
 export class AgregarCotizacionComponent {
   operacion: OperacionClass = new OperacionClass();
-   operacionDetalle: OperacionDetalleClass [] = [];
-      sucursales: any[]= [];
-      tipoOperaciones: any[]= [];
-      departamentos: any[]= [];
-      municipios: any[]= [];
-      distritos: any[]= [];
-      subtotal = 0;
-      iva = 0;
-      retencion = 0;
-      totalVenta = 0;
-      
-      previousUrl: string = '';
-      currentUrl: string = '';
+  operacionDetalle: OperacionDetalleClass [] = [];
 
+  sucursales: any[]= [];
+  tipoOperaciones: any[]= [];
+  departamentos: any[]= [];
+  municipios: any[]= [];
+  distritos: any[]= [];
+
+  subtotal = 0;
+  iva = 0;
+  retencion = 0;
+  totalVenta = 0;
+
+  previousUrl: string = '';
+  currentUrl: string = '';
+
+  // === UX de validación ===
+  intentoGuardar = false;
+
+  // === Toasts individuales con autocierre ===
+  toasts: ToastMsg[] = [];
+
+  constructor(
+    private modalService: NgbModal,
+    private operacionServices: OperacionServicesService,
+    private sucursalServices: SucursalServicesService,
+    private tipoOperacionServices: TipoOperacionServicesService,
+    private distritoServices: DistritosServicesService,
+    private municipioServices: MunicipioServicesService,
+    private departamentoServices: DepartamentosServicesService,
+    private router: Router,
+    private datePipe: DatePipe,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     this.loadDepartamento();
@@ -47,31 +70,25 @@ export class AgregarCotizacionComponent {
     this.limpiarArreglo();
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
-
-
-
   }
-   constructor(private modalService: NgbModal,private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService,private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService,  private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
-    ) { 
 
-    }
-    limpiarArreglo() {
-      this.router.events
-        .pipe(filter(event => event instanceof NavigationEnd))
-        .subscribe((event: any) => {
-          this.previousUrl = this.currentUrl;
-          this.currentUrl = event.urlAfterRedirects;
-  
-          if (this.previousUrl && this.previousUrl !== this.currentUrl) {
-            this.operacionServices.limpiarArreglos()
-          }
-        });
-  
-    }
-    eliminarDetalle(detalle: OperacionDetalleClass): void {
-      this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(()=>{
-        this.operacionDetalle = this.operacionServices.operacionDetalle;
+  limpiarArreglo() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.previousUrl = this.currentUrl;
+        this.currentUrl = event.urlAfterRedirects;
+
+        if (this.previousUrl && this.previousUrl !== this.currentUrl) {
+          this.operacionServices.limpiarArreglos()
+        }
       });
+  }
+
+  eliminarDetalle(detalle: OperacionDetalleClass): void {
+    this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(()=>{
+      this.operacionDetalle = this.operacionServices.operacionDetalle;
+    });
   }
 
   loadDepartamento(){
@@ -82,21 +99,21 @@ export class AgregarCotizacionComponent {
           this.operacion.departamento = this.departamentos?.find(emp => emp.id === this.operacion.departamento?.id);
         }
       }
-
     );
   }
 
-//mostrar datos de la sucursal
-loadSucursal() {
-  this.sucursalServices.buscar().subscribe(
-    (dato: any) => {
-      this.sucursales = dato;
-      if (this.operacion) {
-        this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);
+  //mostrar datos de la sucursal
+  loadSucursal() {
+    this.sucursalServices.buscar().subscribe(
+      (dato: any) => {
+        this.sucursales = dato;
+        if (this.operacion) {
+          this.operacion.sucursal = this.sucursales?.find(emp => emp.id === this.operacion.sucursal?.id);
+        }
       }
-    }
-  );
-}
+    );
+  }
+
   loadMunicipio(){
     this.municipioServices.buscar().subscribe(
       (dato: any) => {
@@ -105,10 +122,9 @@ loadSucursal() {
           this.operacion.municipio = this.municipios?.find(emp => emp.id === this.operacion.municipio?.id);
         }
       }
-
     );
-
   }
+
   loadDistrito(){
     this.distritoServices.buscar().subscribe(
       (dato: any) => {
@@ -117,154 +133,199 @@ loadSucursal() {
           this.operacion.distrito = this.distritos?.find(emp => emp.id === this.operacion.distrito?.id);
         }
       }
-
     );
-
   }
-
-
 
   openModalAgregar (){
     const modalRef = this.modalService.open(AgregarClienteComponent, {
-      size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
+      size: 'lg',
       centered: true
-  });
+    });
   }
-
-
-
-
-
 
   openModalCliente() {
-    
     const modalRef = this.modalService.open(BuscarClienteComponent, {
-      size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
-      centered: true // para centrar el modal
-      
+      size: 'lg',
+      centered: true
     });
-    modalRef.componentInstance.identificador = "cotizacion"; // ← acá mandás el parámetro
-
+    modalRef.componentInstance.identificador = "cotizacion";
   }
+
   openModalProducto() {
     const modalRef = this.modalService.open(BuscarProductoComponent, {
-      size: 'xl', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
-      centered: true // para centrar el modal
+      size: 'xl',
+      centered: true
     });
-    modalRef.componentInstance.identificador = "cotizacion"; // ← acá mandás el parámetro
-
-    
+    modalRef.componentInstance.identificador = "cotizacion";
   }
 
   openModalFormaPago(){
     const modalRef = this.modalService.open(FormaDePagoComponent, {
-      size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
+      size: 'lg',
       centered: true
-  });
-  modalRef.componentInstance.identificador = "cotizacion"; // ← acá mandás el parámetro
-  modalRef.componentInstance.totalVenta = this.operacion.total; // ← acá mandás el parámetro
-
+    });
+    modalRef.componentInstance.identificador = "cotizacion";
+    modalRef.componentInstance.totalVenta = this.operacion.total;
   }
 
+  // ===============================
+  //   VALIDACIÓN PREVIA + TOASTS
+  // ===============================
+  preGuardar(form: NgForm) {
+    this.intentoGuardar = true;
+    form.form.markAllAsTouched();
+
+    // Checks de negocio / modelo
+    const sinProductos = !this.operacionDetalle || this.operacionDetalle.length === 0;
+    const clienteInvalido = !this.operacion.cliente || !this.operacion.cliente.id;
+    const fechaVencimientoInvalida = !this.operacion.fechaVencimiento;
+    const descripcionInvalida = !this.operacion.descripcion || this.operacion.descripcion.trim() === '';
+
+    // Limpiar toasts previos y armar mensajes
+    this.toasts = [];
+    let id = Date.now();
+
+    // Controles del formulario (selects con #refs en el template)
+    const controls = (form.controls ?? {}) as any;
+
+    if (clienteInvalido) this.pushToast(id++, 'Seleccionar cliente');
+    if (controls['departamento']?.invalid) this.pushToast(id++, 'Seleccionar Departamento');
+    if (controls['municipio']?.invalid) this.pushToast(id++, 'Seleccionar Municipio');
+    if (controls['distrito']?.invalid) this.pushToast(id++, 'Seleccionar Distrito');
+    if (controls['sucursal']?.invalid) this.pushToast(id++, 'Seleccionar Sucursal');
+    if (fechaVencimientoInvalida) this.pushToast(id++, 'Indicar Fecha de Vencimiento');
+    if (descripcionInvalida) this.pushToast(id++, 'Ingresar Descripción');
+    if (sinProductos) this.pushToast(id++, 'Agregar al menos un producto');
+
+    const anyInvalid =
+      form.invalid ||
+      sinProductos ||
+      clienteInvalido ||
+      fechaVencimientoInvalida ||
+      descripcionInvalida;
+
+    if (anyInvalid) {
+      return; // mostrar toasts y no continuar
+    }
+
+    // OK: continuar con tu lógica original
+    this.guardarCotizacion();
+  }
+
+  // Helpers de toasts
+  pushToast(id: number, message: string) {
+    this.toasts.push({ id, message });
+    setTimeout(() => this.removeToast(id), 4500);
+  }
+
+  removeToast(id: number) {
+    this.toasts = this.toasts.filter(t => t.id !== id);
+  }
+
+  // ===============================
+  //     LÓGICA ORIGINAL (Swal)
+  // ===============================
   guardarCotizacion(){
-  // ✅ Validación de Cliente
-      if (!this.operacion.cliente || !this.operacion.cliente.id) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Cliente no seleccionado',
-          text: 'Debe seleccionar un cliente antes de continuar.',
-        });
-        return;
-      }
-  
-      // ✅ Validación de Productos agregados
-      if (!this.operacionDetalle || this.operacionDetalle.length === 0) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Sin productos',
-          text: 'Debe agregar al menos un producto antes de continuar.',
-        });
-        return;
-      }
-
-        // ✅ Validar Fecha de Vencimiento
-  if (!this.operacion.fechaVencimiento) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Fecha de vencimiento requerida',
-      text: 'Debe seleccionar una fecha de vencimiento.',
-    });
-    return;
-  }
-
-  // ✅ Validar Descripción
-  if (!this.operacion.descripcion || this.operacion.descripcion.trim() === '') {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Descripción requerida',
-      text: 'Debe ingresar una descripción.',
-    });
-    return;
-  }
-
-  // ✅ Validar Departamento
-  if (!this.operacion.departamento) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Departamento no seleccionado',
-      text: 'Debe seleccionar un departamento.',
-    });
-    return;
-  }
-
-  // ✅ Validar Municipio
-  if (!this.operacion.municipio) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Municipio no seleccionado',
-      text: 'Debe seleccionar un municipio.',
-    });
-    return;
-  }
-
-  // ✅ Validar Distrito
-  if (!this.operacion.distrito) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Distrito no seleccionado',
-      text: 'Debe seleccionar un distrito.',
-    });
-    return;
-  }
-
-  // ✅ Validar Sucursal
-  if (!this.operacion.sucursal) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Sucursal no seleccionada',
-      text: 'Debe seleccionar una sucursal.',
-    });
-    return;
-  }
-  
-      // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
-      //this.openModalFormaPago();
-
-      this.registrarCotizacion();
-
-
-    }
-
-
-    registrarCotizacion() {
-        this.operacion.fechaVencimiento = this.operacion.fechaVencimiento;
-
-
-      this.operacionServices.guardarOperacion().subscribe((dato: any) => {
-      //this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['/component/Nuevacotizacion']);
-        });
+    // ✅ Validación de Cliente
+    if (!this.operacion.cliente || !this.operacion.cliente.id) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Cliente no seleccionado',
+        text: 'Debe seleccionar un cliente antes de continuar.',
       });
+      return;
     }
+
+    // ✅ Validación de Productos agregados
+    if (!this.operacionDetalle || this.operacionDetalle.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sin productos',
+        text: 'Debe agregar al menos un producto antes de continuar.',
+      });
+      return;
+    }
+
+    // ✅ Validar Fecha de Vencimiento
+    if (!this.operacion.fechaVencimiento) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fecha de vencimiento requerida',
+        text: 'Debe seleccionar una fecha de vencimiento.',
+      });
+      return;
+    }
+
+    // ✅ Validar Descripción
+    if (!this.operacion.descripcion || this.operacion.descripcion.trim() === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Descripción requerida',
+        text: 'Debe ingresar una descripción.',
+      });
+      return;
+    }
+
+    // ✅ Validar Departamento
+    if (!this.operacion.departamento) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Departamento no seleccionado',
+        text: 'Debe seleccionar un departamento.',
+      });
+      return;
+    }
+
+    // ✅ Validar Municipio
+    if (!this.operacion.municipio) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Municipio no seleccionado',
+        text: 'Debe seleccionar un municipio.',
+      });
+      return;
+    }
+
+    // ✅ Validar Distrito
+    if (!this.operacion.distrito) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Distrito no seleccionado',
+        text: 'Debe seleccionar un distrito.',
+      });
+      return;
+    }
+
+    // ✅ Validar Sucursal
+    if (!this.operacion.sucursal) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Sucursal no seleccionada',
+        text: 'Debe seleccionar una sucursal.',
+      });
+      return;
+    }
+
+    // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
+    // this.openModalFormaPago();
+
+    this.registrarCotizacion();
+  }
+
+  registrarCotizacion() {
+    this.operacion.fechaVencimiento = this.operacion.fechaVencimiento;
+
+    this.operacionServices.guardarOperacion().subscribe((dato: any) => {
+      // this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/component/Nuevacotizacion']);
+      });
+    });
+  }
+}
+
+// Interfaz para los toasts
+export interface ToastMsg {
+  id: number;
+  message: string;
 }

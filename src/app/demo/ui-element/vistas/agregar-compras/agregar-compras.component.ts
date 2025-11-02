@@ -1,6 +1,6 @@
 import { CommonModule, AsyncPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -51,6 +51,25 @@ export default class AgregarComprasComponent implements OnInit {
   previousUrl: string = '';
   currentUrl: string = '';
 
+  // --- Validación UX ---
+  intentoGuardar = false;
+
+  // --- Toasts individuales ---
+  toasts: ToastMsg[] = [];
+
+  constructor(
+    private modalService: NgbModal,
+    private operacionServices: OperacionServicesService,
+    private sucursalServices: SucursalServicesService,
+    private tipoOperacionServices: TipoOperacionServicesService,
+    private distritoServices: DistritosServicesService,
+    private municipioServices: MunicipioServicesService,
+    private departamentoServices: DepartamentosServicesService,
+    private router: Router,
+    private datePipe: DatePipe,
+    private route: ActivatedRoute,
+  ) { }
+
   ngOnInit(): void {
     this.loadDepartamento();
     this.loadMunicipio();
@@ -63,31 +82,27 @@ export default class AgregarComprasComponent implements OnInit {
 
     const hoy = new Date();
     this.operacion.fechaElaboracion = hoy.toISOString().split('T')[0];
-
   }
-  constructor(private modalService: NgbModal, private operacionServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private distritoServices: DistritosServicesService, private municipioServices: MunicipioServicesService, private departamentoServices: DepartamentosServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
-  ) {
 
+  limpiarArreglo() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.previousUrl = this.currentUrl;
+        this.currentUrl = event.urlAfterRedirects;
+
+        if (this.previousUrl && this.previousUrl !== this.currentUrl) {
+          this.operacionServices.limpiarArreglos()
+        }
+      });
   }
-    limpiarArreglo() {
-        this.router.events
-          .pipe(filter(event => event instanceof NavigationEnd))
-          .subscribe((event: any) => {
-            this.previousUrl = this.currentUrl;
-            this.currentUrl = event.urlAfterRedirects;
-    
-            if (this.previousUrl && this.previousUrl !== this.currentUrl) {
-              this.operacionServices.limpiarArreglos()
-            }
-          });
-    
-      }
 
   eliminarDetalle(detalle: OperacionDetalleClass): void {
     this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(() => {
       this.operacionDetalle = this.operacionServices.operacionDetalle;
     });
   }
+
   loadDepartamento() {
     this.departamentoServices.buscar().subscribe(
       (dato: any) => {
@@ -96,11 +111,9 @@ export default class AgregarComprasComponent implements OnInit {
           this.operacion.departamento = this.departamentos?.find(emp => emp.id === this.operacion.departamento?.id);
         }
       }
-
     );
   }
 
-  //mostrar datos de la sucursal
   loadSucursal() {
     this.sucursalServices.buscar().subscribe(
       (dato: any) => {
@@ -111,6 +124,7 @@ export default class AgregarComprasComponent implements OnInit {
       }
     );
   }
+
   loadMunicipio() {
     this.municipioServices.buscar().subscribe(
       (dato: any) => {
@@ -119,10 +133,9 @@ export default class AgregarComprasComponent implements OnInit {
           this.operacion.municipio = this.municipios?.find(emp => emp.id === this.operacion.municipio?.id);
         }
       }
-
     );
-
   }
+
   loadDistrito() {
     this.distritoServices.buscar().subscribe(
       (dato: any) => {
@@ -131,11 +144,8 @@ export default class AgregarComprasComponent implements OnInit {
           this.operacion.distrito = this.distritos?.find(emp => emp.id === this.operacion.distrito?.id);
         }
       }
-
     );
-
   }
-
 
   loadTipoOperacion() {
     this.tipoOperacionServices.buscarTipoOperacion("E").subscribe(
@@ -144,43 +154,83 @@ export default class AgregarComprasComponent implements OnInit {
         if (this.operacion.tipoOperacion) {
           this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.tipoOperacion === this.operacion.tipoOperacion);
         }
-              
-
       }
-
     );
-
   }
-
-
 
   openModalProveedor() {
     const modalRef = this.modalService.open(BuscarProveedorComponent, {
-      size: 'lg', // 'sm' | 'lg' | 'xl' para ajust
+      size: 'lg',
       centered: true
-
     });
-    modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
-
-
+    modalRef.componentInstance.identificador = "compra";
   }
+
   openModalProducto() {
     const modalRef = this.modalService.open(BuscarProductoComponent, {
-      size: 'xl', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
-      centered: true // para centrar el modal
+      size: 'xl',
+      centered: true
     });
-    modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
-
-
+    modalRef.componentInstance.identificador = "compra";
   }
 
   openModalFormaPago() {
     const modalRef = this.modalService.open(FormaDePagoComponent, {
-      size: 'lg', // 'sm' | 'lg' | 'xl' para ajustar el tamaño
+      size: 'lg',
       centered: true
     });
-    modalRef.componentInstance.identificador = "compra"; // ← acá mandás el parámetro
-    modalRef.componentInstance.totalVenta = this.operacion.total; // ← acá mandás el parámetro
+    modalRef.componentInstance.identificador = "compra";
+    modalRef.componentInstance.totalVenta = this.operacion.total;
     console.log(this.operacion);
   }
+
+  preGuardar(form: NgForm) {
+    this.intentoGuardar = true;
+    form.form.markAllAsTouched();
+
+    const sinProductos = !this.operacionDetalle || this.operacionDetalle.length === 0;
+    const proveedorInvalido = !this.operacion.proveedor || !this.operacion.proveedor.id;
+
+    // Limpia toasts previos
+    this.toasts = [];
+    let id = Date.now();
+
+    // Generar toasts según errores
+    const controls = (form.controls ?? {}) as any;
+
+    if (proveedorInvalido) this.pushToast(id++, 'Seleccionar o ingresar proveedor');
+    if (controls['departamento']?.invalid) this.pushToast(id++, 'Seleccionar Departamento');
+    if (controls['municipio']?.invalid) this.pushToast(id++, 'Seleccionar Municipio');
+    if (controls['distrito']?.invalid) this.pushToast(id++, 'Seleccionar Distrito');
+    if (controls['fechaCompra']?.invalid) this.pushToast(id++, 'Indicar Fecha de Compra');
+    if (controls['tipoOperacion']?.invalid) this.pushToast(id++, 'Seleccionar Tipo de Operación');
+    if (controls['sucursal']?.invalid) this.pushToast(id++, 'Seleccionar Sucursal');
+    if (sinProductos) this.pushToast(id++, 'Agregar al menos un producto');
+
+    const anyInvalid = form.invalid || sinProductos || proveedorInvalido;
+
+    if (anyInvalid) {
+      return; // No continuamos, mostramos los toasts
+    }
+
+    // OK: continuar con el flujo original
+    this.openModalFormaPago();
+  }
+
+
+  // Toast helpers
+  pushToast(id: number, message: string) {
+    this.toasts.push({ id, message });
+    setTimeout(() => this.removeToast(id), 4500);
+  }
+
+  removeToast(id: number) {
+    this.toasts = this.toasts.filter(t => t.id !== id);
+  }
+}
+
+// --- Interfaz del toast ---
+export interface ToastMsg {
+  id: number;
+  message: string;
 }

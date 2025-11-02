@@ -5,59 +5,162 @@
 
 <div class="modal-body">
   <div class="container mt-3">
-    <form>
+    <form #f="ngForm" novalidate>
+
       <div class="row">
         <!-- Nombre -->
         <div class="form-group mb-3 col-md-6">
           <label for="nombre">Nombre</label>
-          <input type="text" [(ngModel)]="gastoNuevo.nombre" name="nombre" id="nombre" class="form-control" placeholder="Nombre" required>
+          <input
+            type="text"
+            [(ngModel)]="gastoNuevo.nombre"
+            name="nombre"
+            id="nombre"
+            class="form-control"
+            placeholder="Nombre"
+            required
+            minlength="3"
+            maxlength="100"
+            #nombre="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || intentoGuardar)">
+            <ng-container *ngIf="nombre.errors?.['required']">El nombre es requerido.</ng-container>
+            <ng-container *ngIf="nombre.errors?.['minlength']">Mínimo {{nombre.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
+            <ng-container *ngIf="nombre.errors?.['maxlength']">Máximo {{nombre.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+          </small>
         </div>
 
         <!-- Descripción -->
         <div class="form-group mb-3 col-md-6">
           <label for="descripcion">Descripción</label>
-          <input type="text" [(ngModel)]="gastoNuevo.descripcion" name="descripcion" id="descripcion" class="form-control" placeholder="Descripción" required>
+          <input
+            type="text"
+            [(ngModel)]="gastoNuevo.descripcion"
+            name="descripcion"
+            id="descripcion"
+            class="form-control"
+            placeholder="Descripción"
+            required
+            minlength="5"
+            maxlength="200"
+            #descripcion="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched || intentoGuardar)">
+            <ng-container *ngIf="descripcion.errors?.['required']">La descripción es requerida.</ng-container>
+            <ng-container *ngIf="descripcion.errors?.['minlength']">Mínimo {{descripcion.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
+            <ng-container *ngIf="descripcion.errors?.['maxlength']">Máximo {{descripcion.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+          </small>
         </div>
 
         <!-- Cantidad -->
         <div class="form-group mb-3 col-md-6">
           <label for="cantidad">Cantidad</label>
-          <input type="number" [(ngModel)]="gastoNuevo.cantidad" name="cantidad" id="cantidad" class="form-control" placeholder="Cantidad" required>
+          <input
+            type="number"
+            [(ngModel)]="gastoNuevo.cantidad"
+            name="cantidad"
+            id="cantidad"
+            class="form-control"
+            placeholder="Cantidad"
+            required
+            min="0.01"
+            step="0.01"
+            #cantidad="ngModel"
+          />
+          <small class="text-danger" *ngIf="cantidad.invalid && (cantidad.dirty || cantidad.touched || intentoGuardar)">
+            <ng-container *ngIf="cantidad.errors?.['required']">La cantidad es requerida.</ng-container>
+            <ng-container *ngIf="cantidad.errors?.['min']">Debe ser mayor a 0.</ng-container>
+          </small>
         </div>
 
         <!-- Total -->
         <div class="form-group mb-3 col-md-6">
           <label for="total">Total</label>
-          <input type="number" [(ngModel)]="gastoNuevo.total" name="total" id="total" class="form-control" placeholder="Total" required>
+          <input
+            type="number"
+            [(ngModel)]="gastoNuevo.total"
+            name="total"
+            id="total"
+            class="form-control"
+            placeholder="Total"
+            required
+            min="0.01"
+            step="0.01"
+            #total="ngModel"
+          />
+          <small class="text-danger" *ngIf="total.invalid && (total.dirty || total.touched || intentoGuardar)">
+            <ng-container *ngIf="total.errors?.['required']">El total es requerido.</ng-container>
+            <ng-container *ngIf="total.errors?.['min']">Debe ser mayor a 0.</ng-container>
+          </small>
         </div>
 
         <!-- Sucursal -->
         <div class="form-group mb-3 col-md-6">
           <label for="sucursal">Sucursal</label>
-          <select [(ngModel)]="gastoNuevo.sucursal" name="sucursal" id="sucursal" class="form-select" required (ngModelChange)="onSucursalChange($event)">
+          <select
+            [(ngModel)]="gastoNuevo.sucursal"
+            name="sucursal"
+            id="sucursal"
+            class="form-select"
+            required
+            (ngModelChange)="onSucursalChange($event)"
+            #sucursal="ngModel"
+          >
             <option [ngValue]="null">Seleccione una sucursal</option>
             <option *ngFor="let dato of sucursales" [ngValue]="dato">
               {{ dato.nombre }}
             </option>
           </select>
+          <small class="text-danger" *ngIf="sucursal.invalid && (sucursal.dirty || sucursal.touched || intentoGuardar)">
+            La sucursal es requerida.
+          </small>
         </div>
 
         <!-- Caja -->
         <div class="form-group mb-3 col-md-6">
           <label for="caja">Caja</label>
-          <select [(ngModel)]="gastoNuevo.caja" name="caja" id="caja" class="form-select" required>
+          <select
+            [(ngModel)]="gastoNuevo.caja"
+            name="caja"
+            id="caja"
+            class="form-select"
+            required
+            #caja="ngModel"
+          >
             <option [ngValue]="null">Seleccione una caja</option>
             <option *ngFor="let dato of cajas" [ngValue]="dato">
               {{ dato.id }} - {{ dato.sucursal?.nombre }}
             </option>
           </select>
+          <small class="text-danger" *ngIf="caja.invalid && (caja.dirty || caja.touched || intentoGuardar)">
+            La caja es requerida.
+          </small>
         </div>
       </div>
+
+      <!-- Toasts flotantes (un toast por error) -->
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:2000">
+        <div
+          *ngFor="let toast of toasts"
+          class="toast show bg-danger text-white mb-2 p-3 shadow rounded"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>⚠ {{ toast.message }}</strong>
+            <button type="button" class="btn-close btn-close-white ms-3" aria-label="Close" (click)="removeToast(toast.id)"></button>
+          </div>
+        </div>
+      </div>
+
     </form>
   </div>
 </div>
 
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar gastos</button>
+  <button type="button" class="btn btn-primary" (click)="preGuardar(f)">Guardar gastos</button>
 </div>

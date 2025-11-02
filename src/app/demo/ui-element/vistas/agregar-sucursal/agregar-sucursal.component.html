@@ -6,32 +6,51 @@
 <div>
   <div class="container mt-3">
     <!-- Formulario de Sucursal -->
-    <form>
+    <form #f="ngForm" (ngSubmit)="preGuardar(f)" novalidate>
       <div class="row">
         <!-- Código de la Sucursal -->
         <div class="col-md-6 mb-3">
           <label for="codigoSucursal">Código</label>
-          <input 
-            type="text" 
-            [(ngModel)]="sucursalNuevo.codigo" 
-            class="form-control" 
-            id="codigoSucursal" 
+          <input
+            type="text"
+            id="codigoSucursal"
+            class="form-control"
+            [(ngModel)]="sucursalNuevo.codigo"
             name="codigo"
-            placeholder="Código de la sucursal" 
-            required>
+            placeholder="Código de la sucursal"
+            required
+            minlength="1"
+            maxlength="20"
+            #codigo="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="codigo.invalid && (codigo.dirty || codigo.touched || intentoGuardar)">
+            <ng-container *ngIf="codigo.errors?.['required']">El código es requerido.</ng-container>
+            <ng-container *ngIf="codigo.errors?.['maxlength']">Máximo 20 caracteres.</ng-container>
+          </small>
         </div>
 
         <!-- Nombre de la Sucursal -->
         <div class="col-md-6 mb-3">
           <label for="nombreSucursal">Nombre de la Sucursal</label>
-          <input 
-            type="text" 
-            [(ngModel)]="sucursalNuevo.nombre" 
-            class="form-control" 
-            id="nombreSucursal" 
+          <input
+            type="text"
+            id="nombreSucursal"
+            class="form-control"
+            [(ngModel)]="sucursalNuevo.nombre"
             name="nombre"
-            placeholder="Nombre de la sucursal" 
-            required>
+            placeholder="Nombre de la sucursal"
+            required
+            minlength="2"
+            maxlength="120"
+            #nombre="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || intentoGuardar)">
+            <ng-container *ngIf="nombre.errors?.['required']">El nombre es requerido.</ng-container>
+            <ng-container *ngIf="nombre.errors?.['minlength']">Mínimo 2 caracteres.</ng-container>
+            <ng-container *ngIf="nombre.errors?.['maxlength']">Máximo 120 caracteres.</ng-container>
+          </small>
         </div>
       </div>
 
@@ -39,27 +58,45 @@
         <!-- Dirección de la Sucursal -->
         <div class="col-md-6 mb-3">
           <label for="direccionSucursal">Dirección</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="direccionSucursal" 
-            placeholder="Dirección de la sucursal" 
+          <input
+            type="text"
+            id="direccionSucursal"
+            class="form-control"
             [(ngModel)]="sucursalNuevo.direccion"
             name="direccion"
-            required>
+            placeholder="Dirección de la sucursal"
+            required
+            minlength="5"
+            maxlength="200"
+            #direccion="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="direccion.invalid && (direccion.dirty || direccion.touched || intentoGuardar)">
+            <ng-container *ngIf="direccion.errors?.['required']">La dirección es requerida.</ng-container>
+            <ng-container *ngIf="direccion.errors?.['minlength']">Mínimo 5 caracteres.</ng-container>
+            <ng-container *ngIf="direccion.errors?.['maxlength']">Máximo 200 caracteres.</ng-container>
+          </small>
         </div>
 
         <!-- Teléfono de la Sucursal -->
         <div class="col-md-6 mb-3">
           <label for="telefonoSucursal">Teléfono</label>
-          <input 
-            type="tel" 
-            class="form-control" 
-            id="telefonoSucursal" 
-            placeholder="Número de teléfono" 
+          <input
+            type="tel"
+            id="telefonoSucursal"
+            class="form-control"
             [(ngModel)]="sucursalNuevo.telefono"
             name="telefono"
-            required>
+            placeholder="Número de teléfono"
+            required
+            pattern="^[267]\d{7}$"
+            #telefono="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="telefono.invalid && (telefono.dirty || telefono.touched || intentoGuardar)">
+            <ng-container *ngIf="telefono.errors?.['required']">El teléfono es requerido.</ng-container>
+            <ng-container *ngIf="telefono.errors?.['pattern']">Formato SV: 8 dígitos iniciando con 2, 6 o 7.</ng-container>
+          </small>
         </div>
       </div>
 
@@ -67,25 +104,40 @@
         <!-- Correo Electrónico de la Sucursal -->
         <div class="col-md-6 mb-3">
           <label for="emailSucursal">Correo Electrónico</label>
-          <input 
-            type="email" 
-            class="form-control" 
-            id="emailSucursal" 
-            placeholder="Correo electrónico" 
+          <input
+            type="email"
+            id="emailSucursal"
+            class="form-control"
             [(ngModel)]="sucursalNuevo.correo"
             name="emailSucursal"
-            required>
+            placeholder="Correo electrónico"
+            required
+            maxlength="120"
+            #emailSucursal="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="emailSucursal.invalid && (emailSucursal.dirty || emailSucursal.touched || intentoGuardar)">
+            <ng-container *ngIf="emailSucursal.errors?.['required']">El correo es requerido.</ng-container>
+            <ng-container *ngIf="emailSucursal.errors?.['email']">Debe ser un correo válido.</ng-container>
+            <ng-container *ngIf="emailSucursal.errors?.['maxlength']">Máximo 120 caracteres.</ng-container>
+          </small>
         </div>
 
         <!-- Fecha de Apertura -->
         <div class="col-md-6 mb-3">
           <label for="fechaApertura">Fecha de Apertura</label>
-          <input 
-            type="date" 
-            class="form-control" 
+          <input
+            type="date"
+            id="fechaApertura"
+            class="form-control"
             [(ngModel)]="sucursalNuevo.fecha"
             name="fechaApertura"
-            required>
+            required
+            #fechaApertura="ngModel"
+          />
+          <small class="text-danger" *ngIf="fechaApertura.invalid && (fechaApertura.dirty || fechaApertura.touched || intentoGuardar)">
+            La fecha de apertura es requerida.
+          </small>
         </div>
       </div>
 
@@ -93,17 +145,41 @@
         <!-- Empresa -->
         <div class="col-md-6 mb-3">
           <label for="empresa">Empresa</label>
-          <select [(ngModel)]="sucursalNuevo.empresa" class="form-select" id="empresa" name="empresa" required name="empresa">
-            <option [ngValue]="null" disabled sucursalSelect>Seleccione una empresa</option>
-            <option *ngFor="let emp of empresas" [ngValue]="emp">{{emp.nombre}}</option>
+          <select
+            id="empresa"
+            class="form-select"
+            [(ngModel)]="sucursalNuevo.empresa"
+            name="empresa"
+            required
+            #empresa="ngModel"
+          >
+            <option [ngValue]="null" disabled selected>Seleccione una empresa</option>
+            <option *ngFor="let emp of empresas" [ngValue]="emp">{{ emp.nombre }}</option>
           </select>
+          <small class="text-danger" *ngIf="empresa.invalid && (empresa.dirty || empresa.touched || intentoGuardar)">
+            La empresa es requerida.
+          </small>
         </div>
+      </div>
+
+      <!-- Toasts flotantes por campo -->
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:2000">
+        <div
+          *ngFor="let toast of toasts"
+          class="toast show bg-danger text-white mb-2 p-3 shadow rounded"
+          role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>⚠ {{ toast.message }}</strong>
+            <button type="button" class="btn-close btn-close-white ms-3" aria-label="Close" (click)="removeToast(toast.id)"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer dentro del form para submit -->
+      <div class="modal-footer px-0">
+        <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="f.pending">Guardar</button>
       </div>
     </form>
   </div>
-</div>
-
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar</button>
 </div>

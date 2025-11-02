@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {GastosServicesService } from '../../services/gastos-services.service'; 	
+import { GastosServicesService } from '../../services/gastos-services.service';
 import { GastoClass } from '../../clases/gasto-class';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
 import { CajasServicesService } from '../../services/cajas-services.service';
 import { LoginServicesService } from '../../services/login-services.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-agregar-gastos',
@@ -19,10 +20,22 @@ export class AgregarGastosComponent {
   sucursales: any[] = [];
   cajas: any[] = [];
 
-  constructor(public activeModal: NgbActiveModal, private loginServices: LoginServicesService, private gastoService: GastosServicesService,private sucursalServices: SucursalServicesService, private router: Router, private datePipe: DatePipe,private cajaServices: CajasServicesService) {}
+  // UX de validación
+  intentoGuardar = false;
+  toasts: ToastMsg[] = [];
 
-   //Valores de inicio
-   ngOnInit(): void {
+  constructor(
+    public activeModal: NgbActiveModal,
+    private loginServices: LoginServicesService,
+    private gastoService: GastosServicesService,
+    private sucursalServices: SucursalServicesService,
+    private router: Router,
+    private datePipe: DatePipe,
+    private cajaServices: CajasServicesService
+  ) {}
+
+  //Valores de inicio
+  ngOnInit(): void {
     if (this.gasto) {
       this.gastoNuevo = { ...this.gasto }; // Copia los valores si está definido
     } else {
@@ -31,24 +44,74 @@ export class AgregarGastosComponent {
     this.loadSucursal();
   }
 
-   //Guardar Gasto
-   guardar(){
-    
+  // =========================
+  // VALIDACIÓN PREVIA + TOAST
+  // =========================
+  preGuardar(form: NgForm) {
+    this.intentoGuardar = true;
+    form.form.markAllAsTouched();
+
+    // limpiar toasts
+    this.toasts = [];
+    let id = Date.now();
+
+    const controls = form.controls as any;
+
+    // Reglas
+    const nombreInvalido = controls['nombre']?.invalid;
+    const descripcionInvalida = controls['descripcion']?.invalid;
+    const cantidadInvalida = controls['cantidad']?.invalid;
+    const totalInvalido = controls['total']?.invalid;
+    const sucursalInvalida = controls['sucursal']?.invalid;
+    const cajaInvalida = controls['caja']?.invalid;
+
+    if (nombreInvalido) this.pushToast(id++, 'Ingresar Nombre válido');
+    if (descripcionInvalida) this.pushToast(id++, 'Ingresar Descripción válida');
+    if (cantidadInvalida) this.pushToast(id++, 'Ingresar Cantidad > 0');
+    if (totalInvalido) this.pushToast(id++, 'Ingresar Total > 0');
+    if (sucursalInvalida) this.pushToast(id++, 'Seleccionar Sucursal');
+    if (cajaInvalida) this.pushToast(id++, 'Seleccionar Caja');
+
+    const anyInvalid =
+      form.invalid ||
+      nombreInvalido ||
+      descripcionInvalida ||
+      cantidadInvalida ||
+      totalInvalido ||
+      sucursalInvalida ||
+      cajaInvalida;
+
+    if (anyInvalid) return;
+
+    // OK -> usa tu lógica original
+    this.guardar();
+  }
+
+  // Helpers de Toast
+  pushToast(id: number, message: string) {
+    this.toasts.push({ id, message });
+    setTimeout(() => this.removeToast(id), 4500);
+  }
+
+  removeToast(id: number) {
+    this.toasts = this.toasts.filter(t => t.id !== id);
+  }
+
+  //Guardar Gasto (lógica original intacta)
+  guardar() {
     if (this.gasto != null) {
       this.gastoNuevo.usuarioModificacion = this.loginServices.getUser();
-      this.gastoService.modificar(this.gastoNuevo.id ?? 0, this.gastoNuevo).subscribe(()=>{
+      this.gastoService.modificar(this.gastoNuevo.id ?? 0, this.gastoNuevo).subscribe(() => {
         this.cerrarYRecargar();
       });
-
     } else {
-      this.gastoNuevo.usuarioCreacion =this.loginServices.getUser();
-      this.gastoService.agregar(this.gastoNuevo).subscribe(()=>
-      {
+      this.gastoNuevo.usuarioCreacion = this.loginServices.getUser();
+      this.gastoService.agregar(this.gastoNuevo).subscribe(() => {
         this.cerrarYRecargar();
       });
     }
-  
   }
+
   cerrarYRecargar() {
     this.activeModal.close(); // Cierra el modal primero
     setTimeout(() => {
@@ -57,6 +120,7 @@ export class AgregarGastosComponent {
       });
     }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
   }
+
   //mostrar datos de la sucursal
   loadSucursal() {
     this.sucursalServices.buscar().subscribe((dato: any) => {
@@ -82,9 +146,8 @@ export class AgregarGastosComponent {
     });
   }
 
-   loadCaja() {
+  loadCaja() {
     const sucursalId = this.gastoNuevo?.sucursal?.id;
-
     if (!sucursalId) return;
 
     this.cajaServices.buscar(sucursalId).subscribe((dato: any) => {
@@ -107,9 +170,15 @@ export class AgregarGastosComponent {
       }
     });
   }
- onSucursalChange(sucursalSeleccionada: any) {
+
+  onSucursalChange(sucursalSeleccionada: any) {
     this.gastoNuevo.sucursal = sucursalSeleccionada;
     this.loadCaja();
   }
+}
 
+// interfaz para toasts
+export interface ToastMsg {
+  id: number;
+  message: string;
 }

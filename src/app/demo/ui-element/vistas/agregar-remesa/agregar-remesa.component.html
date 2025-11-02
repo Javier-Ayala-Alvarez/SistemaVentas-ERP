@@ -1,40 +1,94 @@
 <div class="modal-header">
-    <h5 class="modal-title">Agregar Remesa</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div class="container mt-3">
-      <!-- Formulario -->
-      <form>
-        <!--select sucurdsal-->
-        <div class="form-group mb-3">
-            <label for="sucursal">Sucursal</label>
-            <select [(ngModel)]="remesaNuevo.sucursal" class="form-select" id="sucursal" name="sucursal" required name="sucursal" (ngModelChange)="onSucursalChange($event)">
-              <option [ngValue]="null" selected>Seleccione una sucursal</option>
-              <option *ngFor="let dato of sucursales"  [ngValue]="dato">{{dato.nombre}}</option>
-            </select>
-          </div>
-          
-        <!-- N° caja -->
-        <div class="form-group mb-3">
-          <label for="caja">N° Caja</label>
-          <select [(ngModel)]="remesaNuevo.caja" class="form-select" id="caja" name="caja" required>
-            <option [ngValue]="null" selected>Seleccione una caja</option>
-            <option *ngFor="let dato of cajas" [ngValue]="dato">{{ dato.id }} - {{ dato.sucursal?.nombre }}</option>
-          </select>
-        </div>
-        <!-- cantidad -->
-        <div class="form-group mb-3">
-          <label for="cantidad">Cantidad</label>
-          <input type="text" [(ngModel)]="remesaNuevo.cantidad" class="form-control" id="cantidad" name="cantidad" placeholder="Cantidad" required>
-        </div>
-  
+  <h5 class="modal-title">Agregar Remesa</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
 
-      </form>
-    </div>
+<div class="modal-body">
+  <div class="container mt-3">
+    <!-- Formulario -->
+    <form #f="ngForm" (ngSubmit)="preGuardar(f)" novalidate>
+      <!-- Sucursal -->
+      <div class="form-group mb-3">
+        <label for="sucursal">Sucursal</label>
+        <select
+          id="sucursal"
+          class="form-select"
+          [(ngModel)]="remesaNuevo.sucursal"
+          name="sucursal"
+          required
+          (ngModelChange)="onSucursalChange($event)"
+          #sucursal="ngModel"
+        >
+          <option [ngValue]="null" selected>Seleccione una sucursal</option>
+          <option *ngFor="let dato of sucursales" [ngValue]="dato">{{ dato.nombre }}</option>
+        </select>
+        <small class="text-danger" *ngIf="sucursal.invalid && (sucursal.dirty || sucursal.touched || intentoGuardar)">
+          La sucursal es requerida.
+        </small>
+      </div>
+
+      <!-- Caja -->
+      <div class="form-group mb-3">
+        <label for="caja">N° Caja</label>
+        <select
+          id="caja"
+          class="form-select"
+          [(ngModel)]="remesaNuevo.caja"
+          name="caja"
+          required
+          #caja="ngModel"
+        >
+          <option [ngValue]="null" selected>Seleccione una caja</option>
+          <option *ngFor="let dato of cajas" [ngValue]="dato">
+            {{ dato.id }} - {{ dato.sucursal?.nombre }}
+          </option>
+        </select>
+        <small class="text-danger" *ngIf="caja.invalid && (caja.dirty || caja.touched || intentoGuardar)">
+          La caja es requerida.
+        </small>
+      </div>
+
+      <!-- Cantidad -->
+      <div class="form-group mb-3">
+        <label for="cantidad">Cantidad</label>
+        <input
+          id="cantidad"
+          type="number"
+          class="form-control"
+          [(ngModel)]="remesaNuevo.cantidad"
+          name="cantidad"
+          placeholder="Cantidad"
+          required
+          min="0.01"
+          step="0.01"
+          #cantidad="ngModel"
+        />
+        <small class="text-danger" *ngIf="cantidad.invalid && (cantidad.dirty || cantidad.touched || intentoGuardar)">
+          <ng-container *ngIf="cantidad.errors?.['required']">La cantidad es requerida.</ng-container>
+          <ng-container *ngIf="cantidad.errors?.['min']">Debe ser mayor a 0.</ng-container>
+        </small>
+      </div>
+
+      <!-- Toasts flotantes (uno por error) -->
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:2000">
+        <div
+          *ngFor="let toast of toasts"
+          class="toast show bg-danger text-white mb-2 p-3 shadow rounded"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>⚠ {{ toast.message }}</strong>
+            <button type="button" class="btn-close btn-close-white ms-3" aria-label="Close" (click)="removeToast(toast.id)"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer (botones) dentro del form para usar submit -->
+      <div class="d-flex justify-content-end gap-2 mt-2">
+        <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="f.pending">Guardar Remesa</button>
+      </div>
+    </form>
   </div>
-  
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-    <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Remesa</button>
-  </div>
+</div>

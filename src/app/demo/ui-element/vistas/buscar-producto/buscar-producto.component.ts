@@ -3,12 +3,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductosServicesService } from '../../services/productos-services.service';
 import { ProductoClass } from '../../clases/producto-class';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProveedorClass } from '../../clases/proveedor-class';
-import { loadConfig, baseUrl, imagenes } from '../../services/helper';
-import { UnidadMedidaClass } from '../../clases/unidad-medida-class';
 import { UnidadMedidaProductoClass } from '../../clases/unidadMedidaProducto';
 import { OperacionDetalleClass } from '../../clases/operacionDetalle';
 import { OperacionServicesService } from '../../services/operacion-services.service';
+import { imagenes } from '../../services/helper';
 
 @Component({
   selector: 'app-buscar-producto',
@@ -19,9 +17,10 @@ export class BuscarProductoComponent {
   filtroCodigo: string = '';
   filtroNombre: string = '';
   filtroDescripcion: string = '';
+
   unidadesMedidaProducto?: UnidadMedidaProductoClass[];
-  unidadMedidaProducto: UnidadMedidaProductoClass = new UnidadMedidaProductoClass();
   operacionDetalle: OperacionDetalleClass = new OperacionDetalleClass();
+
   producto?: ProductoClass[] = [];
   page: number = 0;
   size: number = 4;
@@ -29,88 +28,108 @@ export class BuscarProductoComponent {
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
-  terminoBusqueda: string = '';
   totalPages: any[] = [];
-  imagenRuta: string = "";
-  @Input() identificador: String = "";
 
+  imagenRuta: string = '';
+  @Input() identificador: string = '';
 
-  constructor(public activeModal: NgbActiveModal, private productoServices: ProductosServicesService, private operacion: OperacionServicesService, private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    public activeModal: NgbActiveModal,
+    private productoServices: ProductosServicesService,
+    private operacion: OperacionServicesService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
   ngOnInit(): void {
     this.imagenRuta = imagenes;
     this.loadProducto();
-
   }
-  //mostrar datos en la tabla
-  loadProducto() {
-    this.productoServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
-      (dato: any) => {
-        this.producto = dato.content;
 
+  // Mostrar productos
+  loadProducto() {
+    this.productoServices.load(this.busqueda, this.page, this.size, this.order, this.asc)
+      .subscribe((dato: any) => {
+        this.producto = dato.content;
         this.isFirst = dato.first;
         this.isLast = dato.last;
         this.totalPages = new Array(dato.totalPages);
-      }
-    );
+      });
   }
+
+  // Mostrar unidades del producto
   loadUnidadProducto(id: any) {
-    this.productoServices.listaUnidadProductoList(id).subscribe(
-      (dato: any) => {
-        this.unidadesMedidaProducto = dato;
-        if (this.identificador === 'compra') {
-          this.unidadesMedidaProducto?.forEach(unidad => {
-            unidad.precio = 0; // Inicializa el precio en 0
-          });
-        }
+    this.productoServices.listaUnidadProductoList(id).subscribe((dato: any) => {
+      this.unidadesMedidaProducto = dato;
+
+      // Para compras el precio es editable/requerido: inicializa a 0 si viene null
+      if (this.identificador === 'compra') {
+        this.unidadesMedidaProducto?.forEach(u => {
+          if (u.precio == null) u.precio = 0;
+        });
       }
-    );
+
+      // Normaliza valores nulos
+      this.unidadesMedidaProducto?.forEach(u => {
+        if (u.cantidad == null) u.cantidad = 1;
+        if (u.descuento == null) u.descuento = 0;
+      });
+    });
   }
-
-
 
   guardar(unidadMedidaProducto: UnidadMedidaProductoClass) {
-    this.operacionDetalle = new OperacionDetalleClass();
-    this.operacionDetalle.unidadMedida = unidadMedidaProducto.unidadMedida;
-    this.operacionDetalle.producto = unidadMedidaProducto.producto;
-    this.operacionDetalle.cantidad = unidadMedidaProducto.cantidad || 0;
-    this.operacionDetalle.descuento = unidadMedidaProducto.descuento || 0;
-    this.operacionDetalle.precioUnitario = unidadMedidaProducto.precio;
-    this.operacionDetalle.total = (unidadMedidaProducto.cantidad ?? 0) * (unidadMedidaProducto.precio ?? 0);
-    this.operacion.agregarOperacionDetalle(this.operacionDetalle);
-    if (this.identificador == "compra") {
+    // Validaciones de seguridad (además del disable en el botón)
+    const cantidad = unidadMedidaProducto.cantidad ?? 0;
+    const descuento = unidadMedidaProducto.descuento ?? 0;
+    const precio = unidadMedidaProducto.precio ?? 0;
+
+    if (cantidad < 1) return;
+    if (descuento < 0 || descuento > 100) return;
+    if (this.identificador === 'compra' && precio <= 0) return;
+
+    const det = new OperacionDetalleClass();
+    det.unidadMedida = unidadMedidaProducto.unidadMedida;
+    det.producto = unidadMedidaProducto.producto;
+    det.cantidad = cantidad;
+    det.descuento = descuento;
+    det.precioUnitario = precio;
+    det.total = (precio) * (cantidad);
+
+    this.operacion.agregarOperacionDetalle(det);
+
+    if (this.identificador === 'compra') {
       this.router.navigate(['/component/Nuevacompras']);
-    } else if (this.identificador == "cotizacion") {
+    } else if (this.identificador === 'cotizacion') {
       this.router.navigate(['/component/Nuevacotizacion']);
-    } else if (this.identificador == "factura") {
+    } else if (this.identificador === 'factura') {
       this.router.navigate(['/component/factura']);
     }
-    this.activeModal.close(); // Cierra el modal (opcional)
 
+    this.activeModal.close();
   }
 
-
-  //Ir a la siguiente pagina
+  // Paginación
   paginaSiguiente(): void {
     if (!this.isLast) {
       this.page++;
-      this.ngOnInit();
+      this.loadProducto();
     }
   }
-  //ir a la pagina anterior
   paginaAnterior(): void {
     if (!this.isFirst) {
       this.page--;
-      this.ngOnInit();
+      this.loadProducto();
     }
   }
 
   get busqueda(): string {
-    const partes = [];
+    const partes: string[] = [];
     if (this.filtroCodigo) partes.push(`codigo:${this.filtroCodigo}`);
     if (this.filtroNombre) partes.push(`nombre:${this.filtroNombre}`);
     if (this.filtroDescripcion) partes.push(`descripcion:${this.filtroDescripcion}`);
     return partes.join(',');
   }
+
   ordenarPor(campo: string): void {
     if (this.order === campo) {
       this.asc = !this.asc;
@@ -120,6 +139,4 @@ export class BuscarProductoComponent {
     }
     this.loadProducto();
   }
-
-
 }

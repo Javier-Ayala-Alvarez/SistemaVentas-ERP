@@ -4,6 +4,7 @@ import { UnidadesServicesService } from '../../services/unidades-services.servic
 import { UnidadMedidaClass } from '../../clases/unidad-medida-class';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-agregar-unidad-medida',
@@ -13,10 +14,17 @@ import { DatePipe } from '@angular/common';
 export class AgregarUnidadMedidaComponent {
 
   unidadNuevo: UnidadMedidaClass = new UnidadMedidaClass(); // Inicialización por defecto
-  unidad?: UnidadMedidaClass; // Recibe la sucursal desde el componente principal
+  unidad?: UnidadMedidaClass; // Recibe la unidad desde el componente principal
 
-  constructor(public activeModal: NgbActiveModal, private unidadService: UnidadesServicesService, private router: Router, private datePipe: DatePipe) { }
+  // UX validaciones
+  intentoGuardar = false;
 
+  constructor(
+    public activeModal: NgbActiveModal,
+    private unidadService: UnidadesServicesService,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {}
 
   //Valores de inicio
   ngOnInit(): void {
@@ -26,30 +34,37 @@ export class AgregarUnidadMedidaComponent {
       this.unidadNuevo = new UnidadMedidaClass(); // Asegura la inicialización
     }
   }
-  //Guardar Gasto
+
+  // Validación previa sin tocar tu lógica de guardar()
+  preGuardar(form: NgForm) {
+    this.intentoGuardar = true;
+    form.form.markAllAsTouched();
+
+    if (form.invalid) return;
+
+    // OK -> lógica original
+    this.guardar();
+  }
+
+  //Guardar (lógica original)
   guardar(){
     if (this.unidad != null) {
       this.unidadService.modificar(this.unidadNuevo.id ?? 0, this.unidadNuevo).subscribe(() =>{
         this.cerrarYRecargar();
-      })
-
+      });
     } else {
       this.unidadService.agregar(this.unidadNuevo).subscribe(() =>{
         this.cerrarYRecargar();
-      })
-       
-      
+      });
     }
-    
   }
+
   cerrarYRecargar() {
     this.activeModal.close(); // Cierra el modal primero
     setTimeout(() => {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/component/unidades']);
       });
-    }, 200); // Retardo de 200ms para asegurarse de que el modal se cierra antes de la navegación
+    }, 200);
   }
-
-
 }

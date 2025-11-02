@@ -2,61 +2,197 @@
   <h5 class="modal-title">Proveedor</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
+
 <div class="modal-body">
   <div class="container mt-3">
     <!-- Formulario de Proveedor -->
-    <form>
+    <form #f="ngForm" novalidate>
       <div class="row">
-        <!-- Nombre del Proveedor -->
+        <!-- Nombre -->
         <div class="form-group col-md-6 mb-3">
           <label for="nombreProveedor">Nombre del Proveedor</label>
-          <input type="text" [(ngModel)]="proveedorNuevo.nombre" class="form-control" id="nombreProveedor" name="nombreProveedor" placeholder="Nombre del proveedor" required>
+          <input
+            id="nombreProveedor"
+            type="text"
+            class="form-control"
+            [(ngModel)]="proveedorNuevo.nombre"
+            name="nombreProveedor"
+            placeholder="Nombre del proveedor"
+            required
+            minlength="2"
+            maxlength="100"
+            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s\.'-]+$"
+            #nombreProveedor="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="nombreProveedor.invalid && (nombreProveedor.dirty || nombreProveedor.touched || intentoGuardar)">
+            <ng-container *ngIf="nombreProveedor.errors?.['required']">El nombre es requerido.</ng-container>
+            <ng-container *ngIf="nombreProveedor.errors?.['minlength']">Mínimo {{nombreProveedor.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
+            <ng-container *ngIf="nombreProveedor.errors?.['maxlength']">Máximo {{nombreProveedor.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+            <ng-container *ngIf="nombreProveedor.errors?.['pattern']">Solo letras, espacios y . ' -</ng-container>
+          </small>
         </div>
-        <!-- Apellido del Proveedor -->
+
+        <!-- Apellido -->
         <div class="form-group col-md-6 mb-3">
           <label for="apellidoProveedor">Apellido del Proveedor</label>
-          <input type="text" [(ngModel)]="proveedorNuevo.apellido" class="form-control" id="apellidoProveedor" name="apellidoProveedor" placeholder="Apellido del proveedor" required>
+          <input
+            id="apellidoProveedor"
+            type="text"
+            class="form-control"
+            [(ngModel)]="proveedorNuevo.apellido"
+            name="apellidoProveedor"
+            placeholder="Apellido del proveedor"
+            required
+            minlength="2"
+            maxlength="100"
+            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s\.'-]+$"
+            #apellidoProveedor="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="apellidoProveedor.invalid && (apellidoProveedor.dirty || apellidoProveedor.touched || intentoGuardar)">
+            <ng-container *ngIf="apellidoProveedor.errors?.['required']">El apellido es requerido.</ng-container>
+            <ng-container *ngIf="apellidoProveedor.errors?.['minlength']">Mínimo {{apellidoProveedor.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
+            <ng-container *ngIf="apellidoProveedor.errors?.['maxlength']">Máximo {{apellidoProveedor.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+            <ng-container *ngIf="apellidoProveedor.errors?.['pattern']">Solo letras, espacios y . ' -</ng-container>
+          </small>
         </div>
       </div>
 
       <div class="row">
-        <!-- Dirección del Proveedor -->
+        <!-- Dirección -->
         <div class="form-group col-md-6 mb-3">
           <label for="direccionProveedor">Dirección</label>
-          <input type="text" [(ngModel)]="proveedorNuevo.direccion" class="form-control" id="direccionProveedor" name="direccionProveedor" placeholder="Dirección del proveedor" required>
+          <input
+            id="direccionProveedor"
+            type="text"
+            class="form-control"
+            [(ngModel)]="proveedorNuevo.direccion"
+            name="direccionProveedor"
+            placeholder="Dirección del proveedor"
+            required
+            minlength="5"
+            maxlength="200"
+            #direccionProveedor="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="direccionProveedor.invalid && (direccionProveedor.dirty || direccionProveedor.touched || intentoGuardar)">
+            <ng-container *ngIf="direccionProveedor.errors?.['required']">La dirección es requerida.</ng-container>
+            <ng-container *ngIf="direccionProveedor.errors?.['minlength']">Mínimo {{direccionProveedor.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
+            <ng-container *ngIf="direccionProveedor.errors?.['maxlength']">Máximo {{direccionProveedor.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+          </small>
         </div>
-        <!-- Teléfono del Proveedor -->
+
+        <!-- Teléfono (SV: 8 dígitos iniciando con 2, 6 o 7) -->
         <div class="form-group col-md-6 mb-3">
           <label for="telefonoProveedor">Teléfono</label>
-          <input type="tel" [(ngModel)]="proveedorNuevo.telefono" class="form-control" id="telefonoProveedor" name="telefonoProveedor" placeholder="Número de teléfono" required>
+          <input
+            id="telefonoProveedor"
+            type="tel"
+            class="form-control"
+            [(ngModel)]="proveedorNuevo.telefono"
+            name="telefonoProveedor"
+            placeholder="Número de teléfono"
+            required
+            pattern="^[267]\d{7}$"
+            #telefonoProveedor="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="telefonoProveedor.invalid && (telefonoProveedor.dirty || telefonoProveedor.touched || intentoGuardar)">
+            <ng-container *ngIf="telefonoProveedor.errors?.['required']">El teléfono es requerido.</ng-container>
+            <ng-container *ngIf="telefonoProveedor.errors?.['pattern']">Formato inválido. Ej: 71234567, 61234567 o 21234567.</ng-container>
+          </small>
         </div>
       </div>
 
       <div class="row">
-        <!-- Correo Electrónico del Proveedor -->
+        <!-- Correo -->
         <div class="form-group col-md-6 mb-3">
           <label for="emailProveedor">Correo Electrónico</label>
-          <input type="email" [(ngModel)]="proveedorNuevo.correo" class="form-control" id="emailProveedor" name="emailProveedor" placeholder="Correo electrónico" required>
+          <input
+            id="emailProveedor"
+            type="email"
+            class="form-control"
+            [(ngModel)]="proveedorNuevo.correo"
+            name="emailProveedor"
+            placeholder="Correo electrónico"
+            required
+            maxlength="120"
+            #emailProveedor="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="emailProveedor.invalid && (emailProveedor.dirty || emailProveedor.touched || intentoGuardar)">
+            <ng-container *ngIf="emailProveedor.errors?.['required']">El correo es requerido.</ng-container>
+            <ng-container *ngIf="emailProveedor.errors?.['email']">Correo inválido.</ng-container>
+            <ng-container *ngIf="emailProveedor.errors?.['maxlength']">Máximo {{emailProveedor.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+          </small>
         </div>
-        <!-- DUI del Proveedor -->
+
+        <!-- DUI (########-#) -->
         <div class="form-group col-md-6 mb-3">
           <label for="duiProveedor">DUI</label>
-          <input type="text" [(ngModel)]="proveedorNuevo.dui" class="form-control" id="duiProveedor" name="duiProveedor" placeholder="DUI de el proveedor" required>
+          <input
+            id="duiProveedor"
+            type="text"
+            class="form-control"
+            [(ngModel)]="proveedorNuevo.dui"
+            name="duiProveedor"
+            placeholder="DUI del proveedor"
+            required
+            pattern="^\d{8}-\d$"
+            #duiProveedor="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="duiProveedor.invalid && (duiProveedor.dirty || duiProveedor.touched || intentoGuardar)">
+            <ng-container *ngIf="duiProveedor.errors?.['required']">El DUI es requerido.</ng-container>
+            <ng-container *ngIf="duiProveedor.errors?.['pattern']">Formato inválido. Ej: 01234567-8</ng-container>
+          </small>
         </div>
       </div>
 
       <div class="row">
-        <!-- NIT del Proveedor -->
+        <!-- NIT (####-######-###-#) -->
         <div class="form-group col-md-6 mb-3">
           <label for="nitProveedor">NIT</label>
-          <input type="text" [(ngModel)]="proveedorNuevo.nit" class="form-control" id="nitProveedor" name="nitProveedor" placeholder="NIT del proveedor" required>
+          <input
+            id="nitProveedor"
+            type="text"
+            class="form-control"
+            [(ngModel)]="proveedorNuevo.nit"
+            name="nitProveedor"
+            placeholder="NIT del proveedor"
+            required
+            pattern="^\d{4}-\d{6}-\d{3}-\d$"
+            #nitProveedor="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="nitProveedor.invalid && (nitProveedor.dirty || nitProveedor.touched || intentoGuardar)">
+            <ng-container *ngIf="nitProveedor.errors?.['required']">El NIT es requerido.</ng-container>
+            <ng-container *ngIf="nitProveedor.errors?.['pattern']">Formato inválido. Ej: 0614-290186-102-3</ng-container>
+          </small>
         </div>
       </div>
+
+      <!-- Toasts flotantes -->
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:2000">
+        <div
+          *ngFor="let toast of toasts"
+          class="toast show bg-danger text-white mb-2 p-3 shadow rounded"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>⚠ {{ toast.message }}</strong>
+            <button type="button" class="btn-close btn-close-white ms-3" aria-label="Close" (click)="removeToast(toast.id)"></button>
+          </div>
+        </div>
+      </div>
+
     </form>
   </div>
 </div>
 
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Proveedor</button>
+  <button type="button" class="btn btn-primary" (click)="preGuardar(f)">Guardar Proveedor</button>
 </div>

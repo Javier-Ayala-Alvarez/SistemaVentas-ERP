@@ -6,18 +6,54 @@
 <div class="modal-body">
   <div class="container mt-3">
     <!-- Formulario -->
-    <form>
+    <form #f="ngForm" (ngSubmit)="preGuardar(f)" novalidate>
       <div class="row">
         <!-- Nombre de la Unidad -->
         <div class="form-group col-md-6 mb-3">
           <label for="nombreUnidad">Nombre de la Unidad</label>
-          <input type="text" [(ngModel)]="unidadNuevo.nombre" name="unidadNuevo.nombre" class="form-control" id="nombreUnidad" placeholder="Ejemplo: Kilogramos" required>
+          <input
+            type="text"
+            id="nombreUnidad"
+            class="form-control"
+            [(ngModel)]="unidadNuevo.nombre"
+            name="nombre"
+            placeholder="Ejemplo: Kilogramos"
+            required
+            minlength="2"
+            maxlength="120"
+            #nombre="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || intentoGuardar)">
+            <ng-container *ngIf="nombre.errors?.['required']">El nombre es requerido.</ng-container>
+            <ng-container *ngIf="nombre.errors?.['minlength']">Mínimo 2 caracteres.</ng-container>
+            <ng-container *ngIf="nombre.errors?.['maxlength']">Máximo 120 caracteres.</ng-container>
+          </small>
         </div>
         
         <!-- Abreviatura -->
         <div class="form-group col-md-6 mb-3">
           <label for="abreviaturaUnidad">Abreviatura</label>
-          <input type="text" [(ngModel)]="unidadNuevo.abreviatura" name="unidadNuevo.abreviatura" class="form-control" id="abreviaturaUnidad" placeholder="Ejemplo: kg" required>
+          <input
+            type="text"
+            id="abreviaturaUnidad"
+            class="form-control"
+            [(ngModel)]="unidadNuevo.abreviatura"
+            name="abreviatura"
+            placeholder="Ejemplo: kg"
+            required
+            minlength="1"
+            maxlength="10"
+            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\.%\-]{1,10}$"
+            #abreviatura="ngModel"
+            autocomplete="off"
+          />
+          <small class="text-danger" *ngIf="abreviatura.invalid && (abreviatura.dirty || abreviatura.touched || intentoGuardar)">
+            <ng-container *ngIf="abreviatura.errors?.['required']">La abreviatura es requerida.</ng-container>
+            <ng-container *ngIf="abreviatura.errors?.['minlength']">Mínimo 1 carácter.</ng-container>
+            <ng-container *ngIf="abreviatura.errors?.['maxlength']">Máximo 10 caracteres.</ng-container>
+            <ng-container *ngIf="abreviatura.errors?.['pattern']">Solo letras y . % - están permitidos.</ng-container>
+          </small>
         </div>
       </div>
 
@@ -25,20 +61,47 @@
         <!-- Factor de Conversión -->
         <div class="form-group col-md-6 mb-3">
           <label for="factorConversion">Factor de Conversión</label>
-          <input type="number" [(ngModel)]="unidadNuevo.factor" name="unidadNuevo.factor" class="form-control" id="factorConversion" placeholder="Ejemplo: 1, 0.001" required>
+          <input
+            type="number"
+            id="factorConversion"
+            class="form-control"
+            [(ngModel)]="unidadNuevo.factor"
+            name="factor"
+            placeholder="Ejemplo: 1, 0.001"
+            required
+            min="0.0000001"
+            step="any"
+            #factor="ngModel"
+          />
+          <small class="text-danger" *ngIf="factor.invalid && (factor.dirty || factor.touched || intentoGuardar)">
+            <ng-container *ngIf="factor.errors?.['required']">El factor es requerido.</ng-container>
+            <ng-container *ngIf="factor.errors?.['min']">El factor debe ser mayor que 0.</ng-container>
+          </small>
         </div>
         
         <!-- Descripción -->
         <div class="form-group col-md-6 mb-3">
           <label for="descripcionUnidad">Descripción</label>
-          <textarea class="form-control" [(ngModel)]="unidadNuevo.descripcion" name="unidadNuevo.descripcion" id="descripcionUnidad" rows="3" placeholder="Descripción adicional (opcional)"></textarea>
+          <textarea
+            id="descripcionUnidad"
+            class="form-control"
+            [(ngModel)]="unidadNuevo.descripcion"
+            name="descripcion"
+            rows="3"
+            placeholder="Descripción adicional (opcional)"
+            maxlength="250"
+            #descripcion="ngModel"
+          ></textarea>
+          <small class="text-danger" *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched || intentoGuardar)">
+            <ng-container *ngIf="descripcion.errors?.['maxlength']">Máximo 250 caracteres.</ng-container>
+          </small>
         </div>
+      </div>
+
+      <div class="modal-footer px-0">
+        <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="f.pending">Guardar Unidad</button>
       </div>
     </form>
   </div>
-</div>
-
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Unidad</button>
 </div>

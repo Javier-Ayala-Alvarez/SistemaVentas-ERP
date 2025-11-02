@@ -36,7 +36,7 @@
             <label for="producto">Cantidad $</label>
             <div class="input-group">
                 <input type="text" class="form-control" [(ngModel)]="formaPagoOperacion.total"
-                    [disabled]="!formaPagoOperacion?.formasPago" name="cantidad" placeholder="Ingrese la cantidad">
+                    [disabled]="!formaPagoOperacion.formasPago" name="cantidad" placeholder="Ingrese la cantidad">
                 <button class="btn btn-outline-secondary" type="button" (click)="guardar()">Agregar</button>
             </div>
 

@@ -1,111 +1,198 @@
 <div class="container mt-4">
-  <!-- Cabecera de la Factura -->
+  <!-- Cabecera -->
   <div class="card shadow-sm p-4 mb-4 rounded">
     <h3 class="mb-4 text-center">Producto</h3>
 
-    <!-- Sección de Producto y Datos de Factura -->
-    <div class="container">
-      <!-- Primera Fila -->
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="producto">Nombre del producto</label>
-          <input type="text" [(ngModel)]="productoNuevo.nombre" class="form-control" name="nombre" placeholder="Ingrese el nombre del producto">
+    <form #f="ngForm" novalidate>
+      <div class="container">
+        <!-- Primera Fila -->
+        <div class="row mb-3">
+          <!-- Nombre -->
+          <div class="col-md-6">
+            <label for="nombre">Nombre del producto</label>
+            <input
+              id="nombre"
+              type="text"
+              class="form-control"
+              [(ngModel)]="productoNuevo.nombre"
+              name="nombre"
+              placeholder="Ingrese el nombre del producto"
+              required
+              minlength="2"
+              maxlength="120"
+              #nombre="ngModel"
+              autocomplete="off"
+            />
+            <small class="text-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || intentoGuardar)">
+              <ng-container *ngIf="nombre.errors?.['required']">El nombre es requerido.</ng-container>
+              <ng-container *ngIf="nombre.errors?.['minlength']">Mínimo {{nombre.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
+              <ng-container *ngIf="nombre.errors?.['maxlength']">Máximo {{nombre.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+            </small>
+          </div>
+
+          <!-- Descripción -->
+          <div class="col-md-6">
+            <label for="descripcion">Descripción del producto</label>
+            <input
+              id="descripcion"
+              type="text"
+              class="form-control"
+              [(ngModel)]="productoNuevo.descripcion"
+              name="descripcion"
+              placeholder="Ingrese la descripción del producto"
+              required
+              minlength="5"
+              maxlength="300"
+              #descripcion="ngModel"
+              autocomplete="off"
+            />
+            <small class="text-danger" *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched || intentoGuardar)">
+              <ng-container *ngIf="descripcion.errors?.['required']">La descripción es requerida.</ng-container>
+              <ng-container *ngIf="descripcion.errors?.['minlength']">Mínimo {{descripcion.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
+              <ng-container *ngIf="descripcion.errors?.['maxlength']">Máximo {{descripcion.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
+            </small>
+          </div>
         </div>
 
-        <div class="col-md-6">
-          <label for="descripción">Descripción del producto</label>
-          <input type="text" [(ngModel)]="productoNuevo.descripcion" name="descripcion" class="form-control" placeholder="Ingrese la descripción del producto">
-        </div>
-      </div>
+        <!-- Segunda Fila -->
+        <div class="row mb-3">
+          <!-- Categoría -->
+          <div class="form-group mb-3 col-md-6">
+            <label for="categoriaProducto">Categoría</label>
+            <select
+              class="form-select"
+              [(ngModel)]="productoNuevo.categoria"
+              id="categoriaProducto"
+              name="categoriaProducto"
+              required
+              #categoriaProducto="ngModel"
+            >
+              <option [ngValue]="null" disabled selected>Seleccione la categoría</option>
+              <option *ngFor="let dato of categorias" [ngValue]="dato">{{ dato.nombre }}</option>
+            </select>
+            <small class="text-danger" *ngIf="categoriaProducto.invalid && (categoriaProducto.dirty || categoriaProducto.touched || intentoGuardar)">
+              La categoría es requerida.
+            </small>
+          </div>
 
-      <div class="row mb-3">
-        <!-- Categoría -->
-        <div class="form-group mb-3 col-md-6">
-          <label for="categoriaProducto" >Categoría</label>
-          <select class="form-select" [(ngModel)]="productoNuevo.categoria" id="categoriaProducto" name="categoriaProducto" required>
-            <option [ngValue]="null" disabled selected>Seleccione la categoria</option>
-          <option *ngFor="let dato of categorias" [ngValue]="dato">{{dato.nombre}}</option>
-          </select>
-        </div>
-      
-     
-         <!-- Imagen del Producto -->
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <label for="imagenProducto">Imagen del Producto</label>
-          <input 
-            type="file" 
-            class="form-control" 
-            name="iamgen"
-            accept="image/*" (change)="onLogoSelect($event)">
-        </div>
-        <div class="col-md-6 text-center">
-          <!-- Vista previa de la imagen -->
-          <label for="preview">Vista previa</label>
-          <div class="border p-2" style="height: 150px; overflow: hidden;">
-            <img 
-              *ngIf="imagenPreview" 
-              [src]="imagenPreview" 
-              alt="Vista previa" 
-              style="max-height: 100%; max-width: 100%;">
-              <img 
-              *ngIf="!imagenPreview && productoNuevo?.nombreImagen" 
-              [src]="imagenRuta + productoNuevo.nombreImagen" 
-              alt="Vista previa" 
-              style="max-height: 100%; max-width: 100%;">
+          <!-- Imagen del Producto -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="imagenProducto">Imagen del Producto</label>
+              <input
+                id="imagenProducto"
+                type="file"
+                class="form-control"
+                name="imagen"
+                accept="image/*"
+                (change)="onLogoSelect($event)"
+              />
+            </div>
+            <div class="col-md-6 text-center">
+              <label for="preview">Vista previa</label>
+              <div class="border p-2" style="height: 150px; overflow: hidden;">
+                <img
+                  *ngIf="imagenPreview"
+                  [src]="imagenPreview"
+                  alt="Vista previa"
+                  style="max-height: 100%; max-width: 100%;"
+                />
+                <img
+                  *ngIf="!imagenPreview && productoNuevo?.nombreImagen"
+                  [src]="imagenRuta + productoNuevo.nombreImagen"
+                  alt="Vista previa"
+                  style="max-height: 100%; max-width: 100%;"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3 d-flex align-items-end">
+            <button type="button" class="btn btn-success w-100" (click)="openModalAgregar()">
+              Agregar Unidad de medida
+            </button>
           </div>
         </div>
       </div>
-    
 
-        <div class="col-md-3 d-flex align-items-end">
-          <button class="btn btn-success w-100" (click)="openModalAgregar ()">Agregar Unidad de medida</button>
-        </div>
+      <!-- Tabla de Unidades -->
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Abreviatura</th>
+              <th>Factor de Conversión</th>
+              <th>Precio de Compra</th>
+              <th>Precio de Venta</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of unidadMedidaProducto; let i = index">
+              <td>{{ data.unidadMedida?.nombre }}</td>
+              <td>{{ data.unidadMedida?.abreviatura }}</td>
+              <td>{{ data.unidadMedida?.factor }}</td>
+
+              <td style="max-width: 220px;">
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Ingrese el precio de compra"
+                  [(ngModel)]="data.precioCompra"
+                  name="precioCompra_{{i}}"
+                  min="0"
+                  step="0.01"
+                />
+              </td>
+
+              <td style="max-width: 220px;">
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Ingrese el precio de venta"
+                  [(ngModel)]="data.precio"
+                  name="precioVenta_{{i}}"
+                  min="0"
+                  step="0.01"
+                />
+              </td>
+
+              <td>
+                <button type="button" class="btn btn-danger btn-sm rounded-circle me-2" (click)="eliminarUnidadmedida(data)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="!unidadMedidaProducto || unidadMedidaProducto.length === 0">
+              <td colspan="6" class="text-center text-muted">No hay unidades agregadas.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-    </div>
-
-    <!-- Cuerpo de la Factura (Tabla de Productos) -->
-    <div class="table-responsive">
-      <table class="table table-striped table-hover">
-        <thead class="table-dark">
-          <tr>
-            <th>Nombre</th>
-            <th>Abreviatura</th>
-            <th>Factor de Conversión</th>
-            <th>Precio de Compra</th>
-            <th>Precio de Venta</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let data of unidadMedidaProducto">
-              <td>{{data.unidadMedida?.nombre}}</td>
-              <td>{{data.unidadMedida?.abreviatura}}</td>
-              <td>{{data.unidadMedida?.factor}}</td>
-           
-            <td> 
-              <input type="text" class="form-control" placeholder="Ingrese el precio de compra" [(ngModel)]="data.precioCompra">
-            </td>
-            <td> 
-              <input type="text" class="form-control" placeholder="Ingrese el precio de venta" [(ngModel)]="data.precio">
-            <td>
-              <button class="btn btn-danger btn-sm rounded-circle me-2" (click)="eliminarUnidadmedida(data)">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-        </tbody>
-      </table>
-    </div>
-
-  
+      <!-- Toasts flotantes -->
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 2000">
+        <div
+          *ngFor="let toast of toasts"
+          class="toast show bg-danger text-white mb-2 p-3 shadow rounded"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>⚠ {{ toast.message }}</strong>
+            <button type="button" class="btn-close btn-close-white ms-3" aria-label="Close" (click)="removeToast(toast.id)"></button>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 
-  <!-- Botones de acciones adicionales -->
+  <!-- Botones de acciones -->
   <div class="row mt-4">
     <div class="col-md-4">
-      <button class="btn btn-primary w-100" (click)="guardar()">Guardar Producto</button>
+      <button class="btn btn-primary w-100" (click)="preGuardar(f)">Guardar Producto</button>
     </div>
-
   </div>
 </div>

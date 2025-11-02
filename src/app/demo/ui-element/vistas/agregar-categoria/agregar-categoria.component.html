@@ -5,26 +5,74 @@
 
 <div class="modal-body">
   <div class="container mt-3">
-    <!-- Formulario -->
-    <form>
+    <!-- Formulario con Template-Driven + validaciones -->
+    <form #f="ngForm" (ngSubmit)="guardar()" novalidate>
       <div class="row">
+
         <!-- Nombre de la Categoria -->
         <div class="form-group col-md-6 mb-3">
           <label for="nombre">Nombre de la categoria</label>
-          <input type="text" name="nombre" [(ngModel)]="categoriaNuevo.nombre" class="form-control" id="nombre" placeholder="Nombre de categoria" required>
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            name="nombre"
+            [(ngModel)]="categoriaNuevo.nombre"
+            placeholder="Nombre de categoria"
+            required
+            minlength="3"
+            maxlength="100"
+            pattern="^[0-9A-Za-zÁÉÍÓÚáéíóúÑñÜü\s\.\-]+$"
+            #nombre="ngModel"
+            autocomplete="off"
+          />
+          <!-- Errores -->
+          <small class="text-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+            <ng-container *ngIf="nombre.errors?.['required']">El nombre es requerido.</ng-container>
+            <ng-container *ngIf="nombre.errors?.['minlength']">
+              Debe tener al menos {{ nombre.errors?.['minlength']?.requiredLength }} caracteres.
+            </ng-container>
+            <ng-container *ngIf="nombre.errors?.['maxlength']">
+              Máximo {{ nombre.errors?.['maxlength']?.requiredLength }} caracteres.
+            </ng-container>
+            <ng-container *ngIf="nombre.errors?.['pattern']">
+              Solo letras, números, espacios, tildes y los símbolos . -
+            </ng-container>
+          </small>
         </div>
 
-        <!-- Descripción -->
+        <!-- Descripción (opcional) -->
         <div class="form-group col-md-6 mb-3">
           <label for="descripcion">Descripción</label>
-          <textarea class="form-control" name="descripcion" [(ngModel)]="categoriaNuevo.descripcion" id="descripcion" rows="3" placeholder="Descripción adicional (opcional)"></textarea>
+          <textarea
+            class="form-control"
+            id="descripcion"
+            name="descripcion"
+            [(ngModel)]="categoriaNuevo.descripcion"
+            rows="3"
+            placeholder="Descripción adicional (opcional)"
+            maxlength="300"
+            #descripcion="ngModel"
+          ></textarea>
+          <!-- Errores -->
+          <small class="text-danger" *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)">
+            <ng-container *ngIf="descripcion.errors?.['maxlength']">
+              Máximo {{ descripcion.errors?.['maxlength']?.requiredLength }} caracteres.
+            </ng-container>
+          </small>
         </div>
+
+      </div>
+
+      <!-- Footer del form -->
+      <div class="d-flex justify-content-end gap-2 mt-2">
+        <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid || f.pending">
+          Guardar Categoria
+        </button>
       </div>
     </form>
   </div>
 </div>
 
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
-  <button type="button" class="btn btn-primary" (click)="guardar()">Guardar Categoria</button>
-</div>
+<div class="modal-footer d-none"><!-- vacío, mantenido por compatibilidad --></div>

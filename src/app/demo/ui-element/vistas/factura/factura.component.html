@@ -3,329 +3,384 @@
   <div class="card shadow-sm p-4 mb-4 rounded">
     <h3 class="mb-4 text-center">Factura</h3>
 
-    <!-- Sección Cliente y Datos Factura -->
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <label for="clienteCodigo">Código Cliente</label>
-        <div class="input-group">
+    <!-- Formulario principal con Template-Driven -->
+    <form #f="ngForm" novalidate>
+      <!-- Sección Cliente y Datos Factura -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="clienteCodigo">Código Cliente</label>
+          <div class="input-group">
+            <input
+              id="clienteCodigo"
+              type="text"
+              class="form-control"
+              [(ngModel)]="operacion.cliente!.id"
+              placeholder="Código"
+              readonly
+              name="clienteCodigo"
+            />
+            <input
+              id="clienteNombre"
+              type="text"
+              class="form-control"
+              [(ngModel)]="operacion.cliente!.nombre"
+              placeholder="Nombre del cliente"
+              readonly
+              name="clienteNombre"
+            />
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              (click)="openModalCliente()"
+              aria-label="Buscar cliente"
+              title="Buscar cliente"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <!-- Error visual si falta cliente -->
+          <small class="text-danger d-block mt-1"
+                 *ngIf="intentoGuardar && (!operacion.cliente || !operacion.cliente.id)">
+            Debes seleccionar un <b>cliente</b>.
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label for="direccionCliente">Dirección</label>
           <input
-            id="clienteCodigo"
+            id="direccionCliente"
             type="text"
             class="form-control"
-            [(ngModel)]="operacion.cliente!.id"
-            placeholder="Código"
+            [(ngModel)]="operacion.cliente!.direccion"
+            placeholder="Dirección del cliente"
             readonly
-            name="clienteCodigo"
+            name="direccionCliente"
           />
+        </div>
+
+        <div class="col-md-2">
+          <label for="numFactura">Factura N°</label>
           <input
-            id="clienteNombre"
+            id="numFactura"
             type="text"
             class="form-control"
-            [(ngModel)]="operacion.cliente!.nombre"
-            placeholder="Nombre del cliente"
+            [(ngModel)]="operacion.nFactura"
+            placeholder="Número de factura"
             readonly
-            name="clienteNombre"
+            name="numFactura"
           />
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            (click)="openModalCliente()"
-            aria-label="Buscar cliente"
-            title="Buscar cliente"
+        </div>
+      </div>
+
+      <!-- Dirección y Ubicación -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="departamento">Departamento</label>
+          <select
+            id="departamento"
+            class="form-select"
+            [(ngModel)]="operacion.departamento"
+            name="departamento"
+            required
+            #departamento="ngModel"
           >
-            <i class="fas fa-search"></i>
-          </button>
+            <option [ngValue]="null" selected>Seleccione el departamento</option>
+            <option *ngFor="let dato of departamentos" [ngValue]="dato">
+              {{ dato.nombre }}
+            </option>
+          </select>
+          <small class="text-danger" *ngIf="departamento.invalid && (departamento.dirty || departamento.touched || intentoGuardar)">
+            El departamento es requerido.
+          </small>
+        </div>
+
+        <div class="col-md-3">
+          <label for="municipio">Municipio</label>
+          <select
+            id="municipio"
+            class="form-select"
+            [(ngModel)]="operacion.municipio"
+            name="municipio"
+            required
+            #municipio="ngModel"
+          >
+            <option [ngValue]="null" selected>Seleccione el municipio</option>
+            <option *ngFor="let dato of municipios" [ngValue]="dato">
+              {{ dato.nombre }}
+            </option>
+          </select>
+          <small class="text-danger" *ngIf="municipio.invalid && (municipio.dirty || municipio.touched || intentoGuardar)">
+            El municipio es requerido.
+          </small>
+        </div>
+
+        <div class="col-md-3">
+          <label for="distrito">Distrito</label>
+          <select
+            id="distrito"
+            class="form-select"
+            [(ngModel)]="operacion.distrito"
+            name="distrito"
+            required
+            #distrito="ngModel"
+          >
+            <option [ngValue]="null" selected>Seleccione el distrito</option>
+            <option *ngFor="let dato of distritos" [ngValue]="dato">
+              {{ dato.nombre }}
+            </option>
+          </select>
+          <small class="text-danger" *ngIf="distrito.invalid && (distrito.dirty || distrito.touched || intentoGuardar)">
+            El distrito es requerido.
+          </small>
+        </div>
+
+        <div class="col-md-3">
+          <label for="fechaElaboracion">Fecha de Creación</label>
+          <input
+            id="fechaElaboracion"
+            type="date"
+            class="form-control"
+            [(ngModel)]="operacion.fechaElaboracion"
+            name="fechaElaboracion"
+            readonly
+            required
+            #fechaElaboracion="ngModel"
+          />
+          <small class="text-danger" *ngIf="fechaElaboracion.invalid && (fechaElaboracion.dirty || fechaElaboracion.touched || intentoGuardar)">
+            La fecha de creación es requerida.
+          </small>
         </div>
       </div>
 
-      <div class="col-md-4">
-        <label for="direccionCliente">Dirección</label>
-        <input
-          id="direccionCliente"
-          type="text"
-          class="form-control"
-          [(ngModel)]="operacion.cliente!.direccion"
-          placeholder="Dirección del cliente"
-          readonly
-          name="direccionCliente"
-        />
-      </div>
-
-      <div class="col-md-2">
-        <label for="numFactura">Factura N°</label>
-        <input
-          id="numFactura"
-          type="text"
-          class="form-control"
-          [(ngModel)]="operacion.nFactura"
-          placeholder="Número de factura"
-          readonly
-          name="numFactura"
-        />
-      </div>
-    </div>
-
-    <!-- Dirección y Ubicación -->
-    <div class="row mb-3">
-      <div class="col-md-3">
-        <label for="departamento">Departamento</label>
-        <select
-          id="departamento"
-          class="form-select"
-          [(ngModel)]="operacion.departamento"
-          name="departamento"
-          required
-        >
-          <option [ngValue]="null" selected>Seleccione el departamento</option>
-          <option *ngFor="let dato of departamentos" [ngValue]="dato">
-            {{ dato.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-md-3">
-        <label for="municipio">Municipio</label>
-        <select
-          id="municipio"
-          class="form-select"
-          [(ngModel)]="operacion.municipio"
-          name="municipio"
-          required
-        >
-          <option [ngValue]="null" selected>Seleccione el municipio</option>
-          <option *ngFor="let dato of municipios" [ngValue]="dato">
-            {{ dato.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-md-3">
-        <label for="distrito">Distrito</label>
-        <select
-          id="distrito"
-          class="form-select"
-          [(ngModel)]="operacion.distrito"
-          name="distrito"
-          required
-        >
-          <option [ngValue]="null" selected>Seleccione el distrito</option>
-          <option *ngFor="let dato of distritos" [ngValue]="dato">
-            {{ dato.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-md-3">
-        <label for="fechaElaboracion">Fecha de Creación</label>
-        <input
-          id="fechaElaboracion"
-          type="date"
-          class="form-control"
-          [(ngModel)]="operacion.fechaElaboracion"
-          name="fechaElaboracion"
-          readonly
-        />
-      </div>
-    </div>
-
-    <!-- Otros datos -->
-    <div class="row mb-3">
-      <div class="col-md-3">
-        <label for="duiCliente">DUI</label>
-        <input
-          id="duiCliente"
-          type="text"
-          class="form-control"
-          [(ngModel)]="operacion.cliente!.dui"
-          placeholder="DUI del cliente"
-          readonly
-          name="duiCliente"
-        />
-      </div>
-
-      <div class="col-md-3">
-        <label for="nitCliente">NIT</label>
-        <input
-          id="nitCliente"
-          type="text"
-          class="form-control"
-          [(ngModel)]="operacion.cliente!.nit"
-          placeholder="NIT del cliente"
-          readonly
-          name="nitCliente"
-        />
-      </div>
-
-      <div class="col-md-3">
-        <label for="vendedor">Vendedor</label>
-        <input
-          id="vendedor"
-          type="text"
-          class="form-control"
-          [(ngModel)]="operacion.vendedor!.username"
-          placeholder="Nombre del vendedor"
-          readonly
-          name="vendedor"
-        />
-      </div>
-
-      <div class="col-md-3">
-        <label for="tipoOperacion">Tipo de Operación</label>
-        <select
-          id="tipoOperacion"
-          class="form-select"
-          [(ngModel)]="operacion.tipoOperacion"
-          name="tipoOperacion"
-          required
-        >
-          <option [ngValue]="null" selected>Seleccione el tipo de operación</option>
-          <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato">
-            {{ dato.nombre }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-3">
-        <label for="sucursal">Sucursal</label>
-        <select
-          id="sucursal"
-          class="form-select"
-          [(ngModel)]="operacion.sucursal"
-          name="sucursal"
-          required
-          (ngModelChange)="onSucursalChange($event)"
-        >
-          <option [ngValue]="null" selected>Seleccione una sucursal</option>
-          <option *ngFor="let dato of sucursales" [ngValue]="dato">
-            {{ dato.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-md-3">
-        <label for="caja">Caja</label>
-        <select
-          id="caja"
-          class="form-select"
-          [(ngModel)]="operacion.caja"
-          name="caja"
-          required
-        >
-          <option [ngValue]="null" selected>Seleccione una caja</option>
-          <option *ngFor="let dato of cajas" [ngValue]="dato">
-            {{ dato.id }} - {{ dato.sucursal?.nombre }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Tabla de Detalles -->
-    <div class="card shadow-sm mb-4 p-3 rounded table-responsive">
-      <table class="table table-striped table-hover">
-        <thead class="table-dark text-center">
-          <tr>
-            <th>Código</th>
-            <th>Descripción</th>
-            <th>Cantidad</th>
-            <th>Descuento</th>
-            <th>Valor Unitario</th>
-            <th>Exento</th>
-            <th>IVA</th>
-            <th>Total</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody class="text-center">
-          <tr *ngFor="let data of operacionDetalle">
-            <td>{{ data.producto?.id }}</td>
-            <td>{{ data.producto?.nombre }}</td>
-            <td>{{ data.cantidad }}</td>
-            <td>{{ data.descuento }}</td>
-            <td>{{ data.precioUnitario }}</td>
-            <td>0</td>
-            <td>0</td>
-            <td>{{ (data.precioUnitario || 0) * (data.cantidad || 0) }}</td>
-            <td>
-              <button
-                class="btn btn-danger btn-sm rounded-circle me-2"
-                (click)="eliminarDetalle(data)"
-                title="Eliminar detalle"
-              >
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-          <tr *ngIf="operacionDetalle.length === 0">
-            <td colspan="9" class="text-center text-muted">
-              No hay productos agregados.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Pie con Totales y Botones -->
-    <div class="card shadow-sm p-4 rounded">
-      <div class="d-flex justify-content-between flex-wrap gap-3">
-        <div class="d-flex gap-2 align-items-center">
-          <button class="btn btn-success" (click)="agregarProducto()">
-            Agregar Producto
-          </button>
-          <button class="btn btn-primary" (click)="guardarFactura()">
-            Guardar Factura
-          </button>
-          <button class="btn btn-warning">Reimprimir Factura</button>
+      <!-- Otros datos -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="duiCliente">DUI</label>
+          <input
+            id="duiCliente"
+            type="text"
+            class="form-control"
+            [(ngModel)]="operacion.cliente!.dui"
+            placeholder="DUI del cliente"
+            readonly
+            name="duiCliente"
+          />
         </div>
 
-        <div class="d-flex flex-column align-items-end gap-2">
-          <div class="d-flex align-items-center gap-3">
-            <label for="subtotal" class="mb-0"><strong>Subtotal:</strong></label>
-            <input
-              type="text"
-              class="form-control w-50"
-              id="subtotal"
-              name="subtotal"
-              [value]="operacion.subTotal | number : '1.2-2'"
-              readonly
-            />
+        <div class="col-md-3">
+          <label for="nitCliente">NIT</label>
+          <input
+            id="nitCliente"
+            type="text"
+            class="form-control"
+            [(ngModel)]="operacion.cliente!.nit"
+            placeholder="NIT del cliente"
+            readonly
+            name="nitCliente"
+          />
+        </div>
+
+        <div class="col-md-3">
+          <label for="vendedor">Vendedor</label>
+          <input
+            id="vendedor"
+            type="text"
+            class="form-control"
+            [(ngModel)]="operacion.vendedor!.username"
+            placeholder="Nombre del vendedor"
+            readonly
+            name="vendedor"
+          />
+        </div>
+
+        <div class="col-md-3">
+          <label for="tipoOperacion">Tipo de Operación</label>
+          <select
+            id="tipoOperacion"
+            class="form-select"
+            [(ngModel)]="operacion.tipoOperacion"
+            name="tipoOperacion"
+            required
+            #tipoOperacion="ngModel"
+          >
+            <option [ngValue]="null" selected>Seleccione el tipo de operación</option>
+            <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato">
+              {{ dato.nombre }}
+            </option>
+          </select>
+          <small class="text-danger" *ngIf="tipoOperacion.invalid && (tipoOperacion.dirty || tipoOperacion.touched || intentoGuardar)">
+            El tipo de operación es requerido.
+          </small>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="sucursal">Sucursal</label>
+          <select
+            id="sucursal"
+            class="form-select"
+            [(ngModel)]="operacion.sucursal"
+            name="sucursal"
+            required
+            #sucursal="ngModel"
+            (ngModelChange)="onSucursalChange($event)"
+          >
+            <option [ngValue]="null" selected>Seleccione una sucursal</option>
+            <option *ngFor="let dato of sucursales" [ngValue]="dato">
+              {{ dato.nombre }}
+            </option>
+          </select>
+          <small class="text-danger" *ngIf="sucursal.invalid && (sucursal.dirty || sucursal.touched || intentoGuardar)">
+            La sucursal es requerida.
+          </small>
+        </div>
+
+        <div class="col-md-3">
+          <label for="caja">Caja</label>
+          <select
+            id="caja"
+            class="form-select"
+            [(ngModel)]="operacion.caja"
+            name="caja"
+            required
+            #caja="ngModel"
+          >
+            <option [ngValue]="null" selected>Seleccione una caja</option>
+            <option *ngFor="let dato of cajas" [ngValue]="dato">
+              {{ dato.id }} - {{ dato.sucursal?.nombre }}
+            </option>
+          </select>
+          <small class="text-danger" *ngIf="caja.invalid && (caja.dirty || caja.touched || intentoGuardar)">
+            La caja es requerida.
+          </small>
+        </div>
+      </div>
+
+      <!-- Tabla de Detalles -->
+      <div class="card shadow-sm mb-4 p-3 rounded table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark text-center">
+            <tr>
+              <th>Código</th>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+              <th>Descuento</th>
+              <th>Valor Unitario</th>
+              <th>Exento</th>
+              <th>IVA</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <tr *ngFor="let data of operacionDetalle">
+              <td>{{ data.producto?.id }}</td>
+              <td>{{ data.producto?.nombre }}</td>
+              <td>{{ data.cantidad }}</td>
+              <td>{{ data.descuento }}</td>
+              <td>{{ data.precioUnitario }}</td>
+              <td>0</td>
+              <td>0</td>
+              <td>{{ (data.precioUnitario || 0) * (data.cantidad || 0) }}</td>
+              <td>
+                <button
+                  class="btn btn-danger btn-sm rounded-circle me-2"
+                  type="button"
+                  (click)="eliminarDetalle(data)"
+                  title="Eliminar detalle"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="operacionDetalle.length === 0">
+              <td colspan="9" class="text-center text-muted">
+                No hay productos agregados.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pie con Totales y Botones -->
+      <div class="card shadow-sm p-4 rounded">
+        <!-- Resumen flotante con toasts -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:2000">
+          <div
+            *ngFor="let toast of toasts"
+            class="toast show bg-danger text-white mb-2 p-3 shadow rounded"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <strong>⚠ {{ toast.message }}</strong>
+              <button type="button" class="btn-close btn-close-white ms-3" aria-label="Close" (click)="removeToast(toast.id)"></button>
+            </div>
           </div>
-          <div class="d-flex align-items-center gap-3">
-            <label for="iva" class="mb-0"><strong>IVA:</strong></label>
-            <input
-              type="text"
-              class="form-control w-50"
-              id="iva"
-              name="iva"
-              [value]="operacion.iva | number : '1.2-2'"
-              readonly
-            />
+        </div>
+
+        <div class="d-flex justify-content-between flex-wrap gap-3">
+          <div class="d-flex gap-2 align-items-center">
+            <button class="btn btn-success" type="button" (click)="agregarProducto()">
+              Agregar Producto
+            </button>
+            <button class="btn btn-primary" type="button" (click)="preGuardar(f)">
+              Guardar Factura
+            </button>
+            <button class="btn btn-warning" type="button">Reimprimir Factura</button>
           </div>
-          <div class="d-flex align-items-center gap-3">
-            <label for="retencion" class="mb-0"><strong>Retención:</strong></label>
-            <input
-              type="text"
-              class="form-control w-50"
-              id="retencion"
-              name="retencion"
-              [value]="operacion.retencion | number : '1.2-2'"
-              readonly
-            />
-          </div>
-          <div class="d-flex align-items-center gap-3">
-            <label for="totalVenta" class="mb-0"><strong>Total Venta:</strong></label>
-            <input
-              type="text"
-              class="form-control w-50"
-              id="totalVenta"
-              name="totalVenta"
-              [value]="operacion.total | number : '1.2-2'"
-              readonly
-            />
+
+          <div class="d-flex flex-column align-items-end gap-2">
+            <div class="d-flex align-items-center gap-3">
+              <label for="subtotal" class="mb-0"><strong>Subtotal:</strong></label>
+              <input
+                type="text"
+                class="form-control w-50"
+                id="subtotal"
+                name="subtotal"
+                [value]="operacion.subTotal | number : '1.2-2'"
+                readonly
+              />
+            </div>
+            <div class="d-flex align-items-center gap-3">
+              <label for="iva" class="mb-0"><strong>IVA:</strong></label>
+              <input
+                type="text"
+                class="form-control w-50"
+                id="iva"
+                name="iva"
+                [value]="operacion.iva | number : '1.2-2'"
+                readonly
+              />
+            </div>
+            <div class="d-flex align-items-center gap-3">
+              <label for="retencion" class="mb-0"><strong>Retención:</strong></label>
+              <input
+                type="text"
+                class="form-control w-50"
+                id="retencion"
+                name="retencion"
+                [value]="operacion.retencion | number : '1.2-2'"
+                readonly
+              />
+            </div>
+            <div class="d-flex align-items-center gap-3">
+              <label for="totalVenta" class="mb-0"><strong>Total Venta:</strong></label>
+              <input
+                type="text"
+                class="form-control w-50"
+                id="totalVenta"
+                name="totalVenta"
+                [value]="operacion.total | number : '1.2-2'"
+                readonly
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+    </form>
   </div>
 </div>
