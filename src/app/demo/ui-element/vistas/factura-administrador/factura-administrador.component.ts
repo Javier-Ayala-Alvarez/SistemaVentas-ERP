@@ -7,7 +7,7 @@ import { TipoOperacionServicesService } from '../../services/tipo-operacion-serv
 import { OperacionClass } from '../../clases/operaciones-class';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 
-const MOVIENTO_OPERACION = "S";
+const MOVIENTO_OPERACION = 'S';
 
 @Component({
   selector: 'app-factura-administrador',
@@ -17,24 +17,29 @@ const MOVIENTO_OPERACION = "S";
 export default class FacturaAdministradorComponent {
   operacion: OperacionClass = new OperacionClass();
 
-  page: number = 0;
-  size: number = 8;
-  order: string = 'fecha_elaboracion';
-  asc: boolean = true;
-  isFirst: boolean = false;
-  isLast: boolean = false;
+  // Filtros
   filtroTerminoBusqueda: string = '';
-  totalPages: any[] = [];
- filtroFechaInicio: Date | null = null;
-filtroFechaFin: Date | null = null;
-
+  filtroFechaInicio: Date | null = null;
+  filtroFechaFin: Date | null = null;
   filtroNFactura!: string;
   filtroTipoOperacion!: number;
   filtroSucursal!: number;
-  operaciones: OperacionClass[] = [];
 
+  // Datos
+  operaciones: OperacionClass[] = [];
   sucursales: any[] = [];
   tipoOperaciones: any[] = [];
+
+  // Paginación / Orden
+  page: number = 0;
+  size: number = 8;
+  order: string = 'id';   // === igual que Gastos
+  asc: boolean = true;
+  isFirst: boolean = false;
+  isLast: boolean = false;
+  totalPages: any[] = [];
+
+  loading = false;
 
   constructor(
     private modalService: NgbModal,
@@ -52,55 +57,50 @@ filtroFechaFin: Date | null = null;
     this.loadFacturas();
   }
 
-  // Mostrar datos de sucursales
+  // Catálogos
   loadSucursal() {
     this.sucursalServices.buscar().subscribe({
-      next: (dato: any) => {
-        this.sucursales = dato;
-        if (this.operacion) {
-          this.operacion.sucursal = this.sucursales?.find(
-            emp => emp.id === this.operacion.sucursal?.id
-          );
-        }
-      },
+      next: (dato: any) => (this.sucursales = dato || []),
       error: (err) => console.error('Error al cargar sucursales:', err)
     });
   }
 
-  // Mostrar tipos de operación
   loadTipoOperacion() {
     this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe({
-      next: (dato: any) => {
-        this.tipoOperaciones = dato;
-        if (this.operacion.tipoOperacion) {
-          this.operacion.tipoOperacion = this.tipoOperaciones?.find(
-            emp => emp.id === this.operacion.tipoOperacion?.id
-          );
-        }
-      },
+      next: (dato: any) => (this.tipoOperaciones = dato || []),
       error: (err) => console.error('Error al cargar tipos de operación:', err)
     });
   }
 
-  // Mostrar facturas en tabla
+  // Tabla
   loadFacturas() {
-    console.log("🔍 Filtros enviados:", this.busqueda);
-    this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc)
+    this.loading = true;
+    this.operacionesServices
+      .loadFac(this.busqueda, this.page, this.size, this.order, this.asc)
       .subscribe({
         next: (dato: any) => {
-          console.log("✅ Respuesta del backend:", dato);
-          this.operaciones = dato.content || dato; // soporta paginación o lista directa
-          this.isFirst = dato.first ?? false;
-          this.isLast = dato.last ?? false;
-          this.totalPages = new Array(dato.totalPages ?? 1);
+          const content = dato?.content ?? dato ?? [];
+          // Normalizamos fecha para evitar el error del date pipe
+          this.operaciones = (Array.isArray(content) ? content : []).map((o: any) => ({
+            ...o,
+            fechaElaboracion: o?.fechaElaboracion ? new Date(o.fechaElaboracion) : null
+          }));
+          this.isFirst = dato?.first ?? (this.page === 0);
+          this.isLast = dato?.last ?? (this.page + 1 >= (dato?.totalPages ?? 1));
+          this.totalPages = new Array(dato?.totalPages ?? 1);
         },
         error: (err) => {
-          console.error("❌ Error al cargar facturas:", err);
-        }
+          console.error('❌ Error al cargar facturas:', err);
+          this.operaciones = [];
+          this.totalPages = new Array(1);
+          this.isFirst = true;
+          this.isLast = true;
+        },
+        complete: () => (this.loading = false)
       });
   }
 
-  // Navegar entre páginas
+  // Paginación (igual filosofía que Gastos pero sin recargar catálogos)
   paginaSiguiente(): void {
     if (!this.isLast) {
       this.page++;
@@ -109,15 +109,15 @@ filtroFechaFin: Date | null = null;
   }
 
   paginaAnterior(): void {
-    if (!this.isFirst) {
+    if (!this.isFirst && this.page > 0) {
       this.page--;
       this.loadFacturas();
     }
   }
 
-  // Generar cadena de búsqueda
+  // Filtros → string
   get busqueda(): string {
-    const partes = [];
+    const partes: string[] = [];
     const fechaInicio = this.datePipe.transform(this.filtroFechaInicio, 'yyyy-MM-dd');
     const fechaFin = this.datePipe.transform(this.filtroFechaFin, 'yyyy-MM-dd');
 
@@ -131,17 +131,35 @@ filtroFechaFin: Date | null = null;
     return partes.join(',');
   }
 
-  // Editar o agregar nuevo
+  // Ordenamiento “estilo Gastos”
+  ordenarPor(campo: string): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadFacturas();
+  }
+
+  // trackBy opcional (mejor rendimiento)
+  trackById = (_: number, item: any) => item?.id ?? _;
+
+  // Acciones
   editar(dato: OperacionClass): void {
     this.AgregarNuevo(dato);
   }
 
   AgregarNuevo(dato?: OperacionClass): void {
     if (dato) {
-      console.log("📝 Editando factura:", dato);
       this.router.navigate(['/component/factura'], {
-        queryParams: { operacion: JSON.stringify(dato) } // ✅ serializar objeto
+        queryParams: { operacion: JSON.stringify(dato) }
       });
     }
+  }
+
+  eliminar(dato: OperacionClass): void {
+    // Implementa según tu servicio
+    console.log('Eliminar factura', dato?.id);
   }
 }

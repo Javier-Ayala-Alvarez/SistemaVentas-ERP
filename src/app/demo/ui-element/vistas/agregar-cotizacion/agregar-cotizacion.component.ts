@@ -68,8 +68,19 @@ export class AgregarCotizacionComponent {
     this.loadDistrito();
     this.loadSucursal();
     this.limpiarArreglo();
+    this.loadTipoOperacion();
     this.operacionDetalle = this.operacionServices.operacionDetalle;
     this.operacion = this.operacionServices.operacion;
+  }
+  loadTipoOperacion() {
+    this.tipoOperacionServices.buscarTipoOperacion("null").subscribe(
+      (dato: any) => {
+        this.tipoOperaciones = dato;
+        if (this.operacion.tipoOperacion) {
+          this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.tipoOperacion === this.operacion.tipoOperacion);
+        }
+      }
+    );
   }
 
   limpiarArreglo() {
@@ -193,6 +204,7 @@ export class AgregarCotizacionComponent {
     if (controls['municipio']?.invalid) this.pushToast(id++, 'Seleccionar Municipio');
     if (controls['distrito']?.invalid) this.pushToast(id++, 'Seleccionar Distrito');
     if (controls['sucursal']?.invalid) this.pushToast(id++, 'Seleccionar Sucursal');
+    if (controls['tipoOperacion']?.invalid) this.pushToast(id++, 'Seleccionar Tipo de Operación');
     if (fechaVencimientoInvalida) this.pushToast(id++, 'Indicar Fecha de Vencimiento');
     if (descripcionInvalida) this.pushToast(id++, 'Ingresar Descripción');
     if (sinProductos) this.pushToast(id++, 'Agregar al menos un producto');
@@ -314,7 +326,6 @@ export class AgregarCotizacionComponent {
 
   registrarCotizacion() {
     this.operacion.fechaVencimiento = this.operacion.fechaVencimiento;
-
     this.operacionServices.guardarOperacion().subscribe((dato: any) => {
       // this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

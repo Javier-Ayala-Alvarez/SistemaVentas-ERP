@@ -1,15 +1,11 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
 import { DatePipe } from '@angular/common';
-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TipoOperacionServicesService } from '../../services/tipo-operacion-services.service';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 import { OperacionClass } from '../../clases/operaciones-class';
-
-
-
 
 export interface Producto {
   codigo: string;
@@ -21,124 +17,191 @@ export interface Producto {
   iva: number;
   total: number;
 }
-const MOVIENTO_OPERACION = "null";
+
+// Ajusta si tu backend necesita otro valor (ej. 'C' o 'Q')
+// Lo dejo como lo tenías.
+const MOVIENTO_OPERACION = 'null';
+
 @Component({
   selector: 'app-cotizaciones',
   templateUrl: './cotizaciones.component.html',
   styleUrls: ['./cotizaciones.component.scss'],
-  encapsulation: ViewEncapsulation.None
-
+  encapsulation: ViewEncapsulation.None,
+  providers: [DatePipe]
 })
 export default class cotizacionesComponent implements OnInit {
-
   operacion: OperacionClass = new OperacionClass();
 
+  // Paginación / ordenamiento
   page: number = 0;
   size: number = 8;
-  order: string = 'id';
+  order: 'id' | 'fecha_elaboracion' | 'total' = 'id';
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
-  filtroSucursal: any | null = null;
   totalPages: any[] = [];
-  sucursales: any[] = [];
-  tipoOperaciones: any[] = [];
-  selectComboTipoOperacion: any | null = null;
 
+  // Filtros
   filtroTerminoBusqueda: string = '';
-  filtroFechaInicio: Date = new Date();
-  filtroFechaFin: Date = new Date();
+  filtroFechaInicio: Date | null = null;
+  filtroFechaFin: Date | null = null;
   filtroNFactura!: string;
   filtroTipoOperacion!: number;
+  filtroSucursal: any | null = null;
+
+  // Catálogos / datos
+  sucursales: any[] = [];
+  tipoOperaciones: any[] = [];
+  selectComboTipoOperacion: any | null = null; // si lo usas en el HTML
   operaciones: OperacionClass[] = [];
 
+  loading = false;
 
-
-
-
-  constructor(private modalService: NgbModal, private operacionesServices: OperacionServicesService, private sucursalServices: SucursalServicesService, private tipoOperacionServices: TipoOperacionServicesService, private router: Router, private datePipe: DatePipe, private route: ActivatedRoute, // Usamos ActivatedRoute aquí
-  ) { }
+  constructor(
+    private modalService: NgbModal,
+    private operacionesServices: OperacionServicesService,
+    private sucursalServices: SucursalServicesService,
+    private tipoOperacionServices: TipoOperacionServicesService,
+    private router: Router,
+    private datePipe: DatePipe,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.loadSucursal();
-    this.loadCotizaciones();
     this.loadTipoOperacion();
-
+    this.loadCotizaciones();
   }
 
   AgregarNuevo() {
     this.router.navigate(['/component/Nuevacotizacion']);
   }
 
-
-
-  //mostrar datos de la sucursal
+  /** === Catálogos === */
   loadSucursal() {
-    this.sucursalServices.buscar().subscribe(
-      (dato: any) => {
-        this.sucursales = dato;
-        // Si hay una sucursal y una empresa, la seleccionamos en el combo
-        //if (this.sucursalNuevo.empresa) {
-        //this.sucursalNuevo.empresa = this.empresas?.find(emp => emp.id === this.sucursalNuevo.empresa?.id);
-      }
-      //}
-    );
+    this.sucursalServices.buscar().subscribe({
+      next: (dato: any) => {
+        this.sucursales = dato || [];
+      },
+      error: (e) => console.error('Error al cargar sucursales:', e)
+    });
   }
+
+  loadTipoOperacion() {
+    this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe({
+      next: (dato: any) => {
+        this.tipoOperaciones = dato || [];
+        if (this.operacion?.tipoOperacion) {
+          this.operacion.tipoOperacion = this.tipoOperaciones?.find(
+            emp => emp.id === this.operacion.tipoOperacion?.id
+          );
+        }
+        console.log(dato)
+      },
+      error: (e) => console.error('Error al cargar tipos de operación:', e)
+    });
+  }
+
+  /** === Cadena de búsqueda para backend === */
   get busqueda(): string {
-    const partes = [];
-    if (this.filtroFechaFin) partes.push(`fechaFin:${this.filtroFechaFin}`);
-    if (this.filtroFechaInicio) partes.push(`fechaInicio:${this.filtroFechaInicio}`);
+    const partes: string[] = [];
+    const fechaInicio = this.datePipe.transform(this.filtroFechaInicio, 'yyyy-MM-dd');
+    const fechaFin = this.datePipe.transform(this.filtroFechaFin, 'yyyy-MM-dd');
+
+    if (fechaFin) partes.push(`fechaFin:${fechaFin}`);
+    if (fechaInicio) partes.push(`fechaInicio:${fechaInicio}`);
     if (this.filtroNFactura) partes.push(`nFactura:${this.filtroNFactura}`);
     if (this.filtroSucursal) partes.push(`idSucursal:${this.filtroSucursal}`);
     if (this.filtroTerminoBusqueda) partes.push(`nombre:${this.filtroTerminoBusqueda}`);
     if (this.filtroTipoOperacion) partes.push(`idTipoOperacion:${this.filtroTipoOperacion}`);
-    partes.push(`movimiento:${MOVIENTO_OPERACION}`)
+    partes.push(`movimiento:${MOVIENTO_OPERACION}`);
 
     return partes.join(',');
   }
-  //mostrar datos en la tabla
+
+  /** === Carga tabla principal === */
   loadCotizaciones() {
+    this.loading = true;
+    this.operacionesServices
+      .loadFac(this.busqueda, this.page, this.size, this.order, this.asc)
+      .subscribe({
+        next: (dato: any) => {
+          const content = dato?.content ?? dato ?? [];
+          // Normaliza la fecha para evitar errores con el date pipe
+          this.operaciones = (Array.isArray(content) ? content : []).map((o: any) => ({
+            ...o,
+            fechaElaboracion: o?.fechaElaboracion ? new Date(o.fechaElaboracion) : null
+          }));
 
-    this.operacionesServices.loadFac(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
-      (dato: any) => {
-        this.operaciones = dato.content; // <-- esto es lo correcto
-        console.log("estas son las cotizaciones: ", this.operaciones);
-
-        this.isFirst = dato.first;
-        this.isLast = dato.last;
-        this.totalPages = new Array(dato.totalPages);
-      }
-    );
+          this.isFirst = dato?.first ?? (this.page === 0);
+          this.isLast = dato?.last ?? (this.page + 1 >= (dato?.totalPages ?? 1));
+          const pages = dato?.totalPages ?? 1;
+          this.totalPages = new Array(pages > 0 ? pages : 1);
+        },
+        error: (err) => {
+          console.error('❌ Error al cargar cotizaciones:', err);
+          this.operaciones = [];
+          this.totalPages = new Array(1);
+          this.isFirst = true;
+          this.isLast = true;
+        },
+        complete: () => (this.loading = false)
+      });
   }
 
-
-  loadTipoOperacion() {
-    this.tipoOperacionServices.buscarTipoOperacion(MOVIENTO_OPERACION).subscribe(
-      (dato: any) => {
-        this.tipoOperaciones = dato;
-        if (this.operacion.tipoOperacion) {
-          this.operacion.tipoOperacion = this.tipoOperaciones?.find(emp => emp.id === this.operacion.tipoOperacion?.id);
-        }
-      }
-
-    );
-
+  /** === Ordenar columnas === */
+  ordenarPor(campo: 'id' | 'fecha_elaboracion' | 'total'): void {
+    if (this.order === campo) {
+      this.asc = !this.asc;
+    } else {
+      this.order = campo;
+      this.asc = true;
+    }
+    this.loadCotizaciones();
   }
 
-  //Ir a la siguiente pagina
+  /** === Paginación === */
   paginaSiguiente(): void {
     if (!this.isLast) {
       this.page++;
-      this.ngOnInit();
+      this.loadCotizaciones();
     }
   }
-  //ir a la pagina anterior
+
   paginaAnterior(): void {
-    if (!this.isFirst) {
+    if (!this.isFirst && this.page > 0) {
       this.page--;
-      this.ngOnInit();
+      this.loadCotizaciones();
     }
   }
 
+  /** === trackBy para *ngFor === */
+  trackById = (_: number, item: any) => item?.id ?? _;
 
+  /** === Acciones === */
+  editar(dato: OperacionClass): void {
+    this.router.navigate(['/component/Nuevacotizacion'], {
+      queryParams: { operacion: JSON.stringify(dato), modo: 'edit' }
+    });
+  }
+
+  eliminar(dato: OperacionClass): void {
+    if (!dato?.id) return;
+    const ok = window.confirm(`¿Eliminar la cotización #${dato.id}?`);
+    if (!ok) return;
+
+    // Ajusta a la firma real de tu servicio:
+    // Si tu servicio es eliminar(id, body):
+    this.operacionesServices.eliminar(dato.id as number, dato).subscribe({
+      next: () => this.loadCotizaciones(),
+      error: (e) => console.error('❌ Error al eliminar cotización:', e)
+    });
+
+    /* Si tu servicio fuera eliminar(id) solamente:
+    this.operacionesServices.eliminar(dato.id as number).subscribe({
+      next: () => this.loadCotizaciones(),
+      error: (e) => console.error('❌ Error al eliminar cotización:', e)
+    });
+    */
+  }
 }

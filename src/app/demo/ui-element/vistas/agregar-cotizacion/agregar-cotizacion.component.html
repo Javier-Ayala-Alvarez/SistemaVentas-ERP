@@ -186,6 +186,22 @@
             La sucursal es requerida.
           </small>
         </div>
+        <div class="col-md-3">
+          <label for="tipoOperacion">Tipo de Operación</label>
+          <select
+            [(ngModel)]="operacion.tipoOperacion"
+            class="form-select"
+            id="tipoOperacion"
+            name="tipoOperacion"
+            required
+            #tipoOperacion="ngModel">
+            <option [ngValue]="null" selected>Seleccione el tipo de operación</option>
+            <option *ngFor="let dato of tipoOperaciones" [ngValue]="dato">{{ dato.nombre }}</option>
+          </select>
+          <small class="text-danger" *ngIf="tipoOperacion.invalid && (tipoOperacion.dirty || tipoOperacion.touched)">
+            El tipo de operación es requerido.
+          </small>
+        </div>
       </div>
 
       <!-- Cuerpo de la Cotización (Tabla de Productos) -->
