@@ -1,19 +1,7 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { filter, map, startWith } from 'rxjs/operators';
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { filter } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.component';
@@ -73,10 +61,21 @@ export default class FacturaComponent implements OnInit {
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private cajaServices: CajasServicesService
-  ) {}
-
+  ) { }
   ngOnInit(): void {
-    console.log(this.route.snapshot.queryParams['operacion']);
+
+
+    const nav = this.router.getCurrentNavigation();
+    const opFromNav = nav?.extras?.state?.['operacion'] as OperacionClass | undefined;
+    const opFromHistory = (history.state?.operacion as OperacionClass) || undefined;
+    const op = opFromNav ?? opFromHistory;
+    if (op) {
+      this.loadDetalleFac(op.id ?? 0);
+
+    }
+
+
+
     this.loadDepartamento();
     this.loadMunicipio();
     this.loadDistrito();
@@ -98,6 +97,7 @@ export default class FacturaComponent implements OnInit {
 
     this.loadCaja();
   }
+
 
   limpiarArreglo() {
     this.router.events
@@ -256,6 +256,26 @@ export default class FacturaComponent implements OnInit {
           this.operacion.caja = this.cajas[0];
         }
       }
+    });
+  }
+
+  loadDetalleFac(idOperacion: number) {
+    this.operacionServices.loadDetalleFac(idOperacion).subscribe((dato: any) => {
+
+      this.operacion = this.operacionServices.ensureShape(dato[0].operacion ?? undefined);
+      this.operacionServices.operacionDetalle = dato;
+      this.operacionServices.operacion = dato[0].operacion;
+      this.operacionServices.operacion.tipoOperacion = dato[0].operacion.tipoOperacion
+
+
+      this.operacionDetalle = dato
+      this.operacion.tipoOperacion = dato[0].operacion.tipoOperacion
+      this.loadDepartamento();
+      this.loadMunicipio();
+      this.loadDistrito();
+      this.loadTipoOperacion();
+      this.loadSucursal();
+      this.limpiarArreglo();
     });
   }
 

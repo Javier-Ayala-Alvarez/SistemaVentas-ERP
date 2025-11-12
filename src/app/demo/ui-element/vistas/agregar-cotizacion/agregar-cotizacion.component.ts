@@ -17,7 +17,6 @@ import { OperacionServicesService } from '../../services/operacion-services.serv
 import { filter } from 'rxjs';
 import Swal from 'sweetalert2';
 
-// 👇 Import para el template-driven form
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -27,13 +26,13 @@ import { NgForm } from '@angular/forms';
 })
 export class AgregarCotizacionComponent {
   operacion: OperacionClass = new OperacionClass();
-  operacionDetalle: OperacionDetalleClass [] = [];
+  operacionDetalle: OperacionDetalleClass[] = [];
 
-  sucursales: any[]= [];
-  tipoOperaciones: any[]= [];
-  departamentos: any[]= [];
-  municipios: any[]= [];
-  distritos: any[]= [];
+  sucursales: any[] = [];
+  tipoOperaciones: any[] = [];
+  departamentos: any[] = [];
+  municipios: any[] = [];
+  distritos: any[] = [];
 
   subtotal = 0;
   iva = 0;
@@ -60,9 +59,19 @@ export class AgregarCotizacionComponent {
     private router: Router,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    const nav = this.router.getCurrentNavigation();
+    const opFromNav = nav?.extras?.state?.['operacion'] as OperacionClass | undefined;
+    const opFromHistory = (history.state?.operacion as OperacionClass) || undefined;
+    const op = opFromNav ?? opFromHistory;
+    if (op) {
+      this.loadDetalleFac(op.id ?? 0);
+
+    }
+
+
     this.loadDepartamento();
     this.loadMunicipio();
     this.loadDistrito();
@@ -97,12 +106,12 @@ export class AgregarCotizacionComponent {
   }
 
   eliminarDetalle(detalle: OperacionDetalleClass): void {
-    this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(()=>{
+    this.operacionServices.eliminarOperacionDetalle(detalle).subscribe(() => {
       this.operacionDetalle = this.operacionServices.operacionDetalle;
     });
   }
 
-  loadDepartamento(){
+  loadDepartamento() {
     this.departamentoServices.buscar().subscribe(
       (dato: any) => {
         this.departamentos = dato;
@@ -113,7 +122,6 @@ export class AgregarCotizacionComponent {
     );
   }
 
-  //mostrar datos de la sucursal
   loadSucursal() {
     this.sucursalServices.buscar().subscribe(
       (dato: any) => {
@@ -125,7 +133,7 @@ export class AgregarCotizacionComponent {
     );
   }
 
-  loadMunicipio(){
+  loadMunicipio() {
     this.municipioServices.buscar().subscribe(
       (dato: any) => {
         this.municipios = dato;
@@ -136,7 +144,7 @@ export class AgregarCotizacionComponent {
     );
   }
 
-  loadDistrito(){
+  loadDistrito() {
     this.distritoServices.buscar().subscribe(
       (dato: any) => {
         this.distritos = dato;
@@ -147,7 +155,7 @@ export class AgregarCotizacionComponent {
     );
   }
 
-  openModalAgregar (){
+  openModalAgregar() {
     const modalRef = this.modalService.open(AgregarClienteComponent, {
       size: 'lg',
       centered: true
@@ -170,7 +178,7 @@ export class AgregarCotizacionComponent {
     modalRef.componentInstance.identificador = "cotizacion";
   }
 
-  openModalFormaPago(){
+  openModalFormaPago() {
     const modalRef = this.modalService.open(FormaDePagoComponent, {
       size: 'lg',
       centered: true
@@ -237,8 +245,7 @@ export class AgregarCotizacionComponent {
   // ===============================
   //     LÓGICA ORIGINAL (Swal)
   // ===============================
-  guardarCotizacion(){
-    // ✅ Validación de Cliente
+  guardarCotizacion() {
     if (!this.operacion.cliente || !this.operacion.cliente.id) {
       Swal.fire({
         icon: 'warning',
@@ -248,7 +255,6 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Validación de Productos agregados
     if (!this.operacionDetalle || this.operacionDetalle.length === 0) {
       Swal.fire({
         icon: 'warning',
@@ -258,7 +264,6 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Validar Fecha de Vencimiento
     if (!this.operacion.fechaVencimiento) {
       Swal.fire({
         icon: 'warning',
@@ -268,7 +273,6 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Validar Descripción
     if (!this.operacion.descripcion || this.operacion.descripcion.trim() === '') {
       Swal.fire({
         icon: 'warning',
@@ -278,7 +282,6 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Validar Departamento
     if (!this.operacion.departamento) {
       Swal.fire({
         icon: 'warning',
@@ -288,7 +291,6 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Validar Municipio
     if (!this.operacion.municipio) {
       Swal.fire({
         icon: 'warning',
@@ -298,7 +300,6 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Validar Distrito
     if (!this.operacion.distrito) {
       Swal.fire({
         icon: 'warning',
@@ -308,7 +309,6 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Validar Sucursal
     if (!this.operacion.sucursal) {
       Swal.fire({
         icon: 'warning',
@@ -318,8 +318,7 @@ export class AgregarCotizacionComponent {
       return;
     }
 
-    // ✅ Si todas las validaciones pasan, abrir modal de forma de pago
-    // this.openModalFormaPago();
+ 
 
     this.registrarCotizacion();
   }
@@ -331,6 +330,25 @@ export class AgregarCotizacionComponent {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigate(['/component/Nuevacotizacion']);
       });
+    });
+  }
+  loadDetalleFac(idOperacion: number) {
+    this.operacionServices.loadDetalleFac(idOperacion).subscribe((dato: any) => {
+
+      this.operacion = this.operacionServices.ensureShape(dato[0].operacion ?? undefined);
+      this.operacionServices.operacionDetalle = dato;
+      this.operacionServices.operacion = dato[0].operacion;
+      this.operacionServices.operacion.tipoOperacion = dato[0].operacion.tipoOperacion
+
+
+      this.operacionDetalle = dato
+      this.operacion.tipoOperacion = dato[0].operacion.tipoOperacion
+      this.loadDepartamento();
+      this.loadMunicipio();
+      this.loadDistrito();
+      this.loadTipoOperacion();
+      this.loadSucursal();
+      this.limpiarArreglo();
     });
   }
 }

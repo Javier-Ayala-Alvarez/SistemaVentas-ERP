@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { baseUrl } from './helper';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { OperacionDetalleClass } from '../clases/operacionDetalle';
-import { catchError, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 import { OperacionClass } from '../clases/operaciones-class';
 import { FormaPagoOperacion } from '../clases/FormaPagoOperacion';
@@ -18,33 +18,51 @@ export class OperacionServicesService {
   formaPagoOperacion: FormaPagoOperacion[] = [];
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
 
-calcularTotales(): void {
-  let subTotal = 0;
-  let iva = 0;
-  let retencion = 0;
 
-  for (let item of this.operacionDetalle) {
-    const precioUnitario = item.precioUnitario || 0;
-    const cantidad = item.cantidad || 0;
-    const descuento = item.descuento || 0;
 
-    const totalItem = (precioUnitario * cantidad) - descuento;
+  public ensureShape(op?: OperacionClass): OperacionClass {
+    const o = op ?? new OperacionClass();
 
-    // Precio base e IVA incluido
-    const precioBase = totalItem / 1.13;
-    const ivaItem = totalItem - precioBase;
+    (o as any).vendedor = (o as any).vendedor ?? { id: null, username: '' };
+    (o as any).cliente = (o as any).cliente ?? { id: null };
+    (o as any).sucursal = (o as any).sucursal ?? { id: null };
+    (o as any).caja = (o as any).caja ?? { id: null };
+    (o as any).total = (o as any).total ?? 0;
 
-    subTotal += precioBase;
-    iva += ivaItem;
-    //retencion += totalItem * 0.01; // sin redondeo
+    (o as any).detalle = (o as any).detalle ?? [];
+
+    return o;
   }
 
-  // Redondeamos solo al final
-  this.operacion.subTotal = parseFloat(subTotal.toFixed(2));
-  this.operacion.iva = parseFloat(iva.toFixed(2));
-  this.operacion.retencion = parseFloat(retencion.toFixed(2));
-  this.operacion.total = parseFloat((subTotal + iva - retencion).toFixed(2));
-}
+
+  calcularTotales(): void {
+    let subTotal = 0;
+    let iva = 0;
+    let retencion = 0;
+    for (let item of this.operacionDetalle) {
+
+      const precioUnitario = item.precioUnitario || 0;
+      const cantidad = item.cantidad || 0;
+      const descuento = item.descuento || 0;
+
+      const totalItem = (precioUnitario * cantidad) - descuento;
+
+      // Precio base e IVA incluido
+      const precioBase = totalItem / 1.13;
+      const ivaItem = totalItem - precioBase;
+
+      subTotal += precioBase;
+      iva += ivaItem;
+      //retencion += totalItem * 0.01; // sin redondeo
+    }
+
+    // Redondeamos solo al final
+    this.operacion.subTotal = parseFloat(subTotal.toFixed(2));
+    this.operacion.iva = parseFloat(iva.toFixed(2));
+    this.operacion.retencion = parseFloat(retencion.toFixed(2));
+    this.operacion.total = parseFloat((subTotal + iva - retencion).toFixed(2));
+
+  }
 
 
 
@@ -171,8 +189,10 @@ calcularTotales(): void {
   // Eliminar el producto
   eliminar(id: number, operacion: OperacionClass): Observable<any> {
     const form = new FormData();
-    form.append('producto', JSON.stringify(operacion));
+    form.append('operacion', JSON.stringify(this.operacion));
     form.append('detalle', JSON.stringify(this.operacionDetalle));
+    form.append('formaPagoOperacion', JSON.stringify(this.formaPagoOperacion));
+
     return new Observable(observer => {
       Swal.fire({
         title: 'Eliminar Operacion',
@@ -245,9 +265,6 @@ calcularTotales(): void {
     order: string,
     asc: boolean
   ): Observable<any> {
-
-
-
     // Construir la URL con los parámetros validados
     const url = `${this.apiUrl}/List?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
 
@@ -255,6 +272,15 @@ calcularTotales(): void {
       catchError(this.mensajeSwal2.handleError)
     );
   }
+
+  loadDetalleFac(idOperacion: number): Observable<any> {
+    const url = `${baseUrl}/Api/operacionDetalle/operaciondetalle/${idOperacion}`;
+    return this.httpClient.get(url).pipe(
+
+      catchError(this.mensajeSwal2.handleError)
+    );
+  }
+
   generarReportePDF(inicio: string, fin: string, caja: string, idSucursal: String) {
     // Solo agregamos parámetros si tienen valor
     let url = `${this.apiUrl}/reporte/pdf?`;

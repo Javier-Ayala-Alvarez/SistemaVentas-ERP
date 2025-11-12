@@ -131,7 +131,7 @@
             <td>{{ dato?.total | currency:'USD':'symbol-narrow':'1.2-2' }}</td>
             <td>
               <div class="d-flex justify-content-center gap-2">
-                <button class="btn btn-outline-info btn-sm" title="Editar" >
+                <button class="btn btn-outline-info btn-sm" title="Editar"  (click)="editar(dato)"> 
                   <i class="fas fa-pen"></i>
                 </button>
                 <button class="btn btn-outline-danger btn-sm" title="Eliminar">

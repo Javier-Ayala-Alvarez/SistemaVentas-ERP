@@ -153,8 +153,8 @@ export default class FacturaAdministradorComponent {
   AgregarNuevo(dato?: OperacionClass): void {
     if (dato) {
       this.router.navigate(['/component/factura'], {
-        queryParams: { operacion: JSON.stringify(dato) }
-      });
+      state: { operacion: dato }
+      }); 
     }
   }
 

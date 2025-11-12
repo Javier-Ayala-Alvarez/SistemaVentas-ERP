@@ -65,17 +65,25 @@ export default class cotizacionesComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSucursal();
     this.loadTipoOperacion();
     this.loadCotizaciones();
   }
-
-  AgregarNuevo() {
-    this.router.navigate(['/component/Nuevacotizacion']);
+  editar(dato: OperacionClass): void {
+    this.AgregarNuevo(dato);
   }
+  AgregarNuevo(dato?: OperacionClass): void {
+    if (dato) {
+      this.router.navigate(['/component/Nuevacotizacion'], {
+        state: { operacion: dato }
+      });
+    }
+  }
+
+
 
   /** === Catálogos === */
   loadSucursal() {
@@ -179,29 +187,11 @@ export default class cotizacionesComponent implements OnInit {
   trackById = (_: number, item: any) => item?.id ?? _;
 
   /** === Acciones === */
-  editar(dato: OperacionClass): void {
-    this.router.navigate(['/component/Nuevacotizacion'], {
-      queryParams: { operacion: JSON.stringify(dato), modo: 'edit' }
-    });
-  }
-
   eliminar(dato: OperacionClass): void {
     if (!dato?.id) return;
-    const ok = window.confirm(`¿Eliminar la cotización #${dato.id}?`);
-    if (!ok) return;
-
-    // Ajusta a la firma real de tu servicio:
-    // Si tu servicio es eliminar(id, body):
     this.operacionesServices.eliminar(dato.id as number, dato).subscribe({
       next: () => this.loadCotizaciones(),
       error: (e) => console.error('❌ Error al eliminar cotización:', e)
     });
-
-    /* Si tu servicio fuera eliminar(id) solamente:
-    this.operacionesServices.eliminar(dato.id as number).subscribe({
-      next: () => this.loadCotizaciones(),
-      error: (e) => console.error('❌ Error al eliminar cotización:', e)
-    });
-    */
   }
 }

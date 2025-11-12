@@ -71,6 +71,16 @@ export default class AgregarComprasComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const nav = this.router.getCurrentNavigation();
+    const opFromNav = nav?.extras?.state?.['operacion'] as OperacionClass | undefined;
+    const opFromHistory = (history.state?.operacion as OperacionClass) || undefined;
+    const op = opFromNav ?? opFromHistory;
+    if (op) {
+      this.loadDetalleFac(op.id ?? 0);
+
+    }
+
+
     this.loadDepartamento();
     this.loadMunicipio();
     this.loadDistrito();
@@ -226,6 +236,25 @@ export default class AgregarComprasComponent implements OnInit {
 
   removeToast(id: number) {
     this.toasts = this.toasts.filter(t => t.id !== id);
+  }
+  loadDetalleFac(idOperacion: number) {
+    this.operacionServices.loadDetalleFac(idOperacion).subscribe((dato: any) => {
+
+      this.operacion = this.operacionServices.ensureShape(dato[0].operacion ?? undefined);
+      this.operacionServices.operacionDetalle = dato;
+      this.operacionServices.operacion = dato[0].operacion;
+      this.operacionServices.operacion.tipoOperacion = dato[0].operacion.tipoOperacion
+
+
+      this.operacionDetalle = dato
+      this.operacion.tipoOperacion = dato[0].operacion.tipoOperacion
+      this.loadDepartamento();
+      this.loadMunicipio();
+      this.loadDistrito();
+      this.loadTipoOperacion();
+      this.loadSucursal();
+      this.limpiarArreglo();
+    });
   }
 }
 

@@ -52,10 +52,17 @@ export default class ComprasComponent {
     this.loadTipoOperacion();
     this.loadCompras();
   }
-
-  AgregarNuevo() {
-    this.router.navigate(['/component/Nuevacompras']);
+ editar(dato: OperacionClass): void {
+    this.AgregarNuevo(dato);
   }
+  AgregarNuevo(dato?: OperacionClass): void {
+    if (dato) {
+      this.router.navigate(['/component/Nuevacompras'], {
+      state: { operacion: dato }
+      }); 
+    }
+  }
+
 
   // Catálogos
   loadSucursal() {
