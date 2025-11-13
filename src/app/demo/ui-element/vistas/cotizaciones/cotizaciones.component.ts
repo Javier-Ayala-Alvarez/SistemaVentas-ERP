@@ -76,11 +76,10 @@ export default class cotizacionesComponent implements OnInit {
     this.AgregarNuevo(dato);
   }
   AgregarNuevo(dato?: OperacionClass): void {
-    if (dato) {
       this.router.navigate(['/component/Nuevacotizacion'], {
         state: { operacion: dato }
       });
-    }
+    
   }
 
 
@@ -186,10 +185,9 @@ export default class cotizacionesComponent implements OnInit {
   /** === trackBy para *ngFor === */
   trackById = (_: number, item: any) => item?.id ?? _;
 
-  /** === Acciones === */
   eliminar(dato: OperacionClass): void {
     if (!dato?.id) return;
-    this.operacionesServices.eliminar(dato.id as number, dato).subscribe({
+    this.operacionesServices.eliminar(dato.id as number).subscribe({
       next: () => this.loadCotizaciones(),
       error: (e) => console.error('❌ Error al eliminar cotización:', e)
     });

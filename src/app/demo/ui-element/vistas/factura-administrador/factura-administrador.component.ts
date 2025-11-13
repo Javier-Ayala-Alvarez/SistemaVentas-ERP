@@ -158,8 +158,11 @@ export default class FacturaAdministradorComponent {
     }
   }
 
-  eliminar(dato: OperacionClass): void {
-    // Implementa según tu servicio
-    console.log('Eliminar factura', dato?.id);
+   eliminar(dato: OperacionClass): void {
+    if (!dato?.id) return;
+    this.operacionesServices.eliminar(dato.id as number).subscribe({
+      next: () => this.loadFacturas(),
+      error: (e) => console.error('❌ Error al eliminar cotización:', e)
+    });
   }
 }

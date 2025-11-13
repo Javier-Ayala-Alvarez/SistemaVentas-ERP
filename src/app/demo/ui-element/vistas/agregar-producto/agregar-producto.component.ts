@@ -41,6 +41,7 @@ export default class AgregarProductoComponent {
   ) {}
 
   ngOnInit(): void {
+    this.productoService.unidadMedidaProducto = [];
     this.imagenRuta = imagenes;
     this.productoNuevo = new ProductoClass();
     this.id = this.route.snapshot.queryParams['id'] ?? 0;

@@ -186,43 +186,47 @@ export class OperacionServicesService {
     );
   }
 
-  // Eliminar el producto
-  eliminar(id: number, operacion: OperacionClass): Observable<any> {
-    const form = new FormData();
-    form.append('operacion', JSON.stringify(this.operacion));
-    form.append('detalle', JSON.stringify(this.operacionDetalle));
-    form.append('formaPagoOperacion', JSON.stringify(this.formaPagoOperacion));
+eliminar(id: number): Observable<any> {
+  return new Observable(observer => {
+    Swal.fire({
+      title: 'Eliminar Operación',
+      text: '¿Estás seguro de que deseas eliminar esta operación?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((resultado) => {
+      if (resultado.isConfirmed) {
 
-    return new Observable(observer => {
-      Swal.fire({
-        title: 'Eliminar Operacion',
-        text: '¿Estás seguro de que deseas eliminar esta Operacion?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar'
-      }).then((resultado) => {
-        if (resultado.isConfirmed) {
-          operacion.estado = 'N'; // Marca el productp como eliminado
-          this.httpClient.put(`${this.apiUrl}/Actualizar/${id}`, form).pipe(
-            tap(() => {
-              this.mensajeSwal2.mensaje('Eliminada exitoso', 'El producto se ha modificado correctamente.');
-              observer.next(true);  // Emite true indicando que la operación fue exitosa
-            }),
-            catchError((error) => {
-              this.mensajeSwal2.handleError(error);
-              observer.error(error);  // En caso de error, emite el error
-              return throwError(error);
-            })
-          ).subscribe();
-        } else {
-          observer.next(false);  // Si el usuario cancela, emite false
-        }
-      });
+        this.httpClient.post(`${this.apiUrl}/Eliminar/${id}`, {}).pipe(
+
+          tap((resp: any) => {
+
+            this.mensajeSwal2.mensaje(
+              'Operación eliminada',
+              resp.mensaje
+            );
+
+            observer.next(resp.resultado);
+          }),
+
+          catchError(error => {
+            this.mensajeSwal2.handleError(error);
+            observer.error(error);
+            return throwError(() => error);
+          })
+
+        ).subscribe();
+
+      } else {
+        observer.next(false);
+      }
     });
-  }
+  });
+}
+
 
   loadInventario(
     terminoBusqueda: string,

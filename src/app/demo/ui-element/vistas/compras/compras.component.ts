@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { OperacionClass } from '../../clases/operaciones-class';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 
-const MOVIENTO_OPERACION = 'S';
+const MOVIENTO_OPERACION = 'E';
 
 @Component({
   selector: 'app-compras',
@@ -56,11 +56,10 @@ export default class ComprasComponent {
     this.AgregarNuevo(dato);
   }
   AgregarNuevo(dato?: OperacionClass): void {
-    if (dato) {
       this.router.navigate(['/component/Nuevacompras'], {
       state: { operacion: dato }
       }); 
-    }
+    
   }
 
 
@@ -102,6 +101,7 @@ export default class ComprasComponent {
       .loadFac(this.busqueda, this.page, this.size, this.order, this.asc)
       .subscribe({
         next: (dato: any) => {
+          console.log(dato)
           const content = dato?.content ?? dato ?? [];
           // Normalizar fecha para pipe date
           this.operaciones = (Array.isArray(content) ? content : []).map((o: any) => ({
@@ -152,4 +152,11 @@ export default class ComprasComponent {
 
   // trackBy para *ngFor
   trackById = (_: number, item: any) => item?.id ?? _;
+    eliminar(dato: OperacionClass): void {
+    if (!dato?.id) return;
+    this.operacionesServices.eliminar(dato.id as number).subscribe({
+      next: () => this.loadCompras(),
+      error: (e) => console.error('❌ Error al eliminar Compra:', e)
+    });
+  }
 }
