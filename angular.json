@@ -79,7 +79,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/venta/"
+              "baseHref": "/SistemaVenta/"
             }
           },
           "defaultConfiguration": "production"
