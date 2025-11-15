@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UnidadMedidaProductoClass } from '../../clases/unidadMedidaProducto';
 import { OperacionDetalleClass } from '../../clases/operacionDetalle';
 import { OperacionServicesService } from '../../services/operacion-services.service';
-import { imagenes } from '../../services/helper';
+import { imagenes } from 'src/app/config/config';
 
 @Component({
   selector: 'app-buscar-producto',

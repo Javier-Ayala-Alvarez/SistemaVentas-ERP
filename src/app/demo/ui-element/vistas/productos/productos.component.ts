@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductoClass } from '../../clases/producto-class';
 import { ProductosServicesService } from '../../services/productos-services.service';
-import { loadConfig, baseUrl, imagenes } from '../../services/helper';
 import { CategoriasServicesService } from '../../services/categorias-services.service';
+import { imagenes } from 'src/app/config/config';
 
 @Component({
   selector: 'app-productos',

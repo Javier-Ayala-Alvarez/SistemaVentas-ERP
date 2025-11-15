@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, of } from 'rxjs';
-import { baseUrl } from './helper';
+import { baseUrl } from 'src/app/config/config';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 
 @Injectable({

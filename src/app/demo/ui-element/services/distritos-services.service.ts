@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { baseUrl } from './helper';
+import { baseUrl } from 'src/app/config/config';
 import { HttpClient } from '@angular/common/http';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { catchError, Observable } from 'rxjs';

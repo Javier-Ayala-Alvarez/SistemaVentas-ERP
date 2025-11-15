@@ -3,7 +3,7 @@ import { MensajesSwal2Service } from './mensajes-swal2.service';
 import Swal from 'sweetalert2';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import {loadConfig, baseUrl, imagenes} from '../services/helper';
+import {baseUrl} from 'src/app/config/config';
 
 
 

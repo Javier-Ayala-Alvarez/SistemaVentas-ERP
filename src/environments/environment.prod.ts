@@ -3,5 +3,6 @@ import packageInfo from '../../package.json';
 export const environment = {
   appVersion: packageInfo.version,
   production: true,
-  apiUrl: 'http://localhost:4200'
+  apiUrl: 'https://tu-backend.up.railway.app',
+  imagenesUrl: 'https://tu-backend.up.railway.app/imagenesAplicativo/'
 };

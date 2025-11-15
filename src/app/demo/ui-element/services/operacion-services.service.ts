@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { baseUrl } from './helper';
+import { baseUrl } from 'src/app/config/config';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { OperacionDetalleClass } from '../clases/operacionDetalle';
 import { catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs';

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { baseUrl } from './helper';
+import { baseUrl } from 'src/app/config/config';
 
 @Injectable({
   providedIn: 'root'

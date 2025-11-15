@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 import { ProductosServicesService } from '../../services/productos-services.service';
 import { UnidadMedidaProductoClass } from '../../clases/unidadMedidaProducto';
-import { loadConfig, baseUrl, imagenes } from '../../services/helper';
+import { imagenes } from 'src/app/config/config';
 import { CategoriasServicesService } from '../../services/categorias-services.service';
 
 @Component({

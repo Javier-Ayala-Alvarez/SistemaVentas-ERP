@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { EmpresaClass } from '../../clases/empresa-class';
 import { EmpresaServicesService } from '../../services/empresa-services.service';
 import { Router } from '@angular/router';
-import { loadConfig, baseUrl, imagenes } from '../../services/helper';
+import { imagenes } from 'src/app/config/config';
+
 
 @Component({
   selector: 'app-empresa',
@@ -83,3 +84,7 @@ export class EmpresaComponent {
     }
   }
 }
+function loadConfig() {
+  throw new Error('Function not implemented.');
+}
+

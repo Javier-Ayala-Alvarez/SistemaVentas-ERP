@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
-import { loadConfig, baseUrl, imagenes } from '../services/helper';
+import { baseUrl, imagenes } from 'src/app/config/config';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';

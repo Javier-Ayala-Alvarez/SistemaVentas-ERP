@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
 import { CategoriasServicesService } from '../../services/categorias-services.service';
 import { UnidadMedidaProductoClass } from '../../clases/unidadMedidaProducto';
 import { UnidadesServicesService } from '../../services/unidades-services.service';
-import { imagenes } from '../../services/helper';
+import { imagenes } from 'src/app/config/config';
 import { NgForm } from '@angular/forms';
 
 @Component({
