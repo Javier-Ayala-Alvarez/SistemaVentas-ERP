@@ -25,12 +25,8 @@ export class EmpresaComponent {
   }
 
   async loadConfigAndEmpresa(): Promise<void> {
-    try {
-      await loadConfig(); // Esperar que la configuración se cargue
       this.loadEmpresa(); // Ahora cargar la empresa después de la configuración
-    } catch (error) {
-      console.error("Error al cargar la configuración:", error);
-    }
+
   }
 
   loadEmpresa(): void {
