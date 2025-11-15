@@ -38,22 +38,23 @@ export class ReporteVentasComponent {
       const { fechaInicio, fechaFin, numeroCaja, idSucursal } = this.filtros;
      
       this.operacion.generarReportePDF(fechaInicio, fechaFin, numeroCaja, idSucursal)
-        .subscribe({
-          next: (response: Blob) => {
-            this.pdfBlob = response;
-            const objectUrl = URL.createObjectURL(response);
-            this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
-            this.isLoading = false;
-            this.cdr.detectChanges(); // refresca vista otra vez
-            resolve();
-          },
-          error: (err) => {
-            console.error('Error al generar PDF', err);
-            this.isLoading = false;
-            this.cdr.detectChanges();
-            reject(err);
-          }
-        });
+  .subscribe({
+    next: (response: Blob) => {
+      this.pdfBlob = response;
+      const objectUrl = URL.createObjectURL(response);
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
+      this.isLoading = false;
+      this.cdr.detectChanges();
+      resolve();
+    },
+    error: (err) => {
+      console.error('Error al generar PDF', err);
+      this.isLoading = false;
+      this.cdr.detectChanges();
+      reject(err);
+    }
+  });
+
     });
   }
 

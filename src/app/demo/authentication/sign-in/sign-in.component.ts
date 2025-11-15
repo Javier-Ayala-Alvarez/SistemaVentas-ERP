@@ -47,6 +47,7 @@ hidePassword: boolean = true;
           //}
         })
       }, (error) => {
+        console.log(error)
         this.snack.open('Detalles inválidos, vuelva a intentar ', 'Aceptar', {
           duration: 3000
         })

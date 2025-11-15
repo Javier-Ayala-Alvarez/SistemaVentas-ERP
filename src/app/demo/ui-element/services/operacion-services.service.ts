@@ -7,6 +7,7 @@ import { catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs
 import Swal from 'sweetalert2';
 import { OperacionClass } from '../clases/operaciones-class';
 import { FormaPagoOperacion } from '../clases/FormaPagoOperacion';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -186,46 +187,46 @@ export class OperacionServicesService {
     );
   }
 
-eliminar(id: number): Observable<any> {
-  return new Observable(observer => {
-    Swal.fire({
-      title: 'Eliminar Operación',
-      text: '¿Estás seguro de que deseas eliminar esta operación?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then((resultado) => {
-      if (resultado.isConfirmed) {
+  eliminar(id: number): Observable<any> {
+    return new Observable(observer => {
+      Swal.fire({
+        title: 'Eliminar Operación',
+        text: '¿Estás seguro de que deseas eliminar esta operación?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((resultado) => {
+        if (resultado.isConfirmed) {
 
-        this.httpClient.post(`${this.apiUrl}/Eliminar/${id}`, {}).pipe(
+          this.httpClient.post(`${this.apiUrl}/Eliminar/${id}`, {}).pipe(
 
-          tap((resp: any) => {
+            tap((resp: any) => {
 
-            this.mensajeSwal2.mensaje(
-              'Operación eliminada',
-              resp.mensaje
-            );
+              this.mensajeSwal2.mensaje(
+                'Operación eliminada',
+                resp.mensaje
+              );
 
-            observer.next(resp.resultado);
-          }),
+              observer.next(resp.resultado);
+            }),
 
-          catchError(error => {
-            this.mensajeSwal2.handleError(error);
-            observer.error(error);
-            return throwError(() => error);
-          })
+            catchError(error => {
+              this.mensajeSwal2.handleError(error);
+              observer.error(error);
+              return throwError(() => error);
+            })
 
-        ).subscribe();
+          ).subscribe();
 
-      } else {
-        observer.next(false);
-      }
+        } else {
+          observer.next(false);
+        }
+      });
     });
-  });
-}
+  }
 
 
   loadInventario(
@@ -286,20 +287,19 @@ eliminar(id: number): Observable<any> {
   }
 
   generarReportePDF(inicio: string, fin: string, caja: string, idSucursal: String) {
-    // Solo agregamos parámetros si tienen valor
+    const user = JSON.parse(localStorage.getItem('user')!);
+    const logo = user.empresa?.direccionLogo;
     let url = `${this.apiUrl}/reporte/pdf?`;
 
     if (inicio) url += `inicio=${inicio}&`;
     if (fin) url += `fin=${fin}&`;
     if (caja) url += `caja=${caja}&`;
     if (idSucursal) url += `idSucursal=${idSucursal}&`;
-    // Quitamos el último &
     url = url.slice(0, -1);
 
     return this.httpClient.get(url, { responseType: 'blob' }).pipe(
       catchError((error) => {
         catchError(this.mensajeSwal2.handleError)
-        // Para que el observable siga siendo consistente
         return throwError(() => error);
       })
     );
