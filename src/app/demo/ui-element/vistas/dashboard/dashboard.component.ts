@@ -50,6 +50,7 @@ imagenError: { [key: number]: boolean } = {};
   loadProducto() {
     this.productoServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
+        console.log(this.imagenRuta + dato.content[0].nombreImagen)
         this.producto = dato.content;
         this.isFirst = dato.first;
         this.isLast = dato.last;
