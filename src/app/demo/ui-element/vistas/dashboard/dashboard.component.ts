@@ -47,6 +47,7 @@ imagenError: { [key: number]: boolean } = {};
 
   }
 
+  
   loadProducto() {
     this.productoServices.load(this.busqueda, this.page, this.size, this.order, this.asc).subscribe(
       (dato: any) => {
