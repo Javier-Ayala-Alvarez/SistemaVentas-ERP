@@ -70,17 +70,16 @@
             [(ngModel)]="proveedorNuevo.direccion"
             name="direccionProveedor"
             placeholder="Dirección del proveedor"
-            required
             minlength="5"
             maxlength="200"
             #direccionProveedor="ngModel"
             autocomplete="off"
           />
-          <small class="text-danger" *ngIf="direccionProveedor.invalid && (direccionProveedor.dirty || direccionProveedor.touched || intentoGuardar)">
+        <!-- <small class="text-danger" *ngIf="direccionProveedor.invalid && (direccionProveedor.dirty || direccionProveedor.touched || intentoGuardar)">
             <ng-container *ngIf="direccionProveedor.errors?.['required']">La dirección es requerida.</ng-container>
             <ng-container *ngIf="direccionProveedor.errors?.['minlength']">Mínimo {{direccionProveedor.errors?.['minlength']?.requiredLength}} caracteres.</ng-container>
             <ng-container *ngIf="direccionProveedor.errors?.['maxlength']">Máximo {{direccionProveedor.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
-          </small>
+          </small>--> 
         </div>
 
         <!-- Teléfono (SV: 8 dígitos iniciando con 2, 6 o 7) -->
@@ -93,15 +92,14 @@
             [(ngModel)]="proveedorNuevo.telefono"
             name="telefonoProveedor"
             placeholder="Número de teléfono"
-            required
             pattern="^[267]\d{7}$"
             #telefonoProveedor="ngModel"
             autocomplete="off"
           />
-          <small class="text-danger" *ngIf="telefonoProveedor.invalid && (telefonoProveedor.dirty || telefonoProveedor.touched || intentoGuardar)">
+          <!--<small class="text-danger" *ngIf="telefonoProveedor.invalid && (telefonoProveedor.dirty || telefonoProveedor.touched || intentoGuardar)">
             <ng-container *ngIf="telefonoProveedor.errors?.['required']">El teléfono es requerido.</ng-container>
             <ng-container *ngIf="telefonoProveedor.errors?.['pattern']">Formato inválido. Ej: 71234567, 61234567 o 21234567.</ng-container>
-          </small>
+          </small>-->
         </div>
       </div>
 
@@ -116,16 +114,15 @@
             [(ngModel)]="proveedorNuevo.correo"
             name="emailProveedor"
             placeholder="Correo electrónico"
-            required
             maxlength="120"
             #emailProveedor="ngModel"
             autocomplete="off"
           />
-          <small class="text-danger" *ngIf="emailProveedor.invalid && (emailProveedor.dirty || emailProveedor.touched || intentoGuardar)">
+         <!-- <small class="text-danger" *ngIf="emailProveedor.invalid && (emailProveedor.dirty || emailProveedor.touched || intentoGuardar)">
             <ng-container *ngIf="emailProveedor.errors?.['required']">El correo es requerido.</ng-container>
             <ng-container *ngIf="emailProveedor.errors?.['email']">Correo inválido.</ng-container>
             <ng-container *ngIf="emailProveedor.errors?.['maxlength']">Máximo {{emailProveedor.errors?.['maxlength']?.requiredLength}} caracteres.</ng-container>
-          </small>
+          </small>-->
         </div>
 
         <!-- DUI (########-#) -->
@@ -138,15 +135,14 @@
             [(ngModel)]="proveedorNuevo.dui"
             name="duiProveedor"
             placeholder="DUI del proveedor"
-            required
             pattern="^\d{8}-\d$"
             #duiProveedor="ngModel"
             autocomplete="off"
           />
-          <small class="text-danger" *ngIf="duiProveedor.invalid && (duiProveedor.dirty || duiProveedor.touched || intentoGuardar)">
+         <!-- <small class="text-danger" *ngIf="duiProveedor.invalid && (duiProveedor.dirty || duiProveedor.touched || intentoGuardar)">
             <ng-container *ngIf="duiProveedor.errors?.['required']">El DUI es requerido.</ng-container>
             <ng-container *ngIf="duiProveedor.errors?.['pattern']">Formato inválido. Ej: 01234567-8</ng-container>
-          </small>
+          </small>-->
         </div>
       </div>
 
@@ -161,15 +157,14 @@
             [(ngModel)]="proveedorNuevo.nit"
             name="nitProveedor"
             placeholder="NIT del proveedor"
-            required
             pattern="^\d{4}-\d{6}-\d{3}-\d$"
             #nitProveedor="ngModel"
             autocomplete="off"
           />
-          <small class="text-danger" *ngIf="nitProveedor.invalid && (nitProveedor.dirty || nitProveedor.touched || intentoGuardar)">
+         <!-- <small class="text-danger" *ngIf="nitProveedor.invalid && (nitProveedor.dirty || nitProveedor.touched || intentoGuardar)">
             <ng-container *ngIf="nitProveedor.errors?.['required']">El NIT es requerido.</ng-container>
             <ng-container *ngIf="nitProveedor.errors?.['pattern']">Formato inválido. Ej: 0614-290186-102-3</ng-container>
-          </small>
+          </small>-->
         </div>
       </div>
 

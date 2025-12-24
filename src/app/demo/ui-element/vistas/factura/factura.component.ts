@@ -202,11 +202,7 @@ export default class FacturaComponent implements OnInit {
       if (seleccionado) {
         this.operacion.tipoOperacion = seleccionado;
       }
-      if (this.operacion.tipoOperacion) {
-        this.operacion.tipoOperacion = this.tipoOperaciones?.find(
-          emp => emp.tipoOperacion === this.operacion.tipoOperacion
-        );
-      }
+    
     });
   }
 

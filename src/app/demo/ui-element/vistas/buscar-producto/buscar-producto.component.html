@@ -104,7 +104,6 @@
                 <th>Precio</th>
                 <th>Cantidad</th>
                 <th>Desc %</th>
-                <th>Total</th>
                 <th></th>
               </tr>
             </thead>
@@ -150,15 +149,6 @@
                          [(ngModel)]="u.descuento">
                 </td>
 
-                <!-- Total -->
-                <td class="fw-semibold text-success">
-                  {{
-                    (u.precio || 0) *
-                    (u.cantidad || 0) *
-                    (1 - ((u.descuento || 0) / 100))
-                    | number:'1.2-2'
-                  }}
-                </td>
 
                 <!-- Acción -->
                 <td>
