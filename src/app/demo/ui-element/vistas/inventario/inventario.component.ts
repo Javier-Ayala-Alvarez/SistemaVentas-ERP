@@ -22,12 +22,12 @@ export class InventarioComponent {
   size: number = 8;
 
 
-  order: string = 'id_producto';                
+  order: string = 'id_producto';
   asc: boolean = true;
   isFirst: boolean = false;
   isLast: boolean = false;
   totalPages: any[] = [];
-  
+
 
   // Filtros
   filtroNombre: string = '';            // <--- nuevo (búsqueda por nombre de producto)
@@ -36,7 +36,7 @@ export class InventarioComponent {
   filtroFechaInicio: Date | null = null;
   filtroFechaFin: Date | null = null;
   filtroSucursal: number | null = null;
-filtroEstadoStock: EstadoStock = null;
+  filtroEstadoStock: EstadoStock = null;
 
   // Datos
   sucursales: SucursalClass[] = [];
@@ -49,7 +49,7 @@ filtroEstadoStock: EstadoStock = null;
     private kardexService: OperacionServicesService,
     private sucursalServices: SucursalServicesService,
     private datePipe: DatePipe
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadSucursales();
@@ -133,23 +133,28 @@ filtroEstadoStock: EstadoStock = null;
   // trackBy para *ngFor
   trackById = (_: number, item: any) => item?.id ?? _;
   get kardexFiltrado(): KardexClass[] {
-  if (!this.filtroEstadoStock) return this.kardex;
+    if (!this.filtroEstadoStock) return this.kardex;
 
-  return this.kardex.filter(item => {
-    const stock = item.stock ?? 0;
-    const minimo = item.stockConfigurado ?? 0;
+    return this.kardex.filter(item => {
+      const stock = item.stock ?? 0;
+      const minimo = item.stockConfigurado ?? 0;
 
-    switch (this.filtroEstadoStock) {
-      case 'CRITICO':
-        return stock < minimo;
-      case 'ADVERTENCIA':
-        return stock === minimo;
-      case 'OK':
-        return stock > minimo;
-      default:
-        return true;
-    }
-  });
-}
+      switch (this.filtroEstadoStock) {
+        case 'CRITICO':
+          return stock < minimo;
+        case 'ADVERTENCIA':
+          return stock === minimo;
+        case 'OK':
+          return stock > minimo;
+        default:
+          return true;
+      }
+    });
+  }
+  get totalInvertido(): number {
+    return this.kardexFiltrado?.reduce(
+      (sum, dato) => sum + ((dato.precioUnitario || 0) * (dato.stock || 0)), 0
+    ) || 0;
+  }
 
 }

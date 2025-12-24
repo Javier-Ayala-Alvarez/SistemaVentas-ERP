@@ -12,31 +12,24 @@
       <div class="card-header bg-light fw-semibold">
         <i class="fas fa-filter me-2"></i>Filtros
       </div>
-
       <div class="card-body">
         <div class="row g-3">
-
           <div class="col-md-4">
             <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroNombre" (input)="loadKardex()"
               placeholder="Buscar producto" />
           </div>
-
           <div class="col-md-3">
             <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
               (change)="loadKardex()" />
           </div>
-
           <div class="col-md-3">
             <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"
               (change)="loadKardex()" />
           </div>
-
           <div class="col-md-2">
             <select class="form-select form-select-sm" [(ngModel)]="filtroSucursal" (change)="loadKardex()">
               <option [ngValue]="null">Sucursal</option>
-              <option *ngFor="let s of sucursales" [ngValue]="s.id">
-                {{ s.nombre }}
-              </option>
+              <option *ngFor="let s of sucursales" [ngValue]="s.id">{{ s.nombre }}</option>
             </select>
           </div>
           <div class="col-md-3">
@@ -47,30 +40,30 @@
               <option value="OK">🟢 Stock OK</option>
             </select>
           </div>
-
-
         </div>
       </div>
     </div>
 
     <!-- ===== TABLA INVENTARIO ===== -->
-    <div class="card shadow-sm table-responsive" style="max-height:560px;">
+    <div class="card shadow-sm table-responsive" style="max-height:600px;">
       <table class="table table-hover align-middle mb-0">
 
-        <thead class="table-dark sticky-top text-center">
-          <tr>
+        <thead class="table-light sticky-top">
+          <tr class="text-center">
             <th>#</th>
             <th class="text-start">Producto</th>
-            <th>Precio Compra</th>
-            <th>Stock mínimo</th>
-            <th>Stock actual</th>
-            <th style="width:220px;">Nivel</th>
+            <th>Precio C/U</th>
+            <th>Stock Min</th>
+            <th>Stock Actual</th>
+            <th>Total</th>
+            <th>Lote</th>
+            <th>Proveedor</th>
+            <th>Nivel</th>
             <th>Estado</th>
           </tr>
         </thead>
 
         <tbody>
-
           <tr *ngFor="let dato of kardexFiltrado; trackBy: trackById"
             [class.table-danger]="(dato.stock ?? 0) < (dato.stockConfigurado ?? 0)">
 
@@ -78,20 +71,18 @@
             <td class="text-center">{{ dato.id }}</td>
 
             <!-- PRODUCTO -->
-            <td class="text-start text-truncate" style="max-width:260px">
+            <td class="text-start text-truncate" style="max-width:200px">
               <strong>{{ dato.nombreProducto }}</strong>
               <div class="text-muted small">ID: {{ dato.idProducto }}</div>
             </td>
 
-            <!-- PRECIO -->
+            <!-- PRECIO UNITARIO -->
             <td class="text-center">
               {{ dato.precioUnitario | currency:'USD':'symbol-narrow':'1.2-2' }}
             </td>
 
             <!-- STOCK MIN -->
-            <td class="text-center fw-semibold">
-              {{ dato.stockConfigurado }}
-            </td>
+            <td class="text-center fw-semibold">{{ dato.stockConfigurado }}</td>
 
             <!-- STOCK ACTUAL -->
             <td class="text-center fw-bold" [ngClass]="{
@@ -102,15 +93,28 @@
               {{ dato.stock }}
             </td>
 
-            <!-- BARRA -->
+            <!-- TOTAL INVERTIDO -->
+            <td class="text-center">
+              {{ (dato.precioUnitario ?? 0) * (dato.stock ?? 0) | currency:'USD':'symbol-narrow':'1.2-2' }}
+            </td>
+
+            <!-- LOTE -->
+            <td class="text-center">{{ dato.lote }}</td>
+
+            <!-- PROVEEDOR/CLIENTE -->
+            <td class="text-start">{{ dato.proveedorCliente }}</td>
+
+
+
+            <!-- BARRA NIVEL -->
             <td>
               <div class="progress" style="height:18px;">
                 <div class="progress-bar" [style.width.%]="((dato.stock ?? 0) / (dato.stockConfigurado ?? 0)) * 100"
                   [ngClass]="{
-                       'bg-danger': (dato.stock  ?? 0) < (dato.stockConfigurado ?? 0),
-                       'bg-warning': dato.stock === dato.stockConfigurado,
-                       'bg-success': (dato.stock ?? 0) > (dato.stockConfigurado ?? 0)
-                     }">
+                    'bg-danger': (dato.stock ?? 0) < (dato.stockConfigurado ?? 0),
+                    'bg-warning': dato.stock === dato.stockConfigurado,
+                    'bg-success': (dato.stock ?? 0) > (dato.stockConfigurado ?? 0)
+                  }">
                 </div>
               </div>
             </td>
@@ -122,15 +126,24 @@
                   'bg-warning text-dark': dato.stock === dato.stockConfigurado,
                   'bg-success': (dato.stock ?? 0) > (dato.stockConfigurado ?? 0)
                 }">
-                {{
-                (dato.stock ?? 0) < (dato.stockConfigurado ?? 0) ? 'CRÍTICO' : dato.stock===dato.stockConfigurado
+                {{ (dato.stock ?? 0) < (dato.stockConfigurado ?? 0) ? 'CRÍTICO' : dato.stock===dato.stockConfigurado
                   ? 'BAJO' : 'OK' }} </span>
             </td>
 
           </tr>
 
+          <!-- TOTAL GENERAL -->
+          <tr class="table-secondary fw-bold">
+            <td colspan="5" class="text-end">Total Invertido:</td>
+            <td class="text-center">
+              {{ totalInvertido | currency:'USD':'symbol-narrow':'1.2-2' }}
+            </td>
+            <td colspan="6"></td>
+          </tr>
+
+
           <tr *ngIf="kardex?.length === 0">
-            <td colspan="7" class="text-center text-muted py-4">
+            <td colspan="12" class="text-center text-muted py-4">
               No hay inventario que coincida con los filtros
             </td>
           </tr>
@@ -143,21 +156,13 @@
     <nav class="mt-3">
       <ul class="pagination justify-content-end mb-0">
         <li class="page-item" [class.disabled]="page === 0">
-          <button class="page-link" (click)="paginaAnterior()">
-            <i class="fas fa-angle-left"></i>
-          </button>
+          <button class="page-link" (click)="paginaAnterior()"><i class="fas fa-angle-left"></i></button>
         </li>
-
         <li class="page-item disabled">
-          <span class="page-link">
-            Página {{ page + 1 }} de {{ totalPages?.length || 1 }}
-          </span>
+          <span class="page-link">Página {{ page + 1 }} de {{ totalPages?.length || 1 }}</span>
         </li>
-
         <li class="page-item" [class.disabled]="page + 1 >= (totalPages?.length || 1)">
-          <button class="page-link" (click)="paginaSiguiente()">
-            <i class="fas fa-angle-right"></i>
-          </button>
+          <button class="page-link" (click)="paginaSiguiente()"><i class="fas fa-angle-right"></i></button>
         </li>
       </ul>
     </nav>
@@ -165,7 +170,6 @@
   </div>
 </div>
 
-<!-- ===== ESTILOS ===== -->
 <style>
   .progress {
     background-color: #e9ecef;
@@ -177,5 +181,14 @@
 
   .badge {
     font-size: 0.8rem;
+  }
+
+  /* Opcional: destacar vencimientos próximos */
+  td.text-center[data-vencimiento]:not(:empty) {
+    position: relative;
+  }
+
+  td.text-center[data-vencimiento][data-vencimiento-soon="true"] {
+    background-color: #ffe5e5;
   }
 </style>
