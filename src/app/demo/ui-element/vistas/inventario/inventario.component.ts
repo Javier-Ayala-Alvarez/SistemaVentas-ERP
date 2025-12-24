@@ -6,6 +6,7 @@ import { KardexClass } from '../../clases/kardex-class';
 import { SucursalClass } from '../../clases/sucursal-class';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 import { SucursalServicesService } from '../../services/sucursal-services.service';
+type EstadoStock = 'CRITICO' | 'ADVERTENCIA' | 'OK' | null;
 
 @Component({
   selector: 'app-inventario',
@@ -13,6 +14,7 @@ import { SucursalServicesService } from '../../services/sucursal-services.servic
   styleUrls: ['./inventario.component.scss'], // <- plural
   providers: [DatePipe]
 })
+
 export class InventarioComponent {
 
   // Paginación / Orden
@@ -25,6 +27,7 @@ export class InventarioComponent {
   isFirst: boolean = false;
   isLast: boolean = false;
   totalPages: any[] = [];
+  
 
   // Filtros
   filtroNombre: string = '';            // <--- nuevo (búsqueda por nombre de producto)
@@ -33,6 +36,7 @@ export class InventarioComponent {
   filtroFechaInicio: Date | null = null;
   filtroFechaFin: Date | null = null;
   filtroSucursal: number | null = null;
+filtroEstadoStock: EstadoStock = null;
 
   // Datos
   sucursales: SucursalClass[] = [];
@@ -128,4 +132,24 @@ export class InventarioComponent {
 
   // trackBy para *ngFor
   trackById = (_: number, item: any) => item?.id ?? _;
+  get kardexFiltrado(): KardexClass[] {
+  if (!this.filtroEstadoStock) return this.kardex;
+
+  return this.kardex.filter(item => {
+    const stock = item.stock ?? 0;
+    const minimo = item.stockConfigurado ?? 0;
+
+    switch (this.filtroEstadoStock) {
+      case 'CRITICO':
+        return stock < minimo;
+      case 'ADVERTENCIA':
+        return stock === minimo;
+      case 'OK':
+        return stock > minimo;
+      default:
+        return true;
+    }
+  });
+}
+
 }

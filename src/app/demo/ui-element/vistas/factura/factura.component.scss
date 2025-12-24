@@ -7,3 +7,30 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.factura-layout {
+  max-height: calc(100vh - 80px);
+}
+
+.form-control-sm,
+.form-select-sm {
+  font-size: 0.8rem;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.table-wrapper {
+  max-height: 32vh;
+  overflow-y: auto;
+}
+
+.factura-footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 6px 10px;
+  border-top: 2px dashed #dee2e6;
+  z-index: 10;
+}

@@ -7,3 +7,113 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+/* ================= GENERAL ================= */
+.factura-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ================= HEADER ================= */
+.factura-layout h6.fw-bold {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+/* ================= CARDS ================= */
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  background-color: #ffffff;
+}
+
+.card.p-2 {
+  padding: 12px !important;
+}
+
+/* ================= INPUTS ================= */
+.form-control-sm {
+  font-size: 13px;
+  padding: 4px 8px;
+}
+
+.input-group-sm > .form-control,
+.input-group-sm > .btn {
+  height: 32px;
+}
+
+/* ================= SELECTS ================= */
+.form-select-sm {
+  font-size: 13px;
+  height: 32px;
+}
+
+/* ================= TABLA ================= */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+.table thead {
+  background-color: #f8f9fa;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  padding: 6px 8px;
+}
+
+.table td.text-end {
+  text-align: right;
+}
+
+.table td.text-start {
+  text-align: left;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+/* ================= FOOTER ================= */
+.factura-footer {
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.factura-footer .text-success {
+  font-weight: 600;
+}
+
+/* ================= BOTONES ================= */
+.btn-sm {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+/* ================= ALERTAS Y ERRORES ================= */
+.text-danger.small {
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+  .col-lg-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .factura-footer {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .factura-footer button {
+    width: 100%;
+  }
+}

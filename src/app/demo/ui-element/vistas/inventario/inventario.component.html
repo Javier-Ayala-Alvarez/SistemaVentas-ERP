@@ -1,130 +1,181 @@
 <div class="container mt-4">
-  <div class="card shadow-sm p-4 mb-4 rounded">
-    <h3 class="mb-4 text-center">Administrador de Inventario</h3>
+  <div class="card shadow-sm p-4 rounded">
 
-    <!-- Filtros -->
-    <div class="card mb-4 border-0 shadow-sm">
-      <div class="card-header bg-light">
-        <h6 class="mb-0 text-secondary">
-          <i class="fas fa-filter me-2"></i>Filtros
-        </h6>
+    <!-- ===== TÍTULO ===== -->
+    <h3 class="text-center mb-4">
+      <i class="fas fa-warehouse me-2"></i>
+      Administrador de Inventario
+    </h3>
+
+    <!-- ===== FILTROS ===== -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-light fw-semibold">
+        <i class="fas fa-filter me-2"></i>Filtros
       </div>
 
-      <div class="card-body pt-3 pb-0">
-        <!-- Fila 1: Nombre + Fechas -->
-        <div class="row g-3 mb-2">
-          <div class="col-md-4">
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              [(ngModel)]="filtroNombre"
-              (input)="loadKardex()"
-              placeholder="Nombre de producto"
-            />
-          </div>
-          <div class="col-md-4">
-            <input
-              type="date"
-              class="form-control form-control-sm"
-              [(ngModel)]="filtroFechaInicio"
-              (input)="loadKardex()"
-              placeholder="Fecha Inicio"
-            />
-          </div>
-          <div class="col-md-4">
-            <input
-              type="date"
-              class="form-control form-control-sm"
-              [(ngModel)]="filtroFechaFin"
-              (input)="loadKardex()"
-              placeholder="Fecha Fin"
-            />
-          </div>
-        </div>
-
-        <!-- Fila 2: Sucursal + Buscar -->
+      <div class="card-body">
         <div class="row g-3">
+
           <div class="col-md-4">
-            <select
-              class="form-select form-select-sm"
-              [(ngModel)]="filtroSucursal"
-              (change)="loadKardex()"
-            >
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroNombre" (input)="loadKardex()"
+              placeholder="Buscar producto" />
+          </div>
+
+          <div class="col-md-3">
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaInicio"
+              (change)="loadKardex()" />
+          </div>
+
+          <div class="col-md-3">
+            <input type="date" class="form-control form-control-sm" [(ngModel)]="filtroFechaFin"
+              (change)="loadKardex()" />
+          </div>
+
+          <div class="col-md-2">
+            <select class="form-select form-select-sm" [(ngModel)]="filtroSucursal" (change)="loadKardex()">
               <option [ngValue]="null">Sucursal</option>
-              <option *ngFor="let sucursal of sucursales" [ngValue]="sucursal.id">
-                {{ sucursal.nombre }}
+              <option *ngFor="let s of sucursales" [ngValue]="s.id">
+                {{ s.nombre }}
               </option>
             </select>
           </div>
-          <div class="col-md-4 d-flex">
-            <button class="btn btn-warning w-100" (click)="loadKardex()">
-              <i class="fas fa-search me-1"></i> Buscar
-            </button>
+          <div class="col-md-3">
+            <select class="form-select form-select-sm" [(ngModel)]="filtroEstadoStock">
+              <option [ngValue]="null">Todos los estados</option>
+              <option value="CRITICO">🔴 Stock crítico</option>
+              <option value="ADVERTENCIA">🟡 Advertencia</option>
+              <option value="OK">🟢 Stock OK</option>
+            </select>
           </div>
+
+
         </div>
       </div>
     </div>
 
-    <!-- Tabla Inventario -->
-    <div class="card shadow-sm mb-4 p-3 rounded table-responsive" style="max-height:560px;">
-      <table class="table table-striped table-hover align-middle mb-0">
-        <thead class="table-dark text-center sticky-top" style="z-index:1;">
+    <!-- ===== TABLA INVENTARIO ===== -->
+    <div class="card shadow-sm table-responsive" style="max-height:560px;">
+      <table class="table table-hover align-middle mb-0">
+
+        <thead class="table-dark sticky-top text-center">
           <tr>
-            <th (click)="ordenarPor('id')" style="cursor:pointer">
-              #
-              <i class="fas" [ngClass]="order === 'id' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-            </th>
-            <th>Producto</th>
-            <th (click)="ordenarPor('precio_unitario')" style="cursor:pointer">
-              Precio Unitario compra
-              <i class="fas" [ngClass]="order === 'precio_unitario' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-            </th>
-            <th (click)="ordenarPor('stock')" style="cursor:pointer">
-              Stock factorial
-              <i class="fas" [ngClass]="order === 'stock' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-            </th>
-            <th (click)="ordenarPor('valor_stock')" style="cursor:pointer">
-              Valor Stock
-              <i class="fas" [ngClass]="order === 'valor_stock' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-            </th>
+            <th>#</th>
+            <th class="text-start">Producto</th>
+            <th>Precio Compra</th>
+            <th>Stock mínimo</th>
+            <th>Stock actual</th>
+            <th style="width:220px;">Nivel</th>
+            <th>Estado</th>
           </tr>
         </thead>
 
-        <tbody class="text-center">
-          <tr *ngFor="let dato of kardex; trackBy: trackById">
-            <td>{{ dato.id }}</td>
-            <td class="text-truncate" style="max-width:260px" [title]="dato?.nombreProducto">
-              {{ dato.idProducto }} - {{ dato.nombreProducto }}
+        <tbody>
+
+          <tr *ngFor="let dato of kardexFiltrado; trackBy: trackById"
+            [class.table-danger]="(dato.stock ?? 0) < (dato.stockConfigurado ?? 0)">
+
+            <!-- ID -->
+            <td class="text-center">{{ dato.id }}</td>
+
+            <!-- PRODUCTO -->
+            <td class="text-start text-truncate" style="max-width:260px">
+              <strong>{{ dato.nombreProducto }}</strong>
+              <div class="text-muted small">ID: {{ dato.idProducto }}</div>
             </td>
-            <td>{{ dato?.precioUnitario | currency:'USD':'symbol-narrow':'1.2-4' }}</td>
-            <td>{{ dato?.stock }}</td>
-            <td>{{ dato?.valorStock | currency:'USD':'symbol-narrow':'1.2-4' }}</td>
+
+            <!-- PRECIO -->
+            <td class="text-center">
+              {{ dato.precioUnitario | currency:'USD':'symbol-narrow':'1.2-2' }}
+            </td>
+
+            <!-- STOCK MIN -->
+            <td class="text-center fw-semibold">
+              {{ dato.stockConfigurado }}
+            </td>
+
+            <!-- STOCK ACTUAL -->
+            <td class="text-center fw-bold" [ngClass]="{
+                  'text-danger': (dato.stock ?? 0) < (dato.stockConfigurado ?? 0),
+                  'text-warning': dato.stock === dato.stockConfigurado,
+                  'text-success': (dato.stock ?? 0) > (dato.stockConfigurado ?? 0)
+                }">
+              {{ dato.stock }}
+            </td>
+
+            <!-- BARRA -->
+            <td>
+              <div class="progress" style="height:18px;">
+                <div class="progress-bar" [style.width.%]="((dato.stock ?? 0) / (dato.stockConfigurado ?? 0)) * 100"
+                  [ngClass]="{
+                       'bg-danger': (dato.stock  ?? 0) < (dato.stockConfigurado ?? 0),
+                       'bg-warning': dato.stock === dato.stockConfigurado,
+                       'bg-success': (dato.stock ?? 0) > (dato.stockConfigurado ?? 0)
+                     }">
+                </div>
+              </div>
+            </td>
+
+            <!-- ESTADO -->
+            <td class="text-center">
+              <span class="badge px-3 py-2" [ngClass]="{
+                  'bg-danger': (dato.stock ?? 0) < (dato.stockConfigurado ?? 0),
+                  'bg-warning text-dark': dato.stock === dato.stockConfigurado,
+                  'bg-success': (dato.stock ?? 0) > (dato.stockConfigurado ?? 0)
+                }">
+                {{
+                (dato.stock ?? 0) < (dato.stockConfigurado ?? 0) ? 'CRÍTICO' : dato.stock===dato.stockConfigurado
+                  ? 'BAJO' : 'OK' }} </span>
+            </td>
+
           </tr>
 
           <tr *ngIf="kardex?.length === 0">
-            <td colspan="5" class="text-center text-muted">No hay inventario que coincida con los filtros.</td>
+            <td colspan="7" class="text-center text-muted py-4">
+              No hay inventario que coincida con los filtros
+            </td>
           </tr>
+
         </tbody>
       </table>
-
-      <!-- Paginador -->
-      <nav class="mt-3">
-        <ul class="pagination justify-content-end mb-0">
-          <li class="page-item" [class.disabled]="page === 0">
-            <a class="page-link" style="cursor: pointer;" (click)="paginaAnterior()" aria-label="Anterior">
-              <i class="fas fa-angle-left"></i>
-            </a>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link">Página {{ page + 1 }} de {{ totalPages?.length || 1 }}</span>
-          </li>
-          <li class="page-item" [class.disabled]="page + 1 >= (totalPages?.length || 1)">
-            <a class="page-link" style="cursor: pointer;" (click)="paginaSiguiente()" aria-label="Siguiente">
-              <i class="fas fa-angle-right"></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
     </div>
+
+    <!-- ===== PAGINACIÓN ===== -->
+    <nav class="mt-3">
+      <ul class="pagination justify-content-end mb-0">
+        <li class="page-item" [class.disabled]="page === 0">
+          <button class="page-link" (click)="paginaAnterior()">
+            <i class="fas fa-angle-left"></i>
+          </button>
+        </li>
+
+        <li class="page-item disabled">
+          <span class="page-link">
+            Página {{ page + 1 }} de {{ totalPages?.length || 1 }}
+          </span>
+        </li>
+
+        <li class="page-item" [class.disabled]="page + 1 >= (totalPages?.length || 1)">
+          <button class="page-link" (click)="paginaSiguiente()">
+            <i class="fas fa-angle-right"></i>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
   </div>
 </div>
+
+<!-- ===== ESTILOS ===== -->
+<style>
+  .progress {
+    background-color: #e9ecef;
+  }
+
+  .table-danger {
+    background-color: #fff5f5 !important;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+  }
+</style>

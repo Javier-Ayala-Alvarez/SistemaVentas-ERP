@@ -1,58 +1,69 @@
-<div class="modal-header">
-  <h5 class="modal-title">Productos</h5>
-  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+<!-- ================= HEADER ================= -->
+<div class="modal-header text-white">
+  <h5 class="modal-title">
+    <i class="fas fa-boxes me-2"></i>
+    Selección de Productos
+  </h5>
+  <button class="btn-close btn-close-white"
+          (click)="activeModal.dismiss()"></button>
 </div>
 
-<div class="modal-body">
-  <div class="row g-3">
-    <!-- Tabla de Productos -->
-    <div class="col-md-5">
-      <div class="card shadow-sm p-3 rounded h-100 d-flex flex-column">
-        <h6 class="mb-3">Lista de Productos</h6>
-        <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
-          <table class="table table-bordered table-hover align-middle mb-0">
-            <thead class="table-dark">
-              <tr>
-                <th (click)="ordenarPor('nombre')" style="cursor:pointer" class="text-white">
-                  Nombre
-                  <i class="fas" [ngClass]="order === 'nombre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                </th>
-                <th (click)="ordenarPor('descripcion')" style="cursor:pointer" class="text-white">
-                  Descripción
-                  <i class="fas" [ngClass]="order === 'descripcion' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'"></i>
-                </th>
-                <th>Imagen</th>
-              </tr>
-              <tr>
-                <th>
-                  <input class="form-control form-control-sm"
-                         [(ngModel)]="filtroNombre"
-                         (input)="loadProducto()"
-                         placeholder="Nombre"
-                         style="min-width: 110px;" />
-                </th>
-                <th>
-                  <input class="form-control form-control-sm"
-                         [(ngModel)]="filtroDescripcion"
-                         (input)="loadProducto()"
-                         placeholder="Descripción" />
-                </th>
-                <th></th>
-              </tr>
-            </thead>
+<!-- ================= BODY ================= -->
+<div class="modal-body p-4">
+
+  <!-- FLUJO -->
+  <div class="alert alert-info py-2 mb-4 small">
+    <strong>1.</strong> Selecciona un producto
+    <span class="mx-2">→</span>
+    <strong>2.</strong> Configura unidad
+    <span class="mx-2">→</span>
+    <strong>3.</strong> Agrega al detalle
+  </div>
+
+  <div class="row g-4">
+
+    <!-- ========== PRODUCTOS ========== -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-light fw-semibold">
+          Productos
+        </div>
+
+        <!-- Filtro -->
+        <div class="card-body py-2">
+          <input class="form-control form-control-sm"
+                 placeholder="Buscar producto..."
+                 [(ngModel)]="filtroNombre"
+                 (input)="loadProducto()">
+        </div>
+
+        <!-- Lista -->
+        <div class="table-responsive product-list">
+          <table class="table table-hover align-middle mb-0">
             <tbody>
-              <tr *ngFor="let data of producto"
-                  (click)="loadUnidadProducto(data.id)"
-                  class="cursor-pointer"
-                  style="transition: background-color 0.2s ease;">
-                <td>{{ data.nombre }}</td>
-                <td>{{ data.descripcion }}</td>
+              <tr *ngFor="let p of producto"
+                  (click)="seleccionarProducto(p)"
+                  [class.selected]="productoSeleccionado?.id === p.id"
+                  class="cursor-pointer">
                 <td>
-                  <img *ngIf="data.nombreImagen"
-                       [src]="imagenRuta + data.nombreImagen"
-                       class="img-thumbnail"
-                       style="max-height: 50px; max-width: 50px;"
-                       alt="Imagen producto" />
+                  <div class="d-flex align-items-center gap-2">
+                    <img *ngIf="p.nombreImagen"
+                         [src]="imagenRuta + p.nombreImagen"
+                         class="rounded"
+                         width="42">
+                    <div>
+                      <strong>{{ p.nombre }}</strong>
+                      <div class="text-muted small">
+                        {{ p.descripcion }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <tr *ngIf="producto?.length === 0">
+                <td class="text-center text-muted py-4">
+                  Sin productos
                 </td>
               </tr>
             </tbody>
@@ -60,155 +71,126 @@
         </div>
 
         <!-- Paginador -->
-        <nav aria-label="Page navigation" class="mt-3">
-          <ul class="pagination justify-content-end mb-0">
-            <li class="page-item disabled">
-              <span class="page-link">Items por página</span>
-            </li>
-            <li class="page-item disabled">
-              <span class="page-link">Página {{page+1}} de {{totalPages.length}}</span>
-            </li>
-            <li class="page-item" [class.disabled]="page === 0">
-              <button class="page-link" (click)="paginaAnterior()" [disabled]="page === 0" aria-label="Anterior">
-                <i class="fas fa-step-backward"></i>
-              </button>
-            </li>
-            <li class="page-item" [class.disabled]="page >= totalPages.length - 1">
-              <button class="page-link" (click)="paginaSiguiente()" [disabled]="page >= totalPages.length - 1" aria-label="Siguiente">
-                <i class="fas fa-step-forward"></i>
-              </button>
-            </li>
-          </ul>
-        </nav>
+        <div class="card-footer d-flex justify-content-between">
+          <button class="btn btn-sm btn-outline-secondary"
+                  (click)="paginaAnterior()"
+                  [disabled]="page === 0">
+            <i class="fas fa-angle-left"></i>
+          </button>
+          <small class="text-muted">
+            {{ page + 1 }} / {{ totalPages.length }}
+          </small>
+          <button class="btn btn-sm btn-outline-secondary"
+                  (click)="paginaSiguiente()"
+                  [disabled]="page >= totalPages.length - 1">
+            <i class="fas fa-angle-right"></i>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Tabla de Unidades de Medida -->
-    <div class="col-md-7">
-      <div class="card shadow-sm p-3 rounded h-100 d-flex flex-column">
-        <h6 class="mb-3">Unidades de Medida</h6>
-        <div class="table-responsive" style="max-height: 420px; overflow-y: auto;">
-          <table class="table table-bordered table-hover align-middle mb-0 text-center">
-            <thead class="table-dark">
+    <!-- ========== UNIDADES ========== -->
+    <div class="col-md-8">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-light fw-semibold">
+          Unidades de Medida
+        </div>
+
+        <div class="table-responsive unit-list">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-secondary text-center">
               <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
+                <th>Unidad</th>
                 <th>Precio</th>
-                <th style="width: 120px;">Cantidad</th>
-                <th style="width: 130px;">Descuento (%)</th>
-                <th>Agregar</th>
+                <th>Cantidad</th>
+                <th>Desc %</th>
+                <th>Total</th>
+                <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr *ngFor="let unidad of unidadesMedidaProducto; let i = index">
-                <td>{{ unidad.unidadMedida?.abreviatura }}</td>
-                <td class="text-start">{{ unidad.unidadMedida?.descripcion }}</td>
 
-                <!-- Precio (solo para compra) -->
-                <td *ngIf="identificador === 'compra'">
-                  <input type="number"
-                         class="form-control form-control-sm"
-                         placeholder="Precio"
-                         min="0.01"
-                         step="any"
-                         [(ngModel)]="unidad.precio"
-                         [ngModelOptions]="{standalone: true}"
-                         #precioCtrl="ngModel"
-                         required>
-                  <small class="text-danger d-block text-start"
-                         *ngIf="precioCtrl.invalid && (precioCtrl.dirty || precioCtrl.touched)">
-                    <ng-container *ngIf="precioCtrl.errors?.['required']">El precio es requerido.</ng-container>
-                    <ng-container *ngIf="precioCtrl.errors?.['min']">Debe ser mayor a 0.</ng-container>
-                  </small>
+            <tbody>
+              <tr *ngFor="let u of unidadesMedidaProducto">
+
+                <!-- Unidad -->
+                <td>
+                  <strong>{{ u.unidadMedida?.abreviatura }}</strong>
+                  <div class="text-muted small">
+                    {{ u.unidadMedida?.descripcion }}
+                  </div>
                 </td>
-                <td *ngIf="identificador !== 'compra'">{{ unidad.precio | number:'1.2-2' }}</td>
+
+                <!-- Precio -->
+                <td>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">$</span>
+                    <input type="number"
+                           class="form-control"
+                           min="0.01"
+                           step="0.01"
+                           [(ngModel)]="u.precio"
+                           [disabled]="identificador !== 'compra'">
+                  </div>
+                </td>
 
                 <!-- Cantidad -->
                 <td>
                   <input type="number"
                          class="form-control form-control-sm"
-                         placeholder="Cantidad"
                          min="1"
-                         step="1"
-                         [(ngModel)]="unidad.cantidad"
-                         [ngModelOptions]="{standalone: true}"
-                         #cantCtrl="ngModel"
-                         required>
-                  <small class="text-danger d-block text-start"
-                         *ngIf="cantCtrl.invalid && (cantCtrl.dirty || cantCtrl.touched)">
-                    <ng-container *ngIf="cantCtrl.errors?.['required']">La cantidad es requerida.</ng-container>
-                    <ng-container *ngIf="cantCtrl.errors?.['min']">Debe ser al menos 1.</ng-container>
-                  </small>
+                         [(ngModel)]="u.cantidad">
                 </td>
 
                 <!-- Descuento -->
                 <td>
                   <input type="number"
                          class="form-control form-control-sm"
-                         placeholder="%"
                          min="0"
                          max="100"
-                         step="0.01"
-                         [(ngModel)]="unidad.descuento"
-                         [ngModelOptions]="{standalone: true}"
-                         #descCtrl="ngModel">
-                  <small class="text-danger d-block text-start"
-                         *ngIf="descCtrl.invalid && (descCtrl.dirty || descCtrl.touched)">
-                    <ng-container *ngIf="descCtrl.errors?.['min']">No puede ser menor que 0%.</ng-container>
-                    <ng-container *ngIf="descCtrl.errors?.['max']">No puede exceder 100%.</ng-container>
-                  </small>
+                         [(ngModel)]="u.descuento">
                 </td>
 
-                <!-- Agregar -->
-                <td class="text-center">
-                  <button type="button"
-                          class="btn btn-success btn-sm rounded-circle"
-                          (click)="guardar(unidad)"
-                          [disabled]="(identificador === 'compra' && (!unidad.precio || unidad.precio <= 0)) ||
-                                      (!unidad.cantidad || unidad.cantidad < 1) ||
-                                      (unidad.descuento ?? 0) < 0 || (unidad.descuento ?? 0) > 100"
-                          title="Agregar producto">
-                    <i class="fas fa-check"></i>
+                <!-- Total -->
+                <td class="fw-semibold text-success">
+                  {{
+                    (u.precio || 0) *
+                    (u.cantidad || 0) *
+                    (1 - ((u.descuento || 0) / 100))
+                    | number:'1.2-2'
+                  }}
+                </td>
+
+                <!-- Acción -->
+                <td>
+                  <button class="btn btn-success btn-sm px-3"
+                          (click)="guardar(u)"
+                          [disabled]="!u.cantidad || u.cantidad < 1 ||
+                                      (identificador === 'compra' && (!u.precio || u.precio <= 0))">
+                    <i class="fas fa-cart-plus me-1"></i>
+                    Agregar
                   </button>
                 </td>
               </tr>
 
               <tr *ngIf="!unidadesMedidaProducto || unidadesMedidaProducto.length === 0">
-                <td colspan="6" class="text-muted py-3">Seleccione un producto para ver sus unidades.</td>
+                <td colspan="6" class="text-center text-muted py-4">
+                  Seleccione un producto
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
+<!-- ================= FOOTER ================= -->
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cerrar</button>
+  <button class="btn btn-outline-secondary"
+          (click)="activeModal.close()">
+    Cerrar
+  </button>
 </div>
 
-<style>
-  /* Hover efecto en filas clicables (tabla productos) */
-  tr.cursor-pointer:hover {
-    background-color: #e9f5ff;
-    cursor: pointer;
-  }
-
-  /* Inputs focus */
-  input.form-control:focus {
-    outline: 2px solid #0d6efd;
-    box-shadow: 0 0 6px rgba(13, 110, 253, 0.5);
-  }
-
-  /* Botón agregar hover */
-  button.btn-success:hover {
-    background-color: #198754cc;
-  }
-
-  /* Paginación botón deshabilitado */
-  .page-item.disabled .page-link {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-</style>

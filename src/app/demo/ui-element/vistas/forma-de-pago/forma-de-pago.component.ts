@@ -30,7 +30,7 @@ export class FormaDePagoComponent {
   }
   ngOnInit(): void {
     this.loadFormaPago();
-    
+
     this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
     this.totalizacion();
   }
@@ -41,34 +41,44 @@ export class FormaDePagoComponent {
       }
     );
   }
+  seleccionarFormaPago(forma: FormaPagoClass): void {
+    this.formaSeleccionada = forma;
+
+    // Asocia la forma seleccionada al objeto en edición
+    this.formaPagoOperacion.formasPago = forma;
+
+    // Limpia monto anterior para evitar errores
+    this.formaPagoOperacion.total = undefined;
+  }
+
   Agregar(forma: FormaPagoClass) {
-      this.formaSeleccionada = forma; // ✅ Marca la forma seleccionada
+    this.formaSeleccionada = forma; // ✅ Marca la forma seleccionada
     this.formaPagoOperacion!.formasPago = forma;
     this.totalizacion();
 
   }
   guardar() {
-   // ✅ Validar que haya una forma de pago seleccionada
-  if (!this.formaPagoOperacion?.formasPago || !this.formaPagoOperacion?.formasPago?.id) {
-    Swal.fire('Selección requerida','Debe seleccionar una forma de pago antes de ingresar el monto.', 'warning');
-    return;
-  }
+    // ✅ Validar que haya una forma de pago seleccionada
+    if (!this.formaPagoOperacion?.formasPago || !this.formaPagoOperacion?.formasPago?.id) {
+      Swal.fire('Selección requerida', 'Debe seleccionar una forma de pago antes de ingresar el monto.', 'warning');
+      return;
+    }
 
- const monto = Number(this.formaPagoOperacion!.total);
+    const monto = Number(this.formaPagoOperacion!.total);
 
-if (isNaN(monto) || monto <= 0) {
-  Swal.fire('Selección requerida', 'Debe ingresar un monto válido antes de agregar.', 'warning');
-  return;
-}
+    if (isNaN(monto) || monto <= 0) {
+      Swal.fire('Selección requerida', 'Debe ingresar un monto válido antes de agregar.', 'warning');
+      return;
+    }
 
-  // ✅ Si pasa la validación, agrega el pago
-  this.operacion.agregarFormaPagoOperacion(this.formaPagoOperacion!);
-  this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
-  this.totalizacion();
+    // ✅ Si pasa la validación, agrega el pago
+    this.operacion.agregarFormaPagoOperacion(this.formaPagoOperacion!);
+    this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
+    this.totalizacion();
 
-  // Reinicia el objeto para que no se repita el mismo pago accidentalmente
-  this.formaPagoOperacion = new FormaPagoOperacion();
-  this.formaSeleccionada = undefined; // ✅ Reinicia la selección de botón
+    // Reinicia el objeto para que no se repita el mismo pago accidentalmente
+    this.formaPagoOperacion = new FormaPagoOperacion();
+    this.formaSeleccionada = undefined; // ✅ Reinicia la selección de botón
 
   }
   eliminarFormaPago(forma: FormaPagoOperacion) {
@@ -79,6 +89,18 @@ if (isNaN(monto) || monto <= 0) {
     );
   }
   guardarOperacion() {
+    if ((this.efectivo ?? 0) < this.totalVenta) {
+      const restante = this.totalVenta - (this.efectivo ?? 0);
+
+      Swal.fire(
+        'Pago incompleto',
+        `Falta cubrir $${restante.toFixed(2)} para completar la operación.`,
+        'warning'
+      );
+
+
+      return;
+    }
     this.operacion.guardarOperacion().subscribe((dato: any) => {
       this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
       if (this.identificador == "compra") {
@@ -102,16 +124,16 @@ if (isNaN(monto) || monto <= 0) {
   totalizacion() {
     this.efectivo = 0;
     this.cambio = 0;
-  
+
     if (this.formaPagoOperacionList) {
       for (let item of this.formaPagoOperacionList) {
         this.efectivo += Number(item.total ?? 0); // Usa 0 si item.total es null o undefined
       }
     }
-  
+
     this.cambio = (this.efectivo ?? 0) - (this.totalVenta ?? 0);
   }
-  
+
 
 
 }

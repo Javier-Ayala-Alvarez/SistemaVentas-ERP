@@ -139,4 +139,13 @@ export class BuscarProductoComponent {
     }
     this.loadProducto();
   }
+
+  productoSeleccionado?: ProductoClass;
+
+seleccionarProducto(producto: ProductoClass): void {
+  this.productoSeleccionado = producto;
+  this.loadUnidadProducto(producto.id);
+}
+
+
 }

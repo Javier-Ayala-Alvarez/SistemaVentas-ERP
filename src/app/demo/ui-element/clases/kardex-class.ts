@@ -14,6 +14,7 @@ export class KardexClass {
     precioUnitario?: number;
     total?: number;
     stock?: number;
+    stockConfigurado?: number;
     valorStock?: number;
     fecha?: Date;
     producto?: ProductoClass = new ProductoClass(); 

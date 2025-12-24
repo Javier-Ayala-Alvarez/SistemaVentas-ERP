@@ -1,156 +1,123 @@
-<div class="container mt-4">
-  <div class="card shadow-sm p-4 mb-4 rounded">
-    <h3 class="mb-4 text-center">Cliente</h3>
+<div class="container-fluid mt-3 cliente-layout">
 
-    <!-- Filtros -->
-    <div class="card mb-4 border-0 shadow-sm">
-      <div class="card-header bg-light">
-        <h6 class="mb-0 text-secondary">
-          <i class="fas fa-filter me-2"></i>Filtros
-        </h6>
-      </div>
-      <div class="card-body pt-3 pb-0">
-        <div class="row g-2">
-          <div class="col-md-2">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="filtroCodigo"
-              (input)="loadCliente()"
-              placeholder="Código"
-            />
-          </div>
-          <div class="col-md-3">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="filtroNombre"
-              (input)="loadCliente()"
-              placeholder="Nombre"
-            />
-          </div>
-          <div class="col-md-2">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="filtroDui"
-              (input)="loadCliente()"
-              placeholder="DUI"
-            />
-          </div>
-          <div class="col-md-2">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="filtroNit"
-              (input)="loadCliente()"
-              placeholder="NIT"
-            />
-          </div>
-          <!-- Si tienes más filtros, aquí puedes agregarlos -->
+  <!-- ================= HEADER ================= -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">
+      <i class="fas fa-user me-2 text-primary"></i>
+      Seleccionar Cliente
+    </h5>
+
+    <button class="btn btn-outline-secondary btn-sm"
+            (click)="activeModal.dismiss()">
+      <i class="fas fa-times me-1"></i>
+      Cerrar
+    </button>
+  </div>
+
+  <!-- ================= FILTROS ================= -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body py-2">
+      <div class="row g-2">
+
+        <div class="col-md-2">
+          <input class="form-control form-control-sm"
+                 [(ngModel)]="filtroCodigo"
+                 (input)="loadCliente()"
+                 placeholder="Código">
         </div>
+
+        <div class="col-md-4">
+          <input class="form-control form-control-sm"
+                 [(ngModel)]="filtroNombre"
+                 (input)="loadCliente()"
+                 placeholder="Nombre del cliente">
+        </div>
+
+        <div class="col-md-3">
+          <input class="form-control form-control-sm"
+                 [(ngModel)]="filtroDui"
+                 (input)="loadCliente()"
+                 placeholder="DUI">
+        </div>
+
+        <div class="col-md-3">
+          <input class="form-control form-control-sm"
+                 [(ngModel)]="filtroNit"
+                 (input)="loadCliente()"
+                 placeholder="NIT">
+        </div>
+
       </div>
-    </div>
-
-    <!-- Tabla -->
-    <div class="card shadow-sm mb-4 p-3 rounded">
-      <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-        <table class="table table-striped table-hover table-bordered align-middle mb-0">
-          <thead class="table-dark text-center sticky-top" style="z-index: 1;">
-            <tr>
-              <th (click)="ordenarPor('id')" style="cursor:pointer">
-                Código
-                <i
-                  class="fas"
-                  [ngClass]="
-                    order === 'id' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'
-                  "
-                ></i>
-              </th>
-              <th (click)="ordenarPor('nombre')" style="cursor:pointer">
-                Nombre
-                <i
-                  class="fas"
-                  [ngClass]="
-                    order === 'nombre' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'
-                  "
-                ></i>
-              </th>
-              <th (click)="ordenarPor('dui')" style="cursor:pointer">
-                DUI
-                <i
-                  class="fas"
-                  [ngClass]="
-                    order === 'dui' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'
-                  "
-                ></i>
-              </th>
-              <th (click)="ordenarPor('nit')" style="cursor:pointer">
-                NIT
-                <i
-                  class="fas"
-                  [ngClass]="
-                    order === 'nit' ? (asc ? 'fa-sort-up' : 'fa-sort-down') : 'fa-sort'
-                  "
-                ></i>
-              </th>
-              <th class="text-center">Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody class="text-center">
-            <tr *ngFor="let data of cliente" class="cursor-pointer">
-              <td>{{ data.id }}</td>
-              <td>{{ data.nombre }}</td>
-              <td>{{ data.dui }}</td>
-              <td>{{ data.nit }}</td>
-              <td>
-                <button
-                  class="btn btn-success btn-sm rounded-circle"
-                  aria-label="Seleccionar cliente"
-                  (click)="guardar(data)"
-                >
-                  <i class="fas fa-check"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Paginador -->
-      <nav aria-label="Navegación de páginas" class="mt-3">
-        <ul class="pagination justify-content-end mb-0">
-          <li class="page-item disabled">
-            <span class="page-link">Items por página</span>
-          </li>
-          <li class="page-item disabled">
-            <span class="page-link">
-              Página {{ page + 1 }} de {{ totalPages.length }}
-            </span>
-          </li>
-          <li class="page-item" [class.disabled]="page === 0">
-            <button
-              type="button"
-              class="page-link"
-              aria-label="Página anterior"
-              (click)="paginaAnterior()"
-              [disabled]="page === 0"
-              style="cursor: pointer;"
-            >
-              <i class="fas fa-angle-left"></i>
-            </button>
-          </li>
-          <li class="page-item" [class.disabled]="page + 1 >= totalPages.length">
-            <button
-              type="button"
-              class="page-link"
-              aria-label="Página siguiente"
-              (click)="paginaSiguiente()"
-              [disabled]="page + 1 >= totalPages.length"
-              style="cursor: pointer;"
-            >
-              <i class="fas fa-angle-right"></i>
-            </button>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
+
+  <!-- ================= TABLA ================= -->
+  <div class="card shadow-sm">
+
+    <div class="table-responsive" style="max-height: 55vh;">
+      <table class="table table-hover table-sm align-middle mb-0">
+
+        <thead class="table-light sticky-top">
+          <tr class="text-center">
+            <th>Código</th>
+            <th class="text-start">Nombre</th>
+            <th>DUI</th>
+            <th>NIT</th>
+            <th style="width: 60px;">Acción</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let data of cliente"
+              class="cliente-row"
+              (dblclick)="guardar(data)">
+
+            <td class="text-center fw-semibold">{{ data.id }}</td>
+            <td>{{ data.nombre }}</td>
+            <td class="text-center">{{ data.dui }}</td>
+            <td class="text-center">{{ data.nit }}</td>
+            <td class="text-center">
+              <button class="btn btn-success btn-sm rounded-circle"
+                      (click)="guardar(data)"
+                      title="Seleccionar cliente">
+                <i class="fas fa-check"></i>
+              </button>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="cliente?.length === 0">
+            <td colspan="5" class="text-center text-muted py-3">
+              No se encontraron clientes
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+    <div class="d-flex justify-content-between align-items-center px-3 py-2">
+
+      <span class="small text-muted">
+        Página {{ page + 1 }} de {{ totalPages.length }}
+      </span>
+
+      <div>
+        <button class="btn btn-outline-secondary btn-sm me-2"
+                (click)="paginaAnterior()"
+                [disabled]="page === 0">
+          <i class="fas fa-angle-left"></i>
+        </button>
+
+        <button class="btn btn-outline-secondary btn-sm"
+                (click)="paginaSiguiente()"
+                [disabled]="page + 1 >= totalPages.length">
+          <i class="fas fa-angle-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
 </div>

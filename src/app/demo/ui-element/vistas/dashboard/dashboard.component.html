@@ -1,198 +1,225 @@
-<!-- Buscador Mejorado -->
+<!-- ===================== -->
+<!-- FILTROS / BUSCADOR -->
+<!-- ===================== -->
 <div class="container-fluid mt-3">
-  <div class="card border shadow-sm">
-    <div class="card-body py-2">
-      <form class="row align-items-center g-2">
-        <!-- Nombre del Producto -->
-        <div class="col-md-3">
-          <div class="input-group input-group-sm shadow-sm border rounded">
-            <span class="input-group-text"><i class="fas fa-search"></i></span>
-            <input class="form-control" [(ngModel)]="filtroNombre" name="filtroNombre" (input)="loadProducto()"
-              placeholder="Nombre del producto" />
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <form class="row g-3 align-items-end">
+
+        <!-- Nombre -->
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label small text-muted">Producto</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="fas fa-search"></i>
+            </span>
+            <input
+              class="form-control"
+              [(ngModel)]="filtroNombre"
+              name="filtroNombre"
+              placeholder="Buscar por nombre"
+              (input)="loadProducto()" />
           </div>
         </div>
 
-        <!-- Descripción del Producto -->
-        <div class="col-md-3">
-          <div class="input-group input-group-sm shadow-sm border rounded">
-            <span class="input-group-text"><i class="fas fa-align-left"></i></span>
-            <input class="form-control" [(ngModel)]="filtroDescripcion" name="filtroDescripcion"
-              (input)="loadProducto()" placeholder="Descripción" />
+        <!-- Descripción -->
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label small text-muted">Descripción</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light">
+              <i class="fas fa-align-left"></i>
+            </span>
+            <input
+              class="form-control"
+              [(ngModel)]="filtroDescripcion"
+              name="filtroDescripcion"
+              placeholder="Buscar descripción"
+              (input)="loadProducto()" />
           </div>
         </div>
 
         <!-- Categoría -->
-        <div class="col-md-3">
-          <div class="input-group input-group-sm shadow-sm border rounded">
-            <label class="input-group-text" for="filtroCategoria"><i class="fas fa-tags"></i></label>
-            <select class="form-select" [(ngModel)]="filtroCategoria" id="filtroCategoria" name="filtroCategoria"
-              (change)="loadProducto()">
-              <option [ngValue]="null">Todas las categorías</option>
-              <option *ngFor="let dato of categorias" [ngValue]="dato.id">{{ dato.nombre }}</option>
-            </select>
-          </div>
+        <div class="col-lg-3 col-md-6">
+          <label class="form-label small text-muted">Categoría</label>
+          <select
+            class="form-select"
+            [(ngModel)]="filtroCategoria"
+            name="filtroCategoria"
+            (change)="loadProducto()">
+            <option [ngValue]="null">Todas las categorías</option>
+            <option *ngFor="let dato of categorias" [ngValue]="dato.id">
+              {{ dato.nombre }}
+            </option>
+          </select>
         </div>
 
-        <!-- Botón Limpiar -->
-        <div class="col-md-1 d-grid">
-          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="limpiarFiltros()">
-            Limpiar
-          </button>
-        </div>
-
-        <!-- Botón Filtrar -->
-        <div class="col-md-2 d-grid">
-          <button class="btn btn-primary btn-sm" type="button" (click)="loadProducto()">
+        <!-- Acciones -->
+        <div class="col-lg-3 col-md-6 d-flex gap-2">
+          <button
+            type="button"
+            class="btn btn-primary w-100"
+            (click)="loadProducto()">
             <i class="fas fa-filter me-1"></i> Filtrar
           </button>
+
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="limpiarFiltros()">
+            <i class="fas fa-eraser"></i>
+          </button>
         </div>
+
       </form>
     </div>
   </div>
 </div>
 
-<!-- Título para Precios de Compra -->
+<!-- ===================== -->
+<!-- TÍTULO PRECIOS COMPRA -->
+<!-- ===================== -->
 <div *ngIf="mostrarPreciosCompra" class="container mt-4">
-  <h3 class="mb-4 text-center">Precios de compra</h3>
+  <h4 class="text-center fw-bold">Precios de compra</h4>
 </div>
 
+<!-- ===================== -->
+<!-- TARJETAS DE PRODUCTOS -->
+<!-- ===================== -->
+<div *ngIf="!mostrarPreciosCompra" class="container-fluid mt-4">
+  <div class="row g-4">
 
+    <div
+      class="col-xl-3 col-lg-4 col-md-6"
+      *ngFor="let card of producto">
 
+      <mat-card class="product-card h-100">
 
+        <!-- Imagen -->
+        <div class="product-image">
+          <img
+            *ngIf="!imagenError[card.id!]"
+            [src]="imagenRuta + card.nombreImagen"
+            (error)="imagenError[card.id!] = true"
+            alt="Producto" />
 
-
-
-<!-- Tarjetas de Productos -->
-<div *ngIf="!mostrarPreciosCompra" class="container-fluid mt-3">
-  <div class="row">
-    <div class="col-md-3 mb-4" *ngFor="let card of producto; let i = index">
-      <mat-card class="shadow-sm border border-primary" appearance="outlined"
-        [ngClass]="mostrarPreciosCompra ? 'border-danger' : 'border-primary'">
-        <div class="imagen-container" style="position: relative; width: 100%; height: 200px;">
-
-          <img mat-card-image [src]="imagenRuta + card.nombreImagen" (error)="imagenError[card.id!] = true"
-            alt="Imagen del producto" [style.display]="imagenError[card.id!] ? 'none' : 'block'"
-            style="object-fit: cover; width: 100%; height: 100%; border-radius: 4px;" />
-          <div *ngIf="imagenError[card.id!]" class="d-flex justify-content-center align-items-center"
-            style="width: 100%; height: 100%; background-color: #f0f0f0; border-radius: 4px;">
-            <mat-icon color="warn" style="font-size: 48px;">image_not_supported</mat-icon>
+          <div *ngIf="imagenError[card.id!]" class="image-fallback">
+            <mat-icon>image_not_supported</mat-icon>
           </div>
-
         </div>
 
-        <mat-card-header>
-          <mat-card-title class="fw-bold">{{ card.codigo }}</mat-card-title>
-        </mat-card-header>
-
-        <mat-card-subtitle class="px-3">{{ card.nombre }}</mat-card-subtitle>
-
-        <mat-card-content class="mt-2 px-3">
-          <p class="text-muted">{{ card.descripcion }}</p>
+        <!-- Contenido -->
+        <mat-card-content>
+          <h6 class="fw-bold mb-1">{{ card.codigo }}</h6>
+          <p class="mb-1">{{ card.nombre }}</p>
+          <small class="text-muted">{{ card.descripcion }}</small>
         </mat-card-content>
 
-        <mat-card-actions>
-          <button mat-button color="primary" [attr.aria-pressed]="preciosVisible[card.id!] ? 'true' : 'false'"
+        <!-- Acción -->
+        <mat-card-actions class="justify-content-end">
+          <button
+            mat-stroked-button
+            color="primary"
             (click)="loadUnidadProducto(card.id)">
-            <i class="fas fa-eye me-1"></i>
+            <i class="fas fa-tag me-1"></i>
             {{ preciosVisible[card.id!] ? 'Ocultar precios' : 'Ver precios' }}
           </button>
-
         </mat-card-actions>
 
+        <!-- Precios -->
         <div *ngIf="preciosVisible[card.id!]" class="px-3 pb-3">
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let precio of unidadesMedidaProducto[card.id!]">
-              {{ precio.unidadMedida?.descripcion }}
-              <span class="badge bg-primary rounded-pill">
-
-                {{(precio.precio | currency) }}
-              </span>
-            </li>
-          </ul>
+          <div
+            class="d-flex justify-content-between small py-1"
+            *ngFor="let precio of unidadesMedidaProducto[card.id!]">
+            <span>{{ precio.unidadMedida?.descripcion }}</span>
+            <strong>{{ precio.precio | currency }}</strong>
+          </div>
         </div>
+
       </mat-card>
     </div>
   </div>
 </div>
 
+<!-- ===================== -->
+<!-- TABLA PRECIOS COMPRA -->
+<!-- ===================== -->
+<div *ngIf="mostrarPreciosCompra" class="container-fluid mt-4">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Producto</th>
+          <th>Descripción</th>
+          <th>Unidades y precios</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let card of producto">
 
-<!-- Tabla de productos -->
-<div *ngIf="mostrarPreciosCompra" class="table-responsive mt-3">
-  <table class="table table-bordered table-hover">
-    <thead class="table-light">
-      <tr>
-        <th>Imagen</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Unidades y Precios de Compra</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let card of producto">
-        <td style="width: 80px; text-align: center;">
-          <img *ngIf="!imagenError[card.id!]" [src]="imagenRuta + card.nombreImagen" alt="{{ card.nombre }}"
-            style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;"
-            (error)="imagenError[card.id!] = true" />
+          <td class="d-flex align-items-center gap-2">
+            <img
+              *ngIf="!imagenError[card.id!]"
+              [src]="imagenRuta + card.nombreImagen"
+              (error)="imagenError[card.id!] = true"
+              style="width:50px;height:50px;object-fit:cover;border-radius:6px;" />
 
-          <!-- Fallback cuando la imagen falla -->
-          <div *ngIf="imagenError[card.id!]" class="d-flex justify-content-center align-items-center"
-            style="width: 60px; height: 60px; background-color: #f0f0f0; border-radius: 4px; border: 1px solid #ddd;">
-            <i class="fas fa-image text-muted"></i>
-          </div>
-        </td>
-        <td>{{ card.nombre }}</td>
-        <td>{{ card.descripcion }}</td>
+            <div *ngIf="imagenError[card.id!]" class="image-fallback-sm">
+              <i class="fas fa-image"></i>
+            </div>
 
+            <span class="fw-semibold">{{ card.nombre }}</span>
+          </td>
 
-        <td>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between align-items-center"
+          <td>{{ card.descripcion }}</td>
+
+          <td>
+            <div
+              class="d-flex justify-content-between"
               *ngFor="let precio of unidadesMedidaProducto[card.id!]">
-              {{ precio.unidadMedida?.descripcion }}
-              <span class="badge bg-primary rounded-pill">
-                {{ precio.precioCompra | currency }}
-              </span>
-            </li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+              <span>{{ precio.unidadMedida?.descripcion }}</span>
+              <strong>{{ precio.precioCompra | currency }}</strong>
+            </div>
+          </td>
 
-<!-- Mensaje cuando no hay productos -->
-<div *ngIf="noHayProductos" class="col-12 text-center mt-4">
-  <div class="alert alert-warning shadow-sm" role="alert">
-    <i class="fas fa-exclamation-circle me-2"></i>
-    No se encontró ningún producto.
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
-<!-- Paginador -->
-<nav *ngIf="!noHayProductos" aria-label="Page navigation" class="mt-3">
-  <ul class="pagination justify-content-center">
-    <li class="page-item">
-      <span class="page-link">Página {{ page + 1 }} de {{ totalPages.length }}</span>
+<!-- ===================== -->
+<!-- MENSAJE SIN RESULTADOS -->
+<!-- ===================== -->
+<div *ngIf="noHayProductos" class="container mt-4">
+  <div class="alert alert-warning text-center shadow-sm">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    No se encontraron productos
+  </div>
+</div>
+
+<!-- ===================== -->
+<!-- PAGINADOR -->
+<!-- ===================== -->
+<nav *ngIf="!noHayProductos" class="mt-4">
+  <ul class="pagination justify-content-center align-items-center gap-2">
+
+    <li class="page-item disabled">
+      <span class="page-link">
+        Página {{ page + 1 }} de {{ totalPages.length }}
+      </span>
     </li>
+
     <li class="page-item" [class.disabled]="isFirst">
-      <a class="page-link" role="button" [attr.aria-disabled]="isFirst" (click)="paginaAnterior()">
-        <i class="fas fa-step-backward"></i>
-      </a>
+      <button class="page-link" (click)="paginaAnterior()">
+        <i class="fas fa-angle-left"></i>
+      </button>
     </li>
+
     <li class="page-item" [class.disabled]="isLast">
-      <a class="page-link" role="button" [attr.aria-disabled]="isLast" (click)="paginaSiguiente()">
-        <i class="fas fa-step-forward"></i>
-      </a>
+      <button class="page-link" (click)="paginaSiguiente()">
+        <i class="fas fa-angle-right"></i>
+      </button>
     </li>
+
   </ul>
 </nav>
-
-
-<!-- Botón de precios compra -->
-<!--<div class="col-md-2 d-grid">
-  <button class="btn btn-primary btn-sm" type="button" (click)="toggleModoPrecios()">
-    <i class="fas fa-filter me-1"></i> {{ mostrarPreciosCompra ? 'Precios venta' : 'Precios compra' }}
-
-  </button>
-</div>-->
