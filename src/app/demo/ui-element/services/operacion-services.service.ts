@@ -253,12 +253,16 @@ export class OperacionServicesService {
     order: string,
     asc: boolean
   ): Observable<any> {
-
-
-
     // Construir la URL con los parámetros validados
     const url = `${this.apiUrl}/kardex?busqueda=${terminoBusqueda}&page=${page}&size=${size}&order=${order}&asc=${asc}`;
 
+    return this.httpClient.get(url).pipe(
+      catchError(this.mensajeSwal2.handleError)
+    );
+  }
+
+  totalCredito(idCliente: number) {
+    const url = `${this.apiUrl}/totalCredito/${idCliente}`;
     return this.httpClient.get(url).pipe(
       catchError(this.mensajeSwal2.handleError)
     );

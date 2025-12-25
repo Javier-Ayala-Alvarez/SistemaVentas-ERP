@@ -24,12 +24,12 @@
         </tr>
         <tr>
           <th>
-            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroCodigo"
-              (input)="loadProveedor()" placeholder="Filtrar código" />
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroCodigo" (input)="loadProveedor()"
+              placeholder="Filtrar código" />
           </th>
           <th>
-            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroNombre"
-              (input)="loadProveedor()" placeholder="Filtrar nombre" />
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="filtroNombre" (input)="loadProveedor()"
+              placeholder="Filtrar nombre" />
           </th>
           <th></th>
         </tr>
@@ -37,7 +37,8 @@
       <tbody>
         <tr *ngFor="let data of proveedor">
           <td>{{ data.id }}</td>
-          <td>{{ data.nombre }}</td>
+          <td>{{ data.nombre }} {{ data.apellido }}</td>
+
           <td class="text-center">
             <button class="btn btn-success btn-sm rounded-circle" (click)="guardar(data)">
               <i class="fas fa-check"></i>

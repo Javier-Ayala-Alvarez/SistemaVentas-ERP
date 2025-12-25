@@ -103,7 +103,7 @@
                 <th>Unidad</th>
                 <th>Precio</th>
                 <th>Cantidad</th>
-                <th>Desc %</th>
+                <!--<th>Desc %</th>-->
                 <th></th>
               </tr>
             </thead>
@@ -117,6 +117,7 @@
                   <div class="text-muted small">
                     {{ u.unidadMedida?.descripcion }}
                   </div>
+                  
                 </td>
 
                 <!-- Precio -->
@@ -141,13 +142,13 @@
                 </td>
 
                 <!-- Descuento -->
-                <td>
+              <!-- <td>
                   <input type="number"
                          class="form-control form-control-sm"
                          min="0"
                          max="100"
                          [(ngModel)]="u.descuento">
-                </td>
+                </td>--> 
 
 
                 <!-- Acción -->

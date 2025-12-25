@@ -1,0 +1,55 @@
+/* Tabla con hover más claro y fila de crédito destacada */
+.table-hover tbody tr:hover {
+  background-color: #f1f7ff;
+}
+
+.fila-credito {
+  background-color: #e6ffed !important;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable i {
+  margin-left: 4px;
+}
+
+.btn-outline-primary, .btn-outline-danger, .btn-outline-warning {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-outline-warning:hover {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+/* Card shadow suave y bordes redondeados */
+.card {
+  border-radius: 12px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+input.form-control-sm {
+  border-radius: 6px;
+}
+
+/* Mejor espacio en los filtros */
+.form-check {
+  padding-left: 0;
+}

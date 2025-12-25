@@ -155,7 +155,7 @@ export const NavigationItems: NavigationItem[] = [
       },
       {
         id: 'clientes',
-        title: 'Clientes',
+        title: 'Clientes / Crédito',
         type: 'item',
         url: '/component/clientes',
         icon: 'feather icon-user-check',

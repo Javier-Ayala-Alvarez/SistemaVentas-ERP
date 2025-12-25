@@ -14,6 +14,7 @@ export class ClienteClass {
     nit?: string;
     estado?: string;
     select?: boolean = false;
+    totalCredito?: number;
 
     usuarioCreacion?: UsuarioClass;
     usuarioModificacion?: UsuarioClass;
