@@ -5,7 +5,8 @@ import { ClienteClass } from '../../clases/cliente-class';
 import { ClientesServicesService } from '../../services/clientes-services.service';
 import { OperacionServicesService } from '../../services/operacion-services.service';
 import { forkJoin } from 'rxjs';
-
+import { DetalleCreditoComponenteComponent } from '../detalle-credito-componente/detalle-credito-componente.component';
+ 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
@@ -58,9 +59,12 @@ export default class ClientesComponent {
   }
 
   abrirDetalleCredito(cliente: ClienteClass): void {
-   // if (confirm(`¿Desea cancelar el crédito del cliente ${cliente.nombre}?`)) {
-    //  this.clienteServices.cancelarCredito(cliente.id ?? 0).subscribe(() => this.loadClientes());
-    //}
+    const modalRef = this.modalService.open(DetalleCreditoComponenteComponent, {
+      size: 'lg',
+      centered: true
+    });
+    modalRef.componentInstance.cliente = cliente;
+    modalRef.result.finally(() => this.loadClientes()); 
   }
 
 

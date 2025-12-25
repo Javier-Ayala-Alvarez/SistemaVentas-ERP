@@ -75,6 +75,7 @@ import { KardexComponent } from './demo/ui-element/vistas/kardex/kardex.componen
 import { InventarioComponent } from './demo/ui-element/vistas/inventario/inventario.component';
 import { ReporteVentasComponent } from './demo/ui-element/vistas/reporte-ventas/reporte-ventas.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import { DetalleCreditoComponenteComponent } from './demo/ui-element/vistas/detalle-credito-componente/detalle-credito-componente.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     BuscarProductoComponent,
     SignInComponent,
     InventarioComponent,
-    ReporteVentasComponent
+    ReporteVentasComponent,
+    DetalleCreditoComponenteComponent
      ],
   imports: [
     MatCardModule,

@@ -101,6 +101,7 @@ export class FormaDePagoComponent {
 
       return;
     }
+    
     this.operacion.guardarOperacion().subscribe((dato: any) => {
       this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
       if (this.identificador == "compra") {

@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { baseUrl } from 'src/app/config/config';
 import { MensajesSwal2Service } from './mensajes-swal2.service';
@@ -157,11 +157,21 @@ export class OperacionServicesService {
   guardarOperacion(): Observable<any> {
     const form = new FormData();
     this.operacion.estado = "A";
+    var monto = 0;
+    for (let pago of this.formaPagoOperacion) {
+      if ((this.operacion.total ?? 0) <= (pago.total ?? 0)) {
+        pago.montoPagado = (this.operacion.total ?? 0) - monto;
+        monto =  pago.montoPagado;
+      } else {
+        pago.montoPagado = pago.total;
+        monto =  pago.montoPagado ?? 0;
+      }
+    }
+
     form.append('operacion', JSON.stringify(this.operacion));
     form.append('detalle', JSON.stringify(this.operacionDetalle));
     form.append('formaPagoOperacion', JSON.stringify(this.formaPagoOperacion));
     this.operacion.estado = 'A';
-    console.log(this.operacion);
     return this.httpClient.post(`${this.apiUrl}/Guardar`, form).pipe(
       tap((respuesta: any) => {
         if (respuesta?.operacion) {
@@ -267,6 +277,28 @@ export class OperacionServicesService {
       catchError(this.mensajeSwal2.handleError)
     );
   }
+  CreditoPage(
+  idCliente: number,
+  page: number,
+  size: number,
+  order: string,
+  asc: boolean
+): Observable<any> {
+
+  const params = new HttpParams()
+    .set('page', page)
+    .set('size', size)
+    .set('order', order)
+    .set('asc', asc);
+
+  return this.httpClient.get(
+    `${this.apiUrl}/CreditoPage/${idCliente}`,
+    { params }
+  ).pipe(
+    catchError(this.mensajeSwal2.handleError)
+  );
+}
+
   loadFac(
     terminoBusqueda: string,
     page: number,

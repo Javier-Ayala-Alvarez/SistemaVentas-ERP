@@ -6,4 +6,5 @@ export class FormaPagoOperacion {
     operaciones?: OperacionClass = new OperacionClass() ;
     formasPago?: FormaPagoClass = new FormaPagoClass() ;
     total?: number ;
+    montoPagado?: number;
     }
