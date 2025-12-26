@@ -53,14 +53,13 @@ export default class ClientesComponent {
   }
 
   eliminar(cliente: ClienteClass): void {
-    if (confirm(`¿Desea eliminar al cliente ${cliente.nombre}?`)) {
       this.clienteServices.eliminar(cliente.id ?? 0, cliente).subscribe(() => this.loadClientes());
-    }
+   
   }
 
   abrirDetalleCredito(cliente: ClienteClass): void {
     const modalRef = this.modalService.open(DetalleCreditoComponenteComponent, {
-      size: 'lg',
+      size: 'xl',
       centered: true
     });
     modalRef.componentInstance.cliente = cliente;

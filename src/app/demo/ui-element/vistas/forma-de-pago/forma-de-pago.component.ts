@@ -101,25 +101,37 @@ export class FormaDePagoComponent {
 
       return;
     }
-    
-    this.operacion.guardarOperacion().subscribe((dato: any) => {
-      this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
-      if (this.identificador == "compra") {
+    if (this.identificador == "credito") {
+      this.operacion.guardarOperacionCredito().subscribe((dato: any) => {
+        this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['/component/Nuevacompras']);
+          this.router.navigate(['/component/clientes']);
         });
-      } else if (this.identificador == "cotizacion") {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['/component/Nuevacotizacion']);
-        });
-      } else if (this.identificador == "factura") {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['/component/factura']);
-        });
-      }
-      this.activeModal.close(); // Cierra el modal (opcional)
-    });
 
+        this.activeModal.close({
+          success: true,
+          refrescar: true
+        });
+      });
+    } else {
+      this.operacion.guardarOperacion().subscribe((dato: any) => {
+        this.formaPagoOperacionList = this.operacion.formaPagoOperacion;
+        if (this.identificador == "compra") {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/component/Nuevacompras']);
+          });
+        } else if (this.identificador == "cotizacion") {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/component/Nuevacotizacion']);
+          });
+        } else if (this.identificador == "factura") {
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/component/factura']);
+          });
+        }
+        this.activeModal.close(); // Cierra el modal (opcional)
+      });
+    }
   }
 
   totalizacion() {

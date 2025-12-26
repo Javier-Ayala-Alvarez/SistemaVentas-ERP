@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { OperacionClass } from '../clases/operaciones-class';
 import { FormaPagoOperacion } from '../clases/FormaPagoOperacion';
 import { environment } from 'src/environments/environment';
+import { CreditoClass } from '../clases/credito-class';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ import { environment } from 'src/environments/environment';
 export class OperacionServicesService {
   private apiUrl = `${baseUrl}/Api/operacion`; // Cambia la URL según sea necesario
   operacionDetalle: OperacionDetalleClass[] = [];
+  creditoClass: CreditoClass[] = [];
   operacion: OperacionClass = new OperacionClass();
   formaPagoOperacion: FormaPagoOperacion[] = [];
   constructor(private httpClient: HttpClient, private mensajeSwal2: MensajesSwal2Service) { }
@@ -154,6 +156,36 @@ export class OperacionServicesService {
   }
 
   // Agrega un nuevo producto
+  guardarOperacionCredito(): Observable<any> {
+    const form = new FormData();
+    this.operacion.estado = "A";
+    var monto = 0;
+    for (let pago of this.formaPagoOperacion) {
+      if ((this.operacion.total ?? 0) <= (pago.total ?? 0)) {
+        pago.montoPagado = (this.operacion.total ?? 0) - monto;
+        monto = pago.montoPagado;
+      } else {
+        pago.montoPagado = pago.total;
+        monto = pago.montoPagado ?? 0;
+      }
+    }
+
+    form.append('operacion', JSON.stringify(this.operacion));
+    form.append('detalle', JSON.stringify(this.creditoClass));
+    form.append('formaPagoOperacion', JSON.stringify(this.formaPagoOperacion));
+    this.operacion.estado = 'A';
+    return this.httpClient.post(`${this.apiUrl}/GuardarCredito`, form).pipe(
+      tap((respuesta: any) => {
+        if (respuesta?.operacion) {
+          this.mensajeSwal2.mensaje('Guardado exitoso', 'La operacion se ha guardado correctamente.');
+          this.limpiarArreglos();
+        } else {
+          this.mensajeSwal2.mensaje('Error', 'Se produjo un error.');
+        }
+      }),
+      catchError(this.mensajeSwal2.handleError)
+    );
+  }
   guardarOperacion(): Observable<any> {
     const form = new FormData();
     this.operacion.estado = "A";
@@ -161,10 +193,10 @@ export class OperacionServicesService {
     for (let pago of this.formaPagoOperacion) {
       if ((this.operacion.total ?? 0) <= (pago.total ?? 0)) {
         pago.montoPagado = (this.operacion.total ?? 0) - monto;
-        monto =  pago.montoPagado;
+        monto = pago.montoPagado;
       } else {
         pago.montoPagado = pago.total;
-        monto =  pago.montoPagado ?? 0;
+        monto = pago.montoPagado ?? 0;
       }
     }
 
@@ -238,7 +270,46 @@ export class OperacionServicesService {
     });
   }
 
+  eliminarCredito(id: number): Observable<any> {
+    return new Observable(observer => {
+      Swal.fire({
+        title: 'Eliminar Operación',
+        text: '¿Estás seguro de que deseas eliminar esta operación?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((resultado) => {
+        if (resultado.isConfirmed) {
 
+          this.httpClient.post(`${this.apiUrl}/EliminarCredito/${id}`, {}).pipe(
+
+            tap((resp: any) => {
+
+              this.mensajeSwal2.mensaje(
+                'Operación eliminada',
+                resp.mensaje
+              );
+
+              observer.next(resp.resultado);
+            }),
+
+            catchError(error => {
+              this.mensajeSwal2.handleError(error);
+              observer.error(error);
+              return throwError(() => error);
+            })
+
+          ).subscribe();
+
+        } else {
+          observer.next(false);
+        }
+      });
+    });
+  }
   loadInventario(
     terminoBusqueda: string,
     page: number,
@@ -278,26 +349,26 @@ export class OperacionServicesService {
     );
   }
   CreditoPage(
-  idCliente: number,
-  page: number,
-  size: number,
-  order: string,
-  asc: boolean
-): Observable<any> {
+    idCliente: number,
+    page: number,
+    size: number,
+    order: string,
+    asc: boolean
+  ): Observable<any> {
 
-  const params = new HttpParams()
-    .set('page', page)
-    .set('size', size)
-    .set('order', order)
-    .set('asc', asc);
+    const params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('order', order)
+      .set('asc', asc);
 
-  return this.httpClient.get(
-    `${this.apiUrl}/CreditoPage/${idCliente}`,
-    { params }
-  ).pipe(
-    catchError(this.mensajeSwal2.handleError)
-  );
-}
+    return this.httpClient.get(
+      `${this.apiUrl}/CreditoPage/${idCliente}`,
+      { params }
+    ).pipe(
+      catchError(this.mensajeSwal2.handleError)
+    );
+  }
 
   loadFac(
     terminoBusqueda: string,
