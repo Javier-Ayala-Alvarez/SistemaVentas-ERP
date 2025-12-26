@@ -9,7 +9,7 @@
   overflow: hidden;
   min-width: 100%;
   min-height: 100vh;
-  background: linear-gradient(45deg, $primary-color, lighten($primary-color, 13%));
+  background: linear-gradient(0deg, $primary-color, lighten($primary-color, 5%));
 
   @media (min-width: 1200px) {
     .container {
