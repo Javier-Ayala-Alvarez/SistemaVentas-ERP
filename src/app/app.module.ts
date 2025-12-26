@@ -76,6 +76,10 @@ import { InventarioComponent } from './demo/ui-element/vistas/inventario/inventa
 import { ReporteVentasComponent } from './demo/ui-element/vistas/reporte-ventas/reporte-ventas.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { DetalleCreditoComponenteComponent } from './demo/ui-element/vistas/detalle-credito-componente/detalle-credito-componente.component';
+import { EnviosComponent } from './demo/ui-element/vistas/envios/envios.component';
+import { RecepcionComponent } from './demo/ui-element/vistas/recepcion/recepcion.component';
+import { AgregarRecepcionComponent } from './demo/ui-element/vistas/agregar-recepcion/agregar-recepcion.component';
+import { AgregarEnviosComponent } from './demo/ui-element/vistas/agregar-envios/agregar-envios.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +139,11 @@ import { DetalleCreditoComponenteComponent } from './demo/ui-element/vistas/deta
     SignInComponent,
     InventarioComponent,
     ReporteVentasComponent,
-    DetalleCreditoComponenteComponent
+    DetalleCreditoComponenteComponent,
+    EnviosComponent,
+    RecepcionComponent,
+    AgregarRecepcionComponent,
+    AgregarEnviosComponent
      ],
   imports: [
     MatCardModule,

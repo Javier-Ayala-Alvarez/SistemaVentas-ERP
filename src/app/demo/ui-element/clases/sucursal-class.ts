@@ -6,7 +6,7 @@ export class SucursalClass {
     id?: number = 0; // ID único de la sucursal
     codigo?: string; // Código de la sucursal
     nombre?: string = ""; // Nombre de la sucursal
-    direccion?: string; // Dirección de la sucursal
+    direccion?: string = ""; // Dirección de la sucursal
     telefono?: string; // Teléfono de contacto
     correo?: string; // Correo electrónico de contacto
     fecha?: string | Date; // Permite manejar fechas como string o Date

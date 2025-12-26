@@ -103,6 +103,10 @@ export class BuscarProductoComponent {
       this.router.navigate(['/component/Nuevacotizacion']);
     } else if (this.identificador === 'factura') {
       this.router.navigate(['/component/factura']);
+    }else if (this.identificador === 'recepcion') {
+      this.router.navigate(['/component/NuevaRecepcion']);
+    }else if (this.identificador === 'envio') {
+      this.router.navigate(['/component/NuevoEnvio']);
     }
 
     this.activeModal.close();

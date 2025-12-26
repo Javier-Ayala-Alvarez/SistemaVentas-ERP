@@ -1,0 +1,155 @@
+<div class="container-fluid factura-layout">
+
+    <!-- ================= HEADER ================= -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="fw-bold mb-0">
+            <i class="fas fa-file-invoice-dollar me-1 text-primary"></i> Envio
+        </h6>
+        <span class="badge bg-secondary">
+            Nº {{ operacion.nFactura }}
+        </span>
+    </div>
+
+    <form #f="ngForm" class="row g-2" novalidate>
+
+        <!-- ================= IZQUIERDA (Sucursal Destino) ================= -->
+        <div class="col-lg-6">
+            <div class="card p-2 shadow-sm">
+
+                <!-- Sucursal Destino -->
+                <div class="mb-2">
+                    <label class="form-label small">Sucursal destino *</label>
+                    <div class="input-group input-group-sm">
+                        <select class="form-select" [(ngModel)]="operacion.sucursalDestino" name="sucursalDestino"
+                            required>
+                            <option [ngValue]="null">Seleccione sucursal</option>
+                            <option *ngFor="let s of sucursales" [ngValue]="s">
+                                {{ s.nombre }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="intentoGuardar && f.controls['sucursalDestino']?.invalid" class="text-danger small">
+                        Seleccionar sucursal destino
+                    </div>
+                </div>
+
+                <!-- Dirección -->
+                <input class="form-control form-control-sm mb-2" [value]="operacion.sucursalDestino?.direccion" readonly
+                    placeholder="Dirección sucursal">
+
+            </div>
+        </div>
+
+
+        <!-- ================= DERECHA (Datos Cotización) ================= -->
+        <div class="col-lg-6">
+            <div class="card p-2 shadow-sm">
+
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <input type="date" class="form-control form-control-sm" [(ngModel)]="operacion.fechaVencimiento"
+                            name="fechaVencimiento">
+                    </div>
+                    <div class="col-6">
+                        <textarea class="form-control form-control-sm" rows="1" [(ngModel)]="operacion.descripcion"
+                            name="descripcion" placeholder="Descripción"></textarea>
+                        <div *ngIf="intentoGuardar && f.controls['descripcion']?.invalid" class="text-danger small">
+                            Requerido</div>
+
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <select class="form-select form-select-sm" [(ngModel)]="operacion.tipoOperacion"
+                            name="tipoOperacion" required>
+                            <option [ngValue]="null">Tipo operación *</option>
+                            <option *ngFor="let t of tipoOperaciones" [ngValue]="t">{{ t.nombre }}</option>
+                        </select>
+                        <div *ngIf="intentoGuardar && f.controls['tipoOperacion']?.invalid" class="text-danger small">
+                            Requerido</div>
+                    </div>
+
+                    <div class="col-6">
+                        <select class="form-select form-select-sm" [(ngModel)]="operacion.sucursal"
+                            name="sucursal" required>
+                            <option [ngValue]="null">Sucursal *</option>
+                            <option *ngFor="let s of sucursales" [ngValue]="s">{{ s.nombre }}</option>
+                        </select>
+                        <div *ngIf="intentoGuardar && f.controls['sucursal']?.invalid" class="text-danger small">
+                            Requerido</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-success btn-sm w-100 mt-2" type="button" (click)="openModalProducto()">
+                    <i class="fas fa-plus me-1"></i> Agregar producto
+                </button>
+
+            </div>
+        </div>
+
+        <!-- ================= TABLA ================= -->
+        <div class="col-12">
+            <div class="card p-2 shadow-sm table-wrapper">
+                <table class="table table-sm table-hover mb-0 text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Cod</th>
+                            <th>Producto</th>
+                            <th>Cant</th>
+                            <th>Desc</th>
+                            <th>Precio</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let d of operacionDetalle">
+                            <td>{{ d.producto?.id }}</td>
+                            <td class="text-start">{{ d.producto?.nombre }}
+                                <small class="text-muted">({{ d.unidadMedida?.descripcion }})</small>
+                            </td>
+                            <td>{{ d.cantidad }}</td>
+                            <td>{{ d.descuento }}</td>
+                            <td class="text-end">{{ d.precioUnitario | currency }}</td>
+                            <td class="fw-bold text-success">{{ (d.cantidad ?? 0) * (d.precioUnitario ?? 0) | currency
+                                }}</td>
+                            <td>
+                                <button class="btn btn-outline-danger btn-sm" (click)="eliminarDetalle(d)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="operacionDetalle.length === 0">
+                            <td colspan="7" class="text-muted py-2">Sin productos</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div *ngIf="intentoGuardar && operacionDetalle.length === 0" class="text-danger small mt-1">
+                    Agregar al menos un producto
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= FOOTER ================= -->
+        <div class="factura-footer mt-2">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+                    <small>Subtotal:</small> {{ operacion.subTotal | number:'1.2-2' }} |
+                    <small>IVA:</small> {{ operacion.iva | number:'1.2-2' }} |
+                    <small>Retención:</small> {{ operacion.retencion | number:'1.2-2' }}
+                </div>
+
+                <div class="fs-5 fw-bold text-success">{{ operacion.total | currency }}</div>
+
+                <button class="btn btn-primary btn-sm" type="submit" (click)="preGuardar(f)">Guardar</button>
+
+            </div>
+        </div>
+
+    </form>
+</div>

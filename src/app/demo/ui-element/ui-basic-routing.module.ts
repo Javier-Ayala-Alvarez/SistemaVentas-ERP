@@ -28,6 +28,10 @@ import { RoleGuard } from './services/guards.guard';
 import { KardexComponent } from './vistas/kardex/kardex.component';
 import { InventarioComponent } from './vistas/inventario/inventario.component';
 import { ReporteVentasComponent } from './vistas/reporte-ventas/reporte-ventas.component';
+import { RecepcionComponent } from './vistas/recepcion/recepcion.component';
+import { EnviosComponent } from './vistas/envios/envios.component';
+import { AgregarEnviosComponent } from './vistas/agregar-envios/agregar-envios.component';
+import { AgregarRecepcionComponent } from './vistas/agregar-recepcion/agregar-recepcion.component';
 
 const routes: Routes = [
   {
@@ -74,6 +78,25 @@ const routes: Routes = [
       , 
       {
         path: 'gastos',component:GastosComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','GENERAL','SUPERADMIN'] }
+      }, 
+      {
+        path: 'envios',component:EnviosComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','GENERAL','SUPERADMIN'] }
+      },
+      {
+        path: 'NuevoEnvio',component:AgregarEnviosComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','GENERAL','SUPERADMIN'] }
+      },  
+      {
+        path: 'recepcion',component:RecepcionComponent,
+          canActivate: [RoleGuard],
+        data: { roles: ['ADMIN','GENERAL','SUPERADMIN'] }
+      },{
+        path: 'NuevaRecepcion',component:AgregarRecepcionComponent,
           canActivate: [RoleGuard],
         data: { roles: ['ADMIN','GENERAL','SUPERADMIN'] }
       }

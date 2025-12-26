@@ -20,6 +20,8 @@ export class OperacionClass {
     departamento?: DepartamentoClass= new DepartamentoClass();
     municipio?: MunicipioClass= new MunicipioClass();
     sucursal?: SucursalClass = new SucursalClass();
+    sucursalDestino?: SucursalClass = new SucursalClass();
+    sucursalOrigen?: SucursalClass = new SucursalClass();
     distrito?: DistritoClass= new DistritoClass();
     fechaElaboracion?: string;
     fechaVencimiento?: string | Date | undefined;

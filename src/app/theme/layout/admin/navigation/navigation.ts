@@ -78,6 +78,23 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-credit-card',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
         children: []
+      }, {
+        id: 'Envios',
+        title: 'Envíos',
+        type: 'item',
+        url: '/component/envios',
+        icon: 'feather icon-log-out',
+        roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
+        children: []
+      },
+      {
+        id: 'Recepcion',
+        title: 'Recepción',
+        type: 'item',
+        url: '/component/recepcion',
+        icon: 'feather icon-inbox',
+        roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
+        children: []
       },
       {
         id: 'cajas',
@@ -93,7 +110,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Remesas',
         type: 'item',
         url: '/component/remesas',
-  icon: 'fas fa-money-bill-wave',
+        icon: 'feather icon-repeat',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
         children: []
       }
@@ -167,7 +184,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Proveedores',
         type: 'item',
         url: '/component/proveedores',
-        icon: 'feather icon-truck',
+        icon: 'feather icon-file-text',
         roles: ['ADMIN', 'GENERAL', 'SUPERADMIN'],
         children: []
       },
